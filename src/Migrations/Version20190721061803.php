@@ -1,0 +1,44 @@
+<?php
+
+declare(strict_types=1);
+
+namespace DoctrineMigrations;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+final class Version20190721061803 extends AbstractMigration
+{
+    public function getDescription() : string
+    {
+        return '';
+    }
+
+    public function up(Schema $schema) : void
+    {
+        // this up() migration is auto-generated, please modify it to your needs
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+
+        $this->addSql('CREATE TABLE cabinet (id INT AUTO_INCREMENT NOT NULL, building_id INT DEFAULT NULL, name VARCHAR(255) DEFAULT NULL, INDEX IDX_4CED05B04D2A7E12 (building_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE teacher (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) DEFAULT NULL, name_full VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE cabinet ADD CONSTRAINT FK_4CED05B04D2A7E12 FOREIGN KEY (building_id) REFERENCES building (id)');
+        $this->addSql('ALTER TABLE `group` ADD course_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE `group` ADD CONSTRAINT FK_6DC044C5591CC992 FOREIGN KEY (course_id) REFERENCES course (id)');
+        $this->addSql('CREATE INDEX IDX_6DC044C5591CC992 ON `group` (course_id)');
+    }
+
+    public function down(Schema $schema) : void
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+
+        $this->addSql('DROP TABLE cabinet');
+        $this->addSql('DROP TABLE teacher');
+        $this->addSql('ALTER TABLE `group` DROP FOREIGN KEY FK_6DC044C5591CC992');
+        $this->addSql('DROP INDEX IDX_6DC044C5591CC992 ON `group`');
+        $this->addSql('ALTER TABLE `group` DROP course_id');
+    }
+}
