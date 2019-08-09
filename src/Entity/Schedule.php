@@ -51,6 +51,12 @@ class Schedule
      */
     private $week;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Day", inversedBy="schedules")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $day;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -136,6 +142,18 @@ class Schedule
     public function setWeek(?Week $week): self
     {
         $this->week = $week;
+
+        return $this;
+    }
+
+    public function getDay(): ?Day
+    {
+        return $this->day;
+    }
+
+    public function setDay(?Day $day): self
+    {
+        $this->day = $day;
 
         return $this;
     }

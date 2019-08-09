@@ -4,7 +4,34 @@ easy_admin:
         display_name: true
         display_avatar: true
     design:
-        # all kinds of assets are supported and linked accordingly
+        menu:
+            -   label: 'University information'
+                permission: 'ROLE_ADMIN'
+                icon: 'city'
+                children:
+                    - { entity: 'University', icon: 'university' }
+                    - { entity: 'Building', icon: 'building' }
+                    - { entity: 'Cabinet', icon: 'door-open' }
+            - { entity: 'Faculty', permission: 'ROLE_ADMIN', icon: 'puzzle-piece' }
+            - { entity: 'Party', permission: 'ROLE_ADMIN', icon: 'users' }
+            - { entity: 'Schedule', permission: 'ROLE_ADMIN', icon: 'clipboard-list' }
+            -   label: 'Teachers'
+                permission: 'ROLE_ADMIN'
+                icon: 'chalkboard-teacher'
+                children:
+                    - { entity: 'Teacher', icon: 'chalkboard-teacher' }
+                    - { entity: 'TeacherPosition', icon: 'user-tie' }
+            -   label: 'Constant'
+                permission: 'ROLE_ADMIN'
+                icon: 'cog'
+                children:
+                    - { entity: 'Day', icon: 'calendar-day' }
+                    - { entity: 'Week', icon: 'calendar-week' }
+                    - { entity: 'LessonType', icon: 'bookmark' }
+                    - { entity: 'Course', icon: 'cubes' }
+            - { entity: 'User', permission: 'ROLE_ADMIN', icon: 'user' }
+
+
         assets:
             favicon: '/assets/backend/favicon.png'
             css:
@@ -30,15 +57,63 @@ easy_admin:
             label: 'Faculties'
             list:
                 title: '%%entity_name%% list'
+                filters: ['university']
+                sort: ['university', 'ASC']
+                fields: ['name', {property: 'name_full', label: 'Full name'}, 'university', {property: 'enable', label: 'Status'} 'parties']
 
+        User:
+            class: App\Entity\User
+            controller: App\Controller\EasyAdmin\UserController
+            list:
+                fields: ['email', 'roleLabel']
+            edit:
+                fields: ['email', 'access_faculties']
+            new:
+                fields: ['email',  {property: 'password', type: 'password'}, 'access_faculties']
 
-#        - App\Entity\Party
-#        - App\Entity\Schedule
-#        - App\Entity\Course
-#        - App\Entity\Teacher
-#        - App\Entity\TeacherPosition
-#        - App\Entity\Week
-#        - App\Entity\LessonType
-#        - App\Entity\Building
-#        - App\Entity\Cabinet
-#        - App\Entity\User
+        Party:
+            class: App\Entity\Party
+
+        Schedule:
+            class: App\Entity\Schedule
+
+        Course:
+            class: App\Entity\Course
+
+        Teacher:
+            class: App\Entity\Teacher
+
+        TeacherPosition:
+            class: App\Entity\TeacherPosition
+
+        Week:
+            class: App\Entity\Week
+
+        LessonType:
+            class: App\Entity\LessonType
+
+        Building:
+            class: App\Entity\Building
+            label: 'Buildings'
+
+        Cabinet:
+            class: App\Entity\Cabinet
+
+        Day:
+            class: App\Entity\Day
+            label: Days
+            list:
+                title: '%%entity_label%% list'
+                sort: ['id', 'ASC']
+                fields: ['name', {property: 'name_full', label: 'Full name'}]
+                actions:
+                    - { name: 'new', label: 'Add day' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            new:
+                title: 'Create day'
+                fields: ['name', {property: 'name_full', label: 'Full name'}]
+            edit:
+                title: 'Edit day number %%entity_id%%'
+                fields: ['name', {property: 'name_full', label: 'Full name'}]
+

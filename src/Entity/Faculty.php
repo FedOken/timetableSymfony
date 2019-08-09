@@ -43,9 +43,23 @@ class Faculty
      */
     private $parties;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="access_faculties")
+     */
+    private $users;
+
     public function __construct()
     {
         $this->parties = new ArrayCollection();
+        $this->users = new ArrayCollection();
+    }
+
+    /**
+     * Set what user see in form by relation
+     * @return mixed
+     */
+    public function __toString(){
+        return $this->name_full;
     }
 
     public function getId(): ?int
@@ -102,14 +116,6 @@ class Faculty
     }
 
     /**
-     * Set what user see in form by relation
-     * @return mixed
-     */
-    public function __toString(){
-        return $this->name_full;
-    }
-
-    /**
      * @return Collection|Party[]
      */
     public function getParties(): Collection
@@ -135,6 +141,34 @@ class Faculty
             if ($party->getFaculty() === $this) {
                 $party->setFaculty(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addAccessFaculty($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            $user->removeAccessFaculty($this);
         }
 
         return $this;
