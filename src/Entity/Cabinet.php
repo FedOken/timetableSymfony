@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\BuildingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,12 +20,13 @@ class Cabinet
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $name;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Building", inversedBy="cabinets")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $building;
 
@@ -33,9 +35,23 @@ class Cabinet
      */
     private $schedules;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\University", inversedBy="cabinets")
+     */
+    private $university;
+
     public function __construct()
     {
         $this->schedules = new ArrayCollection();
+    }
+
+    /**
+     * Set what user see in form by relation
+     * @return mixed
+     */
+    public function __toString()
+    {
+        return $this->name;
     }
 
     public function getId(): ?int
@@ -98,11 +114,15 @@ class Cabinet
         return $this;
     }
 
-    /**
-     * Set what user see in form by relation
-     * @return mixed
-     */
-    public function __toString(){
-        return $this->name;
+    public function getUniversity(): ?University
+    {
+        return $this->university;
+    }
+
+    public function setUniversity(?University $university): self
+    {
+        $this->university = $university;
+
+        return $this;
     }
 }

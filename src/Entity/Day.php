@@ -19,12 +19,12 @@ class Day
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $name_full;
 
@@ -36,6 +36,14 @@ class Day
     public function __construct()
     {
         $this->schedules = new ArrayCollection();
+    }
+
+    /**
+     * Set what user see in form by relation
+     * @return mixed
+     */
+    public function __toString(){
+        return $this->name_full;
     }
 
     public function getId(): ?int

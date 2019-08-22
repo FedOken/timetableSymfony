@@ -17,37 +17,43 @@ class Schedule
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $lesson_name;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Party", inversedBy="schedules")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $party;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\LessonType", inversedBy="schedules")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $lesson_type;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Teacher", inversedBy="schedules")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $teacher;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Building", inversedBy="schedules")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $building;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Cabinet", inversedBy="schedules")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $cabinet;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Week", inversedBy="schedules")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $week;
 
@@ -56,6 +62,20 @@ class Schedule
      * @ORM\JoinColumn(nullable=false)
      */
     private $day;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\University", inversedBy="schedules")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $university;
+
+    /**
+     * Set what user see in form by relation
+     * @return mixed
+     */
+    public function __toString(){
+        return $this->lesson_name;
+    }
 
     public function getId(): ?int
     {
@@ -154,6 +174,18 @@ class Schedule
     public function setDay(?Day $day): self
     {
         $this->day = $day;
+
+        return $this;
+    }
+
+    public function getUniversity(): ?University
+    {
+        return $this->university;
+    }
+
+    public function setUniversity(?University $university): self
+    {
+        $this->university = $university;
 
         return $this;
     }

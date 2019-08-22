@@ -19,32 +19,21 @@ class WeekRepository extends ServiceEntityRepository
         parent::__construct($registry, Week::class);
     }
 
-    // /**
-    //  * @return Week[] Returns an array of Week objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('w.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Week
+    /**
+     * @param $university_id
+     * @param $week_id
+     * @return mixed
+     */
+    public function checkWeekByUniversity($university_id, $week_id)
     {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.exampleField = :val')
-            ->setParameter('val', $value)
+        return $this->createQueryBuilder('table')
+            ->andWhere('table.university = :university')
+            ->andWhere('table.id = :id')
+            ->setParameter('university', $university_id)
+            ->setParameter('id', $week_id)
+            ->orderBy('table.id', 'ASC')
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getResult();
     }
-    */
 }

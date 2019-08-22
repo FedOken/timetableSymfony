@@ -5,115 +5,343 @@ easy_admin:
         display_avatar: true
     design:
         menu:
-            -   label: 'University information'
-                permission: 'ROLE_ADMIN'
-                icon: 'city'
+            -   label: 'University structure'
+                icon: 'layer-group'
                 children:
                     - { entity: 'University', icon: 'university' }
+                    - { entity: 'Faculty', icon: 'puzzle-piece' }
+                    - { entity: 'Party', icon: 'users' }
+            -   label: 'University building'
+                icon: 'city'
+                children:
                     - { entity: 'Building', icon: 'building' }
                     - { entity: 'Cabinet', icon: 'door-open' }
-            - { entity: 'Faculty', permission: 'ROLE_ADMIN', icon: 'puzzle-piece' }
-            - { entity: 'Party', permission: 'ROLE_ADMIN', icon: 'users' }
-            - { entity: 'Schedule', permission: 'ROLE_ADMIN', icon: 'clipboard-list' }
+            -   label: 'University constant'
+                icon: 'dot-circle'
+                children:
+                    - { entity: 'Course', icon: 'cubes' }
+                    - { entity: 'Week', icon: 'calendar-week' }
             -   label: 'Teachers'
-                permission: 'ROLE_ADMIN'
                 icon: 'chalkboard-teacher'
                 children:
                     - { entity: 'Teacher', icon: 'chalkboard-teacher' }
                     - { entity: 'TeacherPosition', icon: 'user-tie' }
+            - { entity: 'Schedule', icon: 'clipboard-list' }
             -   label: 'Constant'
-                permission: 'ROLE_ADMIN'
                 icon: 'cog'
                 children:
                     - { entity: 'Day', icon: 'calendar-day' }
-                    - { entity: 'Week', icon: 'calendar-week' }
                     - { entity: 'LessonType', icon: 'bookmark' }
-                    - { entity: 'Course', icon: 'cubes' }
-            - { entity: 'User', permission: 'ROLE_ADMIN', icon: 'user' }
+            - { entity: 'User', icon: 'user' }
 
 
         assets:
-            favicon: '/assets/backend/favicon.png'
+            #favicon: '/assets/backend/favicon.png'
             css:
                 - ''
             js:
-                - ''
+                - 'bundles/easyadmin/custom/js/admin.js'
     entities:
         # List the entity class name you want to manage
         University:
             class: App\Entity\University
-            label: 'Universities'
+            label: Universities
             list:
-                title: '%%entity_name%% list'
-                fields: ['id', {property: 'enable', label: 'Status'}, 'name', {property: 'name_full', label: 'Full name'}, 'faculties', 'buildings']
-            show:
-                fields: ['id', {property: 'enable', label: 'Status'}, 'name', {property: 'name_full', label: 'Full name'}, 'faculties', 'buildings']
+                title: '%%entity_label%% list'
+                sort: ['name_full', 'ASC']
+                fields: ['name', { property: 'name_full', label: 'Full name' }, { property: 'enable', label: 'Status' }, 'faculties', 'buildings']
+                actions:
+                    - { name: 'new', label: 'Add university' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'name',  help: 'Set short name (NU)' }
+                    - { property: 'name_full', label: 'Full name', help: 'Set full university name (National university)'}
+                    - { property: 'enable', label: 'Status' }
+            new:
+                title: 'Create university'
             edit:
-                fields: ['id', {property: 'enable', label: 'Status'}, 'name', {property: 'name_full', label: 'Full name'}]
-            search:
-                fields: ['id']
+                title: 'Edit university'
+
         Faculty:
             class: App\Entity\Faculty
             label: 'Faculties'
             list:
-                title: '%%entity_name%% list'
-                filters: ['university']
+                title: '%%entity_label%% list'
                 sort: ['university', 'ASC']
-                fields: ['name', {property: 'name_full', label: 'Full name'}, 'university', {property: 'enable', label: 'Status'} 'parties']
-
-        User:
-            class: App\Entity\User
-            controller: App\Controller\EasyAdmin\UserController
-            list:
-                fields: ['email', 'roleLabel']
-            edit:
-                fields: ['email', 'access_faculties']
+                filters: ['university', 'enable']
+                fields:
+                    - 'name'
+                    - {property: 'name_full', label: 'Full name'}
+                    - 'university'
+                    - {property: 'enable', label: 'Status'}
+                    - 'parties'
+                actions:
+                    - { name: 'new', label: 'Add faculty' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'name',  help: 'Set short name (FAT)' }
+                    - { property: 'name_full', label: 'Full name',  help: 'Set full name (Faculty of advanced technology)' }
+                    - { property: 'university', type_options: { required: true }, help: 'Choose your university'}
+                    - 'enable'
             new:
-                fields: ['email',  {property: 'password', type: 'password'}, 'access_faculties']
+                title: 'Create faculty'
+            edit:
+                title: 'Edit faculty'
 
         Party:
             class: App\Entity\Party
+            controller: App\Controller\EasyAdmin\PartyController
+            label: 'Groups'
+            list:
+                title: '%%entity_label%% list'
+                sort: ['faculty', 'ASC']
+                filters: ['university', 'faculty', 'course']
+                fields:
+                    - 'name'
+                    - 'course'
+                    - 'faculty'
+                    - 'university'
+                actions:
+                    - { name: 'new', label: 'Add group' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'university', type_options: { required: true }, help: 'Choose university' }
+                    - { property: 'faculty',  type_options: { required: true }, help: 'Choose faculty after university' }
+                    - { property: 'course', type_options: { required: true }, help: 'Choose course after university' }
+                    - { property: 'name',  help: 'Set group name (GN-2-1, GN-5-1m, GN-3-1tec)' }
+            new:
+                title: 'Create group'
+            edit:
+                title: 'Edit group'
 
-        Schedule:
-            class: App\Entity\Schedule
-
-        Course:
-            class: App\Entity\Course
-
-        Teacher:
-            class: App\Entity\Teacher
-
-        TeacherPosition:
-            class: App\Entity\TeacherPosition
-
-        Week:
-            class: App\Entity\Week
-
-        LessonType:
-            class: App\Entity\LessonType
 
         Building:
             class: App\Entity\Building
+            controller: App\Controller\EasyAdmin\BuildingController
             label: 'Buildings'
+            list:
+                title: '%%entity_label%% list'
+                sort: ['university', 'ASC']
+                filters: ['university']
+                fields: ['name', { property: 'name_full', label: 'Full name' }, 'address', 'university', 'cabinets']
+                actions:
+                    - { name: 'new', label: 'Add building' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'university', type_options: { required: true }, help: 'Choose university' }
+                    - { property: 'name',  type_options: { required: true }, help: 'Set short building name (C1, C6)' }
+                    - { property: 'name_full', label: 'Full name', help: 'Set full building name (Main campus, Learning campus)' }
+                    - { property: 'address',   type_options: { required: true }, help: 'Set building address (Kiev, st. Khreschatyk, 1)' }
+            new:
+                title: 'Create building'
+            edit:
+                title: 'Edit building'
 
         Cabinet:
             class: App\Entity\Cabinet
+            label: 'Cabinets'
+            list:
+                title: '%%entity_label%% list'
+                sort: ['building', 'ASC']
+                filters: ['university', 'building']
+                fields: ['name', 'building', 'university', 'schedules']
+                actions:
+                    - { name: 'new', label: 'Add cabinet' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'university',  type_options: { required: true }, help: 'Choose university' }
+                    - { property: 'building', help: 'Choose building' }
+                    - { property: 'name', help: 'Enter cabinet number (2, 411, 325a)' }
+            new:
+                title: 'Create cabinet'
+            edit:
+                title: 'Edit cabinet'
 
-        Day:
-            class: App\Entity\Day
-            label: Days
+        Course:
+            class: App\Entity\Course
+            label: Courses
+            list:
+                title: '%%entity_label%% list'
+                sort: ['university', 'ASC']
+                filters: ['university']
+                fields: ['course', { property: 'name_full', label: 'Full name' }, 'university']
+                actions:
+                    - { name: 'new', label: 'Add course' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'university', type_options: { required: true }, help: 'Choose university'}
+                    - { property: 'course', type_options: { required: true }, help: 'Set course number (1, 2, 5)' }
+                    - { property: 'name_full', label: 'Full name', help: 'Set full name (First course, Second course)' }
+            new:
+                title: 'Create course'
+            edit:
+                title: 'Edit course'
+
+        Week:
+            class: App\Entity\Week
+            label: 'Week'
+            list:
+                title: '%%entity_label%% list'
+                sort: ['university', 'ASC']
+                filters: ['university']
+                fields: ['name', 'university', 'schedules']
+                actions:
+                    - { name: 'new', label: 'Add week' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'name',  help: 'Set full name (First week, Second week)' }
+                    - { property: 'university', type_options: { required: true }, help: 'Choose university'}
+            new:
+                title: 'Create week'
+            edit:
+                title: 'Edit week'
+
+        Teacher:
+            class: App\Entity\Teacher
+            label: Teachers
+            list:
+                title: '%%entity_label%% list'
+                sort: ['university', 'ASC']
+                filters: ['university', 'position']
+                fields: ['name', { property: 'name_full', label: 'Full name' }, 'position', 'university']
+                actions:
+                    - { name: 'new', label: 'Add teacher' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'university', type_options: { required: true }, help: 'Choose university'}
+                    - { property: 'name',  help: 'Set name with abbreviation (Fedorenko O.B.)' }
+                    - { property: 'name_full', label: 'Full name', help: 'Set full name (Fedorenko Oleksandr Borisovich)' }
+                    - { property: 'position', type_options: { required: true }, help: 'Choose teacher position'}
+            new:
+                title: 'Create teacher'
+            edit:
+                title: 'Edit teacher'
+
+        TeacherPosition:
+            class: App\Entity\TeacherPosition
+            label: 'Teachers position'
             list:
                 title: '%%entity_label%% list'
                 sort: ['id', 'ASC']
-                fields: ['name', {property: 'name_full', label: 'Full name'}]
+                fields: ['name', { property: 'name_full', label: 'Full name' }, 'teachers']
+                actions:
+                    - { name: 'new', label: 'Add position' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'name',  help: 'Set short name (prof.)' }
+                    - { property: 'name_full', label: 'Full name', help: 'Set full name (Professor)' }
+            new:
+                title: 'Create teacher position'
+            edit:
+                title: 'Edit teacher position'
+
+        Schedule:
+            class: App\Entity\Schedule
+            controller: App\Controller\EasyAdmin\ScheduleController
+            label: 'Schedules'
+            list:
+                title: '%%entity_label%% list'
+                sort: ['day', 'ASC']
+                filters: ['building', 'cabinet', 'day', 'week']
+                fields:
+                    - 'lesson_name'
+                    - 'lesson_type'
+                    - 'party'
+                    - 'teacher'
+                    - 'building'
+                    - 'cabinet'
+                    - 'day'
+                    - 'week'
+                actions:
+                    - { name: 'new', label: 'Add schedule' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'university', help: 'Choose university'}
+                    - { property: 'building', help: 'Choose building'}
+                    - { property: 'cabinet', help: 'Choose cabinet'}
+                    - { property: 'party', help: 'Choose party'}
+                    - { property: 'teacher', help: 'Choose teacher'}
+                    - { property: 'lesson_type', help: 'Choose lesson type'}
+                    - { property: 'day', help: 'Choose day'}
+                    - { property: 'lesson_name', help: 'Set lesson name (Computer technology)'}
+            new:
+                title: 'Create schedule'
+            edit:
+                title: 'Edit schedule'
+
+        LessonType:
+            class: App\Entity\LessonType
+            label: 'Lesson types'
+            list:
+                title: '%%entity_label%% list'
+                sort: ['id', 'ASC']
+                fields: ['name', { property: 'name_full', label: 'Full name' }]
+                actions:
+                    - { name: 'new', label: 'Add type' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'name', help: 'Set short name (Lec, Pr)'}
+                    - { property: 'name_full', label: 'Full name', help: 'Set full name (Lecture, Practice)' }
+            new:
+                title: 'Create lesson type'
+            edit:
+                title: 'Edit lesson type'
+
+        Day:
+            class: App\Entity\Day
+            label: 'Days'
+            list:
+                title: '%%entity_label%% list'
+                sort: ['id', 'ASC']
+                fields: ['name', { property: 'name_full', label: 'Full name' }]
                 actions:
                     - { name: 'new', label: 'Add day' }
                     - { name: 'edit', icon: 'pencil', label: false }
                     - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'name', help: 'Set day abbreviation (Mo, Tu)'}
+                    - { property: 'name_full', label: 'Full name', help: 'Set full name (Monday, Tuesday)' }
             new:
                 title: 'Create day'
-                fields: ['name', {property: 'name_full', label: 'Full name'}]
+                fields: ['name', { property: 'name_full', label: 'Full name' }]
             edit:
                 title: 'Edit day number %%entity_id%%'
-                fields: ['name', {property: 'name_full', label: 'Full name'}]
-
+                fields: ['name', { property: 'name_full', label: 'Full name' }]
+        User:
+            class: App\Entity\User
+            controller: App\Controller\EasyAdmin\UserController
+            label: Users
+            list:
+                title: '%%entity_label%% list'
+                fields: ['email', { property: 'roleLabel', label: 'Role' }]
+                actions:
+                    - { name: 'new', label: 'Add user' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            edit:
+                fields: ['email', 'access_faculties']
+            new:
+                fields: ['email',  {property: 'password', type: 'password'}, 'access_faculties']

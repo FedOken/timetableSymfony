@@ -19,23 +19,36 @@ class Course
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $course;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
-    private $comment;
+    private $name_full;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Party", mappedBy="course")
      */
     private $parties;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\University", inversedBy="courses")
+     */
+    private $university;
+
     public function __construct()
     {
         $this->parties = new ArrayCollection();
+    }
+
+    /**
+     * Set what user see in form by relation
+     * @return mixed
+     */
+    public function __toString(){
+        return $this->course;
     }
 
     public function getId(): ?int
@@ -55,14 +68,14 @@ class Course
         return $this;
     }
 
-    public function getComment(): ?string
+    public function getNameFull(): ?string
     {
-        return $this->comment;
+        return $this->name_full;
     }
 
-    public function setComment(?string $comment): self
+    public function setNameFull(?string $name_full): self
     {
-        $this->comment = $comment;
+        $this->name_full = $name_full;
 
         return $this;
     }
@@ -94,6 +107,18 @@ class Course
                 $party->setCourse(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUniversity(): ?University
+    {
+        return $this->university;
+    }
+
+    public function setUniversity(?University $university): self
+    {
+        $this->university = $university;
 
         return $this;
     }

@@ -19,32 +19,20 @@ class CabinetRepository extends ServiceEntityRepository
         parent::__construct($registry, Cabinet::class);
     }
 
-    // /**
-    //  * @return Cabinet[] Returns an array of Cabinet objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param $building_id
+     * @param $cabinet_id
+     * @return mixed
+     */
+    public function checkCabinetByBuilding($building_id, $cabinet_id)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('table')
+            ->andWhere('table.building = :building')
+            ->andWhere('table.id = :id')
+            ->setParameter('building', $building_id)
+            ->setParameter('id', $cabinet_id)
+            ->orderBy('table.id', 'ASC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Cabinet
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

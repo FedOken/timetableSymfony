@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Translation\Translator;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TeacherPositionRepository")
@@ -19,12 +20,12 @@ class TeacherPosition
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $name_full;
 
@@ -36,6 +37,14 @@ class TeacherPosition
     public function __construct()
     {
         $this->teachers = new ArrayCollection();
+    }
+
+    /**
+     * Set what user see in form by relation
+     * @return mixed
+     */
+    public function __toString(){
+        return $this->name_full;
     }
 
     public function getId(): ?int

@@ -19,7 +19,7 @@ class Building
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $name;
 
@@ -29,12 +29,13 @@ class Building
     private $name_full;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $address;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\University", inversedBy="buildings")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $university;
 
@@ -52,6 +53,23 @@ class Building
     {
         $this->cabinets = new ArrayCollection();
         $this->schedules = new ArrayCollection();
+    }
+
+    /**
+     * Set what user see in form by relation
+     * @return mixed
+     */
+    public function __toString()
+    {
+        return $this->getComplexName();
+    }
+
+    /**
+     * @return string
+     */
+    public function getComplexName() :string
+    {
+        return $this->name.' ('.$this->address.')';
     }
 
     public function getId(): ?int
@@ -167,13 +185,5 @@ class Building
         }
 
         return $this;
-    }
-
-    /**
-     * Set what user see in form by relation
-     * @return mixed
-     */
-    public function __toString(){
-        return $this->name;
     }
 }

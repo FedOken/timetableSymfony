@@ -19,12 +19,12 @@ class University
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $name_full;
 
@@ -43,11 +43,54 @@ class University
      */
     private $buildings;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Week", mappedBy="university")
+     */
+    private $weeks;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Course", mappedBy="university")
+     */
+    private $courses;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Teacher", mappedBy="university")
+     */
+    private $teachers;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Cabinet", mappedBy="university")
+     */
+    private $cabinets;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Party", mappedBy="university")
+     */
+    private $parties;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Schedule", mappedBy="university")
+     */
+    private $schedules;
 
     public function __construct()
     {
         $this->faculties = new ArrayCollection();
         $this->buildings = new ArrayCollection();
+        $this->weeks = new ArrayCollection();
+        $this->courses = new ArrayCollection();
+        $this->teachers = new ArrayCollection();
+        $this->cabinets = new ArrayCollection();
+        $this->parties = new ArrayCollection();
+        $this->schedules = new ArrayCollection();
+    }
+
+    /**
+     * Set what user see in form by relation
+     * @return mixed
+     */
+    public function __toString(){
+        return $this->name_full;
     }
 
     public function getId(): ?int
@@ -123,14 +166,6 @@ class University
     }
 
     /**
-     * Set what user see in form by relation
-     * @return mixed
-     */
-    public function __toString(){
-        return $this->name_full;
-    }
-
-    /**
      * @return Collection|Building[]
      */
     public function getBuildings(): Collection
@@ -155,6 +190,192 @@ class University
             // set the owning side to null (unless already changed)
             if ($building->getUniversity() === $this) {
                 $building->setUniversity(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Week[]
+     */
+    public function getWeeks(): Collection
+    {
+        return $this->weeks;
+    }
+
+    public function addWeek(Week $week): self
+    {
+        if (!$this->weeks->contains($week)) {
+            $this->weeks[] = $week;
+            $week->setUniversity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWeek(Week $week): self
+    {
+        if ($this->weeks->contains($week)) {
+            $this->weeks->removeElement($week);
+            // set the owning side to null (unless already changed)
+            if ($week->getUniversity() === $this) {
+                $week->setUniversity(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Course[]
+     */
+    public function getCourses(): Collection
+    {
+        return $this->courses;
+    }
+
+    public function addCourse(Course $course): self
+    {
+        if (!$this->courses->contains($course)) {
+            $this->courses[] = $course;
+            $course->setUniversity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCourse(Course $course): self
+    {
+        if ($this->courses->contains($course)) {
+            $this->courses->removeElement($course);
+            // set the owning side to null (unless already changed)
+            if ($course->getUniversity() === $this) {
+                $course->setUniversity(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Teacher[]
+     */
+    public function getTeachers(): Collection
+    {
+        return $this->teachers;
+    }
+
+    public function addTeacher(Teacher $teacher): self
+    {
+        if (!$this->teachers->contains($teacher)) {
+            $this->teachers[] = $teacher;
+            $teacher->setUniversity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeacher(Teacher $teacher): self
+    {
+        if ($this->teachers->contains($teacher)) {
+            $this->teachers->removeElement($teacher);
+            // set the owning side to null (unless already changed)
+            if ($teacher->getUniversity() === $this) {
+                $teacher->setUniversity(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Cabinet[]
+     */
+    public function getCabinets(): Collection
+    {
+        return $this->cabinets;
+    }
+
+    public function addCabinet(Cabinet $cabinet): self
+    {
+        if (!$this->cabinets->contains($cabinet)) {
+            $this->cabinets[] = $cabinet;
+            $cabinet->setUniversity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCabinet(Cabinet $cabinet): self
+    {
+        if ($this->cabinets->contains($cabinet)) {
+            $this->cabinets->removeElement($cabinet);
+            // set the owning side to null (unless already changed)
+            if ($cabinet->getUniversity() === $this) {
+                $cabinet->setUniversity(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Party[]
+     */
+    public function getParties(): Collection
+    {
+        return $this->parties;
+    }
+
+    public function addParty(Party $party): self
+    {
+        if (!$this->parties->contains($party)) {
+            $this->parties[] = $party;
+            $party->setUniversity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParty(Party $party): self
+    {
+        if ($this->parties->contains($party)) {
+            $this->parties->removeElement($party);
+            // set the owning side to null (unless already changed)
+            if ($party->getUniversity() === $this) {
+                $party->setUniversity(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Schedule[]
+     */
+    public function getSchedules(): Collection
+    {
+        return $this->schedules;
+    }
+
+    public function addSchedule(Schedule $schedule): self
+    {
+        if (!$this->schedules->contains($schedule)) {
+            $this->schedules[] = $schedule;
+            $schedule->setUniversity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSchedule(Schedule $schedule): self
+    {
+        if ($this->schedules->contains($schedule)) {
+            $this->schedules->removeElement($schedule);
+            // set the owning side to null (unless already changed)
+            if ($schedule->getUniversity() === $this) {
+                $schedule->setUniversity(null);
             }
         }
 

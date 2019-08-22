@@ -19,32 +19,20 @@ class BuildingRepository extends ServiceEntityRepository
         parent::__construct($registry, Building::class);
     }
 
-    // /**
-    //  * @return Building[] Returns an array of Building objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param $university_id
+     * @param $building_id
+     * @return mixed
+     */
+    public function checkBuildingByUniversity($university_id, $building_id)
     {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('table')
+            ->andWhere('table.university = :university')
+            ->andWhere('table.id = :id')
+            ->setParameter('university', $university_id)
+            ->setParameter('id', $building_id)
+            ->orderBy('table.id', 'ASC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Building
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

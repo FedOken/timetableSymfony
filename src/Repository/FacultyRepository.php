@@ -19,32 +19,20 @@ class FacultyRepository extends ServiceEntityRepository
         parent::__construct($registry, Faculty::class);
     }
 
-    // /**
-    //  * @return Faculty[] Returns an array of Faculty objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param $university_id
+     * @param $faculty_id
+     * @return mixed
+     */
+    public function checkFacultyByUniversity($university_id, $faculty_id)
     {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('f.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('table')
+            ->andWhere('table.university = :university')
+            ->andWhere('table.id = :id')
+            ->setParameter('university', $university_id)
+            ->setParameter('id', $faculty_id)
+            ->orderBy('table.id', 'ASC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Faculty
-    {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

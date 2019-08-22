@@ -19,7 +19,7 @@ class Week
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $name;
 
@@ -28,9 +28,22 @@ class Week
      */
     private $schedules;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\University", inversedBy="weeks")
+     */
+    private $university;
+
     public function __construct()
     {
         $this->schedules = new ArrayCollection();
+    }
+
+    /**
+     * Set what user see in form by relation
+     * @return mixed
+     */
+    public function __toString(){
+        return $this->name;
     }
 
     public function getId(): ?int
@@ -77,6 +90,18 @@ class Week
                 $schedule->setWeek(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUniversity(): ?University
+    {
+        return $this->university;
+    }
+
+    public function setUniversity(?University $university): self
+    {
+        $this->university = $university;
 
         return $this;
     }

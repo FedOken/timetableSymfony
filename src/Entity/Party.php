@@ -19,14 +19,9 @@ class Party
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $name;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $enable;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Faculty", inversedBy="parties")
@@ -43,9 +38,22 @@ class Party
      */
     private $schedules;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\University", inversedBy="parties")
+     */
+    private $university;
+
     public function __construct()
     {
         $this->schedules = new ArrayCollection();
+    }
+
+    /**
+     * Set what user see in form by relation
+     * @return mixed
+     */
+    public function __toString(){
+        return $this->name;
     }
 
     public function getId(): ?int
@@ -61,18 +69,6 @@ class Party
     public function setName(?string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getEnable(): ?bool
-    {
-        return $this->enable;
-    }
-
-    public function setEnable(bool $enable): self
-    {
-        $this->enable = $enable;
 
         return $this;
     }
@@ -128,6 +124,18 @@ class Party
                 $schedule->setParty(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUniversity(): ?University
+    {
+        return $this->university;
+    }
+
+    public function setUniversity(?University $university): self
+    {
+        $this->university = $university;
 
         return $this;
     }

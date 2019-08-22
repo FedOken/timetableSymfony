@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190721070154 extends AbstractMigration
+final class Version20190821055532 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,9 +22,7 @@ final class Version20190721070154 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE party (id INT AUTO_INCREMENT NOT NULL, faculty_id INT DEFAULT NULL, course_id INT DEFAULT NULL, name VARCHAR(255) DEFAULT NULL, enable TINYINT(1) NOT NULL, INDEX IDX_89954EE0680CAB68 (faculty_id), INDEX IDX_89954EE0591CC992 (course_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE party ADD CONSTRAINT FK_89954EE0680CAB68 FOREIGN KEY (faculty_id) REFERENCES faculty (id)');
-        $this->addSql('ALTER TABLE party ADD CONSTRAINT FK_89954EE0591CC992 FOREIGN KEY (course_id) REFERENCES course (id)');
+        $this->addSql('ALTER TABLE schedule CHANGE cabinet_id cabinet_id INT NOT NULL');
     }
 
     public function down(Schema $schema) : void
@@ -32,6 +30,6 @@ final class Version20190721070154 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('DROP TABLE party');
+        $this->addSql('ALTER TABLE schedule CHANGE cabinet_id cabinet_id INT DEFAULT NULL');
     }
 }
