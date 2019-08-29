@@ -44,7 +44,7 @@ class Faculty
     private $parties;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="access_faculties")
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="faculty")
      */
     private $users;
 
@@ -158,7 +158,7 @@ class Faculty
     {
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
-            $user->addAccessFaculty($this);
+            $user->setFaculty($this);
         }
 
         return $this;
@@ -168,7 +168,10 @@ class Faculty
     {
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
-            $user->removeAccessFaculty($this);
+            // set the owning side to null (unless already changed)
+            if ($user->getFaculty() === $this) {
+                $user->setFaculty(null);
+            }
         }
 
         return $this;

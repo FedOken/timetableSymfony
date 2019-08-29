@@ -43,9 +43,15 @@ class Teacher
      */
     private $university;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="teacher")
+     */
+    private $users;
+
     public function __construct()
     {
         $this->schedules = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     /**
@@ -136,6 +142,37 @@ class Teacher
     public function setUniversity(?University $university): self
     {
         $this->university = $university;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            // set the owning side to null (unless already changed)
+            if ($user->getTeacher() === $this) {
+                $user->setTeacher(null);
+            }
+        }
 
         return $this;
     }

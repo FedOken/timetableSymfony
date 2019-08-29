@@ -38,14 +38,40 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Faculty", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Role", inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $access_faculties;
+    private $role_label;
 
-    public function __construct()
-    {
-        $this->access_faculties = new ArrayCollection();
-    }
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $access_code;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $enable;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\University", inversedBy="users")
+     */
+    private $university;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Faculty", inversedBy="users")
+     */
+    private $faculty;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Party", inversedBy="users")
+     */
+    private $party;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Teacher", inversedBy="users")
+     */
+    private $teacher;
 
     /**
      * Set what user see in form by relation
@@ -97,55 +123,9 @@ class User implements UserInterface
         return $roles;
     }
 
-    public function getRole(): string
-    {
-        //Get current role or set default ROLE_USER
-        $roles = $this->roles;
-
-        if(!$roles) {
-            $roles[] = 'ROLE_USER';
-        }
-
-        return $roles[0];
-    }
-
-    public function getRoleList()
-    {
-        return [
-            'Admin'                 => 'ROLE_ADMIN' ,
-            'User'                  => 'ROLE_USER',
-            'University manager'    => 'ROLE_UNIVERSITY_MANAGER',
-            'Faculty manager'       => 'ROLE_FACULTY_MANAGER',
-            'Group manager'         => 'ROLE_GROUP_MANAGER',
-        ];
-    }
-
-    public function getRoleLabel()
-    {
-        $roles = $this->getRoleList();
-        $current_role_in_array = $this->getRoles()[0];
-
-        foreach ($roles as $role_label => $role_key)
-        {
-            if($current_role_in_array == $role_key )
-            {
-                return $role_label;
-            }
-        }
-        return 'Undefined';
-    }
-
-
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
-
-        return $this;
-    }
-
-    public function setRole($role): self
-    {
-        $this->roles = [$role];
 
         return $this;
     }
@@ -182,28 +162,87 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    /**
-     * @return Collection|Faculty[]
-     */
-    public function getAccessFaculties(): Collection
+
+    public function getRoleLabel(): ?Role
     {
-        return $this->access_faculties;
+        return $this->role_label;
     }
 
-    public function addAccessFaculty(Faculty $accessFaculty): self
+    public function setRoleLabel(?Role $role_label): self
     {
-        if (!$this->access_faculties->contains($accessFaculty)) {
-            $this->access_faculties[] = $accessFaculty;
-        }
+        $this->role_label = $role_label;
 
         return $this;
     }
 
-    public function removeAccessFaculty(Faculty $accessFaculty): self
+    public function getAccessCode(): ?string
     {
-        if ($this->access_faculties->contains($accessFaculty)) {
-            $this->access_faculties->removeElement($accessFaculty);
-        }
+        return $this->access_code;
+    }
+
+    public function setAccessCode(string $access_code): self
+    {
+        $this->access_code = $access_code;
+
+        return $this;
+    }
+
+    public function getEnable(): ?bool
+    {
+        return $this->enable;
+    }
+
+    public function setEnable(bool $enable): self
+    {
+        $this->enable = $enable;
+
+        return $this;
+    }
+
+    public function getUniversity(): ?University
+    {
+        return $this->university;
+    }
+
+    public function setUniversity(?University $university): self
+    {
+        $this->university = $university;
+
+        return $this;
+    }
+
+    public function getFaculty(): ?Faculty
+    {
+        return $this->faculty;
+    }
+
+    public function setFaculty(?Faculty $faculty): self
+    {
+        $this->faculty = $faculty;
+
+        return $this;
+    }
+
+    public function getParty(): ?Party
+    {
+        return $this->party;
+    }
+
+    public function setParty(?Party $party): self
+    {
+        $this->party = $party;
+
+        return $this;
+    }
+
+    public function getTeacher(): ?Teacher
+    {
+        return $this->teacher;
+    }
+
+    public function setTeacher(?Teacher $teacher): self
+    {
+        $this->teacher = $teacher;
 
         return $this;
     }

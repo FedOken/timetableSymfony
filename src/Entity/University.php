@@ -73,6 +73,11 @@ class University
      */
     private $schedules;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="university")
+     */
+    private $users;
+
     public function __construct()
     {
         $this->faculties = new ArrayCollection();
@@ -83,6 +88,7 @@ class University
         $this->cabinets = new ArrayCollection();
         $this->parties = new ArrayCollection();
         $this->schedules = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     /**
@@ -376,6 +382,37 @@ class University
             // set the owning side to null (unless already changed)
             if ($schedule->getUniversity() === $this) {
                 $schedule->setUniversity(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setUniversity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            // set the owning side to null (unless already changed)
+            if ($user->getUniversity() === $this) {
+                $user->setUniversity(null);
             }
         }
 

@@ -5,35 +5,33 @@ easy_admin:
         display_avatar: true
     design:
         menu:
-            -   label: 'University structure'
-                icon: 'layer-group'
-                children:
-                    - { entity: 'University', icon: 'university' }
-                    - { entity: 'Faculty', icon: 'puzzle-piece' }
-                    - { entity: 'Party', icon: 'users' }
-            -   label: 'University building'
-                icon: 'city'
-                children:
-                    - { entity: 'Building', icon: 'building' }
-                    - { entity: 'Cabinet', icon: 'door-open' }
+            - { entity: 'University', icon: 'university', permission: 'ROLE_UNIVERSITY_MANAGER' }
+            - { entity: 'Faculty', icon: 'puzzle-piece', permission: 'ROLE_FACULTY_MANAGER' }
+            - { entity: 'Party', icon: 'users', permission: 'ROLE_PARTY_MANAGER' }
+
+            - { entity: 'Building', icon: 'building', permission: 'ROLE_UNIVERSITY_MANAGER' }
+            - { entity: 'Cabinet', icon: 'door-open', permission: 'ROLE_FACULTY_MANAGER' }
+
             -   label: 'University constant'
+                permission: 'ROLE_UNIVERSITY_MANAGER'
                 icon: 'dot-circle'
                 children:
-                    - { entity: 'Course', icon: 'cubes' }
-                    - { entity: 'Week', icon: 'calendar-week' }
-            -   label: 'Teachers'
-                icon: 'chalkboard-teacher'
-                children:
-                    - { entity: 'Teacher', icon: 'chalkboard-teacher' }
-                    - { entity: 'TeacherPosition', icon: 'user-tie' }
-            - { entity: 'Schedule', icon: 'clipboard-list' }
+                    - { entity: 'Course', icon: 'cubes', permission: 'ROLE_UNIVERSITY_MANAGER' }
+                    - { entity: 'Week', icon: 'calendar-week', permission: 'ROLE_UNIVERSITY_MANAGER' }
+
+            - { entity: 'Teacher', icon: 'chalkboard-teacher', permission: 'ROLE_FACULTY_MANAGER' }
+            - { entity: 'TeacherPosition', icon: 'user-tie', permission: 'ROLE_ADMIN' }
+
+            - { entity: 'Schedule', icon: 'clipboard-list', permission: 'ROLE_PARTY_MANAGER' }
+
             -   label: 'Constant'
+                permission: 'ROLE_ADMIN'
                 icon: 'cog'
                 children:
-                    - { entity: 'Day', icon: 'calendar-day' }
-                    - { entity: 'LessonType', icon: 'bookmark' }
-            - { entity: 'User', icon: 'user' }
-
+                    - { entity: 'Day', icon: 'calendar-day', permission: 'ROLE_ADMIN' }
+                    - { entity: 'LessonType', icon: 'bookmark', permission: 'ROLE_ADMIN' }
+                    - { entity: 'Role', icon: 'user', permission: 'ROLE_ADMIN' }
+            - { entity: 'User', icon: 'user', permission: 'ROLE_ADMIN' }
 
         assets:
             #favicon: '/assets/backend/favicon.png'
@@ -41,15 +39,24 @@ easy_admin:
                 - ''
             js:
                 - 'bundles/easyadmin/custom/js/admin.js'
+                -
     entities:
+
         # List the entity class name you want to manage
         University:
             class: App\Entity\University
-            label: Universities
+            controller: App\Controller\EasyAdmin\UniversityController
+            label: 'Universities'
             list:
                 title: '%%entity_label%% list'
                 sort: ['name_full', 'ASC']
-                fields: ['name', { property: 'name_full', label: 'Full name' }, { property: 'enable', label: 'Status' }, 'faculties', 'buildings']
+                fields:
+                    - 'name'
+                    - { property: 'name_full', label: 'Full name' }
+                    - { property: 'enable', label: 'Status' }
+                    - 'faculties'
+                    - 'buildings'
+
                 actions:
                     - { name: 'new', label: 'Add university' }
                     - { name: 'edit', icon: 'pencil', label: false }
@@ -66,6 +73,7 @@ easy_admin:
 
         Faculty:
             class: App\Entity\Faculty
+            controller: App\Controller\EasyAdmin\FacultyController
             label: 'Faculties'
             list:
                 title: '%%entity_label%% list'
@@ -85,7 +93,7 @@ easy_admin:
                 fields:
                     - { property: 'name',  help: 'Set short name (FAT)' }
                     - { property: 'name_full', label: 'Full name',  help: 'Set full name (Faculty of advanced technology)' }
-                    - { property: 'university', type_options: { required: true }, help: 'Choose your university'}
+                    - { property: 'university', type_options: { required: true }, help: 'Choose your university',  permission: 'ROLE_ADMIN'}
                     - 'enable'
             new:
                 title: 'Create faculty'
@@ -336,12 +344,43 @@ easy_admin:
             label: Users
             list:
                 title: '%%entity_label%% list'
-                fields: ['email', { property: 'roleLabel', label: 'Role' }]
+                fields:
+                    - { property: 'email' }
+                    - { property: 'role_label' }
+                    - { property: 'access_code' }
+                    - { property: 'enable', label: 'Status' }
                 actions:
                     - { name: 'new', label: 'Add user' }
                     - { name: 'edit', icon: 'pencil', label: false }
                     - { name: 'delete', icon: 'trash-alt', label: false }
-            edit:
-                fields: ['email', 'access_faculties']
+            form:
+                fields:
+                    - { property: 'email' }
+                    - { property: 'role_label' }
+                    - { property: 'university' }
+                    - { property: 'faculty' }
+                    - { property: 'party' }
+                    - { property: 'teacher' }
+                    - { property: 'enable', label: 'Status' }
             new:
-                fields: ['email',  {property: 'password', type: 'password'}, 'access_faculties']
+                fields:
+                    - { property: 'password', type: 'password'}
+
+        Role:
+            class: App\Entity\Role
+            label: 'Roles'
+            list:
+                title: '%%entity_label%% list'
+                fields: ['name', 'label']
+                actions:
+                    - { name: 'new', label: 'Add role' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'name' }
+                    - { property: 'label' }
+            new:
+                title: 'Create role'
+            edit:
+                title: 'Edit role'
