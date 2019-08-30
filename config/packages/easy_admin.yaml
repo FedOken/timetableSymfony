@@ -47,6 +47,9 @@ easy_admin:
             class: App\Entity\University
             controller: App\Controller\EasyAdmin\UniversityController
             label: 'Universities'
+            templates:
+                #show: 'easyadmin/university/show.html.twig'
+                #edit: 'easyadmin/university/edit.html.twig'
             list:
                 title: '%%entity_label%% list'
                 sort: ['name_full', 'ASC']
@@ -70,6 +73,10 @@ easy_admin:
                 title: 'Create university'
             edit:
                 title: 'Edit university'
+                actions: ['-delete']
+            show:
+                title: 'University view'
+                actions: ['-delete']
 
         Faculty:
             class: App\Entity\Faculty
