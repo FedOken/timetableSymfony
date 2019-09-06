@@ -100,12 +100,16 @@ easy_admin:
                 fields:
                     - { property: 'name',  help: 'Set short name (FAT)' }
                     - { property: 'name_full', label: 'Full name',  help: 'Set full name (Faculty of advanced technology)' }
-                    - { property: 'university', type_options: { required: true }, help: 'Choose your university',  permission: 'ROLE_ADMIN'}
-                    - 'enable'
+                    #- { property: 'university', type: 'easyadmin_autocomplete', type_options: { required: true }, help: 'Choose your university',  permission: 'ROLE_ADMIN'}
             new:
                 title: 'Create faculty'
+                fields:
+                    - { property: 'university', permission: 'ROLE_ADMIN' }
             edit:
                 title: 'Edit faculty'
+                fields:
+                    - { property: 'university', permission: 'ROLE_ADMIN' }
+
 
         Party:
             class: App\Entity\Party

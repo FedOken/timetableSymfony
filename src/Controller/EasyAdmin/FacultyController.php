@@ -11,6 +11,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 
 class FacultyController extends EasyAdminController
 {
+    private $access_service;
+
+    public function __construct(AccessService $access_service)
+    {
+        $this->access_service = $access_service;
+    }
+
     /**
      * @param string $entityClass
      * @param string $sortDirection
@@ -20,10 +27,9 @@ class FacultyController extends EasyAdminController
      */
     protected function createListQueryBuilder($entityClass, $sortDirection, $sortField = null, $dqlFilter = null)
     {
-        $response =  parent::createListQueryBuilder($entityClass, $sortDirection, $sortField, $dqlFilter);
+        $response = parent::createListQueryBuilder($entityClass, $sortDirection, $sortField, $dqlFilter);
 
-        $access_service = new AccessService();
-        $university_ids = $access_service->getUniversityPermission($this->getUser(), $this->getDoctrine());
+        $university_ids = $this->access_service->getUniversityPermission($this->getUser());
 
         $faculty_ids = [7, 8, 9];
 

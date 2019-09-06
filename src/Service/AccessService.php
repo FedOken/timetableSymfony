@@ -10,9 +10,13 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 
 class AccessService
 {
+    private $em;
+
     const ROLE_ADMIN = 'ROLE_ADMIN';
     const ROLE_UNIVERSITY_MANAGER = 'ROLE_UNIVERSITY_MANAGER';
     const ROLE_FACULTY_MANAGER = 'ROLE_FACULTY_MANAGER';
@@ -24,6 +28,11 @@ class AccessService
     const FACULTY_CODE = 'F';
     const PARTY_CODE = 'P';
     const TEACHER_CODE = 'T';
+
+    public function __construct(EntityManagerInterface $entity_manager)
+    {
+        $this->em = $entity_manager;
+    }
 
     /**
      * Create access code for User entity
@@ -59,33 +68,32 @@ class AccessService
 
     /**
      * @param User $user_obj
-     * @param $doctrine Registry
      * @return array
      */
-    public function getUniversityPermission(User $user_obj, Registry $doctrine) {
+    public function getUniversityPermission(User $user_obj) {
         $access_arr = explode( '-', $user_obj->getAccessCode());
 
 
         if($access_arr[0] == self::ADMIN_CODE) {
-            $university_objs = $doctrine->getRepository(University::class)->findAll();
+            $university_objs = $this->em->getRepository(University::class)->findAll();
             return ArrayHelperService::getAllIdsFromObjectsArray($university_objs);
         }
         if($access_arr[0] == self::UNIVERSITY_CODE) {
             return [$access_arr[1]];
         }
         if($access_arr[0] == self::FACULTY_CODE) {
-            $faculty_obj = $doctrine->getRepository(Faculty::class)->find($access_arr[1]);
-            $university_obj = $doctrine->getRepository(University::class)->find($faculty_obj->getUniversity());
+            $faculty_obj =  $this->em->getRepository(Faculty::class)->find($access_arr[1]);
+            $university_obj =  $this->em->getRepository(University::class)->find($faculty_obj->getUniversity());
             return [$university_obj->getId()];
         }
         if($access_arr[0] == self::PARTY_CODE) {
-            $party_obj = $doctrine->getRepository(Party::class)->find($access_arr[1]);
-            $university_obj = $doctrine->getRepository(University::class)->find($party_obj->getUniversity());
+            $party_obj =  $this->em->getRepository(Party::class)->find($access_arr[1]);
+            $university_obj =  $this->em->getRepository(University::class)->find($party_obj->getUniversity());
             return [$university_obj->getId()];
         }
         if($access_arr[0] == self::TEACHER_CODE) {
-            $teacher_obj = $doctrine->getRepository(Teacher::class)->find($access_arr[1]);
-            $university_obj = $doctrine->getRepository(University::class)->find($teacher_obj->getUniversity());
+            $teacher_obj =  $this->em->getRepository(Teacher::class)->find($access_arr[1]);
+            $university_obj =  $this->em->getRepository(University::class)->find($teacher_obj->getUniversity());
             return [$university_obj->getId()];
         }
 
