@@ -153,4 +153,20 @@ class TestController extends AbstractController
 
         return new JsonResponse($data);
     }
+
+    /**
+     * @Route("/ajax/test-route", name="test-route")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getTest(Request $request)
+    {
+
+        $data = [
+            ['id' => 100, 'text' => 'abc1'],
+            ['id' => 100, 'text' => 'fgs2']
+        ];
+        return new JsonResponse($data);
+
+    }
 }

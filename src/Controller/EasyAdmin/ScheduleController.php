@@ -4,24 +4,53 @@ namespace App\Controller\EasyAdmin;
 
 use App\Entity\Building;
 use App\Entity\Cabinet;
+use App\Entity\Day;
+use App\Entity\Faculty;
 use App\Entity\Party;
 use App\Entity\Schedule;
 use App\Entity\Teacher;
+use App\Entity\University;
 use App\Entity\User;
 use App\Repository\BuildingRepository;
 use App\Repository\CabinetRepository;
+use App\Repository\DayRepository;
 use App\Repository\PartyRepository;
 use App\Repository\TeacherRepository;
-use Doctrine\DBAL\Types\TextType;
+use App\Repository\UniversityRepository;
+use App\Service\AccessService;
+use Doctrine\ORM\Query\Expr\Select;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
+use EasyCorp\Bundle\EasyAdminBundle\Form\EventListener\EasyAdminAutocompleteSubscriber;
+use EasyCorp\Bundle\EasyAdminBundle\Form\Type\EasyAdminAutocompleteType;
+use EasyCorp\Bundle\EasyAdminBundle\Form\Type\EasyAdminDividerType;
+use EasyCorp\Bundle\EasyAdminBundle\Form\Type\EasyAdminFormType;
+use EasyCorp\Bundle\EasyAdminBundle\Form\Type\EasyAdminSectionType;
+use EasyCorp\Bundle\EasyAdminBundle\Tests\Form\Type\EasyAdminAutocompleteTypeTest;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Core\Encoder\NativePasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
 
 
 class ScheduleController extends EasyAdminController
 {
+    protected $accessService;
+    protected $universityRepo;
+    protected $buildingRepo;
+    protected $cabinetRepo;
+
+    public function __construct(AccessService $accessService, UniversityRepository $universityRepo, CabinetRepository $cabinetRepo, BuildingRepository $buildingRepo)
+    {
+        $this->accessService = $accessService;
+        $this->buildingRepo = $buildingRepo;
+        $this->universityRepo = $universityRepo;
+        $this->cabinetRepo = $cabinetRepo;
+    }
+
     /**
      * Action Edit, on update
      *
@@ -79,6 +108,27 @@ class ScheduleController extends EasyAdminController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($entity);
         $entityManager->flush();
+    }
+
+    protected function createEntityFormBuilder($entity, $view)
+    {
+        $formBuilder = parent::createEntityFormBuilder($entity, $view);
+
+        $userToAccess = $this->getUser();
+        $universityPermission = $this->accessService->getUniversityPermission($userToAccess);
+
+        $universityToChoice = $this->universityRepo->getDataForChoice($universityPermission);;
+        $buildingsToChoice = $this->buildingRepo->getDataForChoice($universityPermission);
+
+        $formBuilder->add('university', ChoiceType::class, [
+                'choices' => $universityToChoice,
+                'attr' => ['data-widget' => 'select2']
+        ]);
+        $formBuilder->add('building', ChoiceType::class, [
+                'choices' => $buildingsToChoice,
+                'attr' => ['data-widget' => 'select2']]);
+
+        return $formBuilder;
     }
 
 

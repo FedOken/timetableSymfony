@@ -33,12 +33,15 @@ easy_admin:
                     - { entity: 'Role', icon: 'user', permission: 'ROLE_ADMIN' }
             - { entity: 'User', icon: 'user', permission: 'ROLE_ADMIN' }
 
+        templates:
+            layout: 'easyadmin/layout/main.html.twig'
+
         assets:
             #favicon: '/assets/backend/favicon.png'
             css:
                 - ''
             js:
-                - 'bundles/easyadmin/custom/js/admin.js'
+                - 'admin/js/admin.js'
                 -
     entities:
 
@@ -76,6 +79,13 @@ easy_admin:
                 actions: ['-delete']
             show:
                 title: 'University view'
+                fields:
+                    - { property: 'name',  label: 'Short name' }
+                    - { property: 'name_full', label: 'Full name'}
+                    - { property: 'enable', label: 'Status' }
+                    - { property: 'faculties' }
+                    - { property: 'buildings' }
+                    - { property: 'courses' }
                 actions: ['-delete']
 
         Faculty:
@@ -100,15 +110,11 @@ easy_admin:
                 fields:
                     - { property: 'name',  help: 'Set short name (FAT)' }
                     - { property: 'name_full', label: 'Full name',  help: 'Set full name (Faculty of advanced technology)' }
-                    #- { property: 'university', type: 'easyadmin_autocomplete', type_options: { required: true }, help: 'Choose your university',  permission: 'ROLE_ADMIN'}
+                    #- { property: 'university', type_options: { required: true }, help: 'Choose your university',  permission: ROLE_ADMIN }
             new:
                 title: 'Create faculty'
-                fields:
-                    - { property: 'university', permission: 'ROLE_ADMIN' }
             edit:
                 title: 'Edit faculty'
-                fields:
-                    - { property: 'university', permission: 'ROLE_ADMIN' }
 
 
         Party:

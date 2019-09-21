@@ -99,6 +99,15 @@ class University
         return $this->name_full;
     }
 
+    /**
+     * @param $propertyName
+     * @return mixed
+     */
+    public function __get($propertyName)
+    {
+        return $this->$propertyName;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

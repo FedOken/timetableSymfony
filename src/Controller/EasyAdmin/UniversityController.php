@@ -71,6 +71,13 @@ class UniversityController extends EasyAdminController
         return false;
     }
 
+    protected function showAction()
+    {
+        $response = parent::showAction();
+
+        return $response;
+    }
+
     protected function autocompleteAction()
     {
 //        if ('Lugar' === $this->request->query->get('entity')) {

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\University;
+use App\Helper\ArrayHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -17,5 +18,22 @@ class UniversityRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, University::class);
+    }
+
+    /**
+     * @param array $university_ids
+     * @return array
+     */
+    public function getDataForChoice(array $university_ids)
+    {
+        $queryResult = $this->createQueryBuilder('tb')
+            ->andWhere('tb.id IN (:university_ids)')
+            ->setParameter('university_ids', $university_ids)
+            ->orderBy('tb.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        $data = ArrayHelper::map($queryResult, 'name_full', 'id');
+        return $data;
     }
 }

@@ -65,6 +65,15 @@ class Building
     }
 
     /**
+     * @param $propertyName
+     * @return mixed
+     */
+    public function __get($propertyName)
+    {
+        return $this->$propertyName;
+    }
+
+    /**
      * @return string
      */
     public function getComplexName() :string

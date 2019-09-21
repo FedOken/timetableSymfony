@@ -62,7 +62,6 @@ class AccessService
                 return self::TEACHER_CODE.'-'.$id;
                 break;
         }
-
         return null;
     }
 
