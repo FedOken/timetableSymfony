@@ -4,13 +4,9 @@ namespace App\Controller\EasyAdmin;
 
 use App\Entity\Building;
 use App\Entity\Cabinet;
-use App\Entity\Day;
-use App\Entity\Faculty;
 use App\Entity\Party;
 use App\Entity\Schedule;
 use App\Entity\Teacher;
-use App\Entity\University;
-use App\Entity\User;
 use App\Repository\BuildingRepository;
 use App\Repository\CabinetRepository;
 use App\Repository\DayRepository;
@@ -18,23 +14,9 @@ use App\Repository\PartyRepository;
 use App\Repository\TeacherRepository;
 use App\Repository\UniversityRepository;
 use App\Service\AccessService;
-use Doctrine\ORM\Query\Expr\Select;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
-use EasyCorp\Bundle\EasyAdminBundle\Form\EventListener\EasyAdminAutocompleteSubscriber;
-use EasyCorp\Bundle\EasyAdminBundle\Form\Type\EasyAdminAutocompleteType;
-use EasyCorp\Bundle\EasyAdminBundle\Form\Type\EasyAdminDividerType;
-use EasyCorp\Bundle\EasyAdminBundle\Form\Type\EasyAdminFormType;
-use EasyCorp\Bundle\EasyAdminBundle\Form\Type\EasyAdminSectionType;
-use EasyCorp\Bundle\EasyAdminBundle\Tests\Form\Type\EasyAdminAutocompleteTypeTest;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\Security\Core\Encoder\NativePasswordEncoder;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-
-
 
 class ScheduleController extends EasyAdminController
 {
@@ -42,13 +24,19 @@ class ScheduleController extends EasyAdminController
     protected $universityRepo;
     protected $buildingRepo;
     protected $cabinetRepo;
+    protected $partyRepo;
+    protected $teacherRepo;
 
-    public function __construct(AccessService $accessService, UniversityRepository $universityRepo, CabinetRepository $cabinetRepo, BuildingRepository $buildingRepo)
+    public function __construct(TeacherRepository $teacherRepository, DayRepository $dayRepository, PartyRepository $partyRepository, AccessService $accessService, UniversityRepository $universityRepo, CabinetRepository $cabinetRepository, BuildingRepository $buildingRepository)
     {
+        //Access service
         $this->accessService = $accessService;
-        $this->buildingRepo = $buildingRepo;
+        //Repository
+        $this->buildingRepo = $buildingRepository;
         $this->universityRepo = $universityRepo;
-        $this->cabinetRepo = $cabinetRepo;
+        $this->cabinetRepo = $cabinetRepository;
+        $this->partyRepo = $partyRepository;
+        $this->teacherRepo = $teacherRepository;
     }
 
     /**
@@ -119,6 +107,13 @@ class ScheduleController extends EasyAdminController
 
         $universityToChoice = $this->universityRepo->getDataForChoice($universityPermission);;
         $buildingsToChoice = $this->buildingRepo->getDataForChoice($universityPermission);
+        if (count($buildingsToChoice) > 0) {
+            $cabinetToChoice = $this->cabinetRepo->getDataForChoice(array_values($buildingsToChoice)[0]);
+        } else {
+            $cabinetToChoice = [];
+        }
+        $partyToChoice = $this->partyRepo->getDataForChoice($universityPermission);
+        $teacherToChoice = $this->teacherRepo->getDataForChoice($universityPermission);
 
         $formBuilder->add('university', ChoiceType::class, [
                 'choices' => $universityToChoice,
@@ -127,6 +122,15 @@ class ScheduleController extends EasyAdminController
         $formBuilder->add('building', ChoiceType::class, [
                 'choices' => $buildingsToChoice,
                 'attr' => ['data-widget' => 'select2']]);
+        $formBuilder->add('cabinet', ChoiceType::class, [
+            'choices' => $cabinetToChoice,
+            'attr' => ['data-widget' => 'select2']]);
+        $formBuilder->add('party', ChoiceType::class, [
+            'choices' => $partyToChoice,
+            'attr' => ['data-widget' => 'select2']]);
+        $formBuilder->add('teacher', ChoiceType::class, [
+            'choices' => $teacherToChoice,
+            'attr' => ['data-widget' => 'select2']]);
 
         return $formBuilder;
     }

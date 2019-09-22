@@ -8,7 +8,16 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\FacultyRepository")
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $name_full
+ * @property bool $enable
+ * @property University $university
+ * @property ArrayCollection $parties
+ * @property ArrayCollection $users
  */
+
 class Faculty
 {
     /**
@@ -54,12 +63,13 @@ class Faculty
         $this->users = new ArrayCollection();
     }
 
-    /**
-     * Set what user see in form by relation
-     * @return mixed
-     */
     public function __toString(){
         return $this->name_full;
+    }
+
+    public function __get($propertyName)
+    {
+        return $this->$propertyName;
     }
 
     public function getId(): ?int

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Party;
+use App\Helper\ArrayHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -34,5 +35,22 @@ class PartyRepository extends ServiceEntityRepository
             ->orderBy('table.id', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param array $university_ids
+     * @return array
+     */
+    public function getDataForChoice(array $university_ids)
+    {
+        $queryResult = $this->createQueryBuilder('tb')
+            ->andWhere('tb.university IN (:university_ids)')
+            ->setParameter('university_ids', $university_ids)
+            ->orderBy('tb.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        $data = ArrayHelper::map($queryResult, 'name', 'id');
+        return $data;
     }
 }

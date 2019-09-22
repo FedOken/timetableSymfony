@@ -8,6 +8,20 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UniversityRepository")
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $name_full
+ * @property ArrayCollection $faculties
+ * @property bool $enable
+ * @property ArrayCollection $building
+ * @property ArrayCollection $weeks
+ * @property ArrayCollection $courses
+ * @property ArrayCollection $teachers
+ * @property ArrayCollection $cabinets
+ * @property ArrayCollection $parties
+ * @property ArrayCollection $schedules
+ *
  */
 class University
 {
@@ -59,21 +73,6 @@ class University
     private $teachers;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Cabinet", mappedBy="university")
-     */
-    private $cabinets;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Party", mappedBy="university")
-     */
-    private $parties;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Schedule", mappedBy="university")
-     */
-    private $schedules;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="university")
      */
     private $users;
@@ -91,18 +90,10 @@ class University
         $this->users = new ArrayCollection();
     }
 
-    /**
-     * Set what user see in form by relation
-     * @return mixed
-     */
     public function __toString(){
         return $this->name_full;
     }
 
-    /**
-     * @param $propertyName
-     * @return mixed
-     */
     public function __get($propertyName)
     {
         return $this->$propertyName;
@@ -298,99 +289,6 @@ class University
             // set the owning side to null (unless already changed)
             if ($teacher->getUniversity() === $this) {
                 $teacher->setUniversity(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Cabinet[]
-     */
-    public function getCabinets(): Collection
-    {
-        return $this->cabinets;
-    }
-
-    public function addCabinet(Cabinet $cabinet): self
-    {
-        if (!$this->cabinets->contains($cabinet)) {
-            $this->cabinets[] = $cabinet;
-            $cabinet->setUniversity($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCabinet(Cabinet $cabinet): self
-    {
-        if ($this->cabinets->contains($cabinet)) {
-            $this->cabinets->removeElement($cabinet);
-            // set the owning side to null (unless already changed)
-            if ($cabinet->getUniversity() === $this) {
-                $cabinet->setUniversity(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Party[]
-     */
-    public function getParties(): Collection
-    {
-        return $this->parties;
-    }
-
-    public function addParty(Party $party): self
-    {
-        if (!$this->parties->contains($party)) {
-            $this->parties[] = $party;
-            $party->setUniversity($this);
-        }
-
-        return $this;
-    }
-
-    public function removeParty(Party $party): self
-    {
-        if ($this->parties->contains($party)) {
-            $this->parties->removeElement($party);
-            // set the owning side to null (unless already changed)
-            if ($party->getUniversity() === $this) {
-                $party->setUniversity(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Schedule[]
-     */
-    public function getSchedules(): Collection
-    {
-        return $this->schedules;
-    }
-
-    public function addSchedule(Schedule $schedule): self
-    {
-        if (!$this->schedules->contains($schedule)) {
-            $this->schedules[] = $schedule;
-            $schedule->setUniversity($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSchedule(Schedule $schedule): self
-    {
-        if ($this->schedules->contains($schedule)) {
-            $this->schedules->removeElement($schedule);
-            // set the owning side to null (unless already changed)
-            if ($schedule->getUniversity() === $this) {
-                $schedule->setUniversity(null);
             }
         }
 

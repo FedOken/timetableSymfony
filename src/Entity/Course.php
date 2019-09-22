@@ -43,12 +43,13 @@ class Course
         $this->parties = new ArrayCollection();
     }
 
-    /**
-     * Set what user see in form by relation
-     * @return mixed
-     */
     public function __toString(){
         return $this->course;
+    }
+
+    public function __get($propertyName)
+    {
+        return $this->$propertyName;
     }
 
     public function getId(): ?int

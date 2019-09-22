@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Cabinet;
+use App\Helper\ArrayHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -34,5 +35,22 @@ class CabinetRepository extends ServiceEntityRepository
             ->orderBy('table.id', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param int $building_id
+     * @return array
+     */
+    public function getDataForChoice(int $building_id)
+    {
+        $queryResult = $this->createQueryBuilder('tb')
+            ->andWhere('tb.building = :building_id')
+            ->setParameter('building_id', $building_id)
+            ->orderBy('tb.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        $data = ArrayHelper::map($queryResult, 'name', 'id');
+        return $data;
     }
 }

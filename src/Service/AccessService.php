@@ -7,15 +7,24 @@ use App\Entity\Party;
 use App\Entity\Teacher;
 use App\Entity\University;
 use App\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\DBAL\Query\QueryBuilder;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
+use App\Helper\ArrayHelper;
+use App\Repository\BuildingRepository;
+use App\Repository\CabinetRepository;
+use App\Repository\DayRepository;
+use App\Repository\FacultyRepository;
+use App\Repository\PartyRepository;
+use App\Repository\TeacherRepository;
+use App\Repository\UniversityRepository;
 
 class AccessService
 {
     private $em;
+    protected $universityRepo;
+    protected $facultyRepo;
+    protected $buildingRepo;
+    protected $cabinetRepo;
+    protected $partyRepo;
+    protected $teacherRepo;
 
     const ROLE_ADMIN = 'ROLE_ADMIN';
     const ROLE_UNIVERSITY_MANAGER = 'ROLE_UNIVERSITY_MANAGER';
@@ -29,9 +38,15 @@ class AccessService
     const PARTY_CODE = 'P';
     const TEACHER_CODE = 'T';
 
-    public function __construct(EntityManagerInterface $entity_manager)
+    public function __construct(FacultyRepository $facultyRepository, TeacherRepository $teacherRepository, DayRepository $dayRepository, PartyRepository $partyRepository, UniversityRepository $universityRepo, CabinetRepository $cabinetRepository, BuildingRepository $buildingRepository)
     {
-        $this->em = $entity_manager;
+        //Repository
+        $this->buildingRepo = $buildingRepository;
+        $this->universityRepo = $universityRepo;
+        $this->cabinetRepo = $cabinetRepository;
+        $this->partyRepo = $partyRepository;
+        $this->teacherRepo = $teacherRepository;
+        $this->facultyRepo = $facultyRepository;
     }
 
     /**
@@ -66,28 +81,31 @@ class AccessService
     }
 
     /**
-     * @param User $user_obj
+     * @param User|object $user_obj
      * @return array
      */
     public function getUniversityPermission(User $user_obj) {
-        $access_arr = explode( '-', $user_obj->getAccessCode());
+        $accessCodePerm = explode( '-', $user_obj->getAccessCode());
 
-
-        if($access_arr[0] == self::ADMIN_CODE) {
-            $university_objs = $this->em->getRepository(University::class)->findAll();
-            return ArrayHelperService::getAllIdsFromObjectsArray($university_objs);
+        //For admin get all universities
+        if($accessCodePerm[0] == self::ADMIN_CODE) {
+            $university_objs = $this->universityRepo->findAll();
+            return ArrayHelper::getColumn($university_objs, 'id');
         }
-        if($access_arr[0] == self::UNIVERSITY_CODE) {
-            return [$access_arr[1]];
+        //For university manager get university from code
+        if($accessCodePerm[0] == self::UNIVERSITY_CODE) {
+            return [$accessCodePerm[1]];
         }
-        if($access_arr[0] == self::FACULTY_CODE) {
-            $faculty_obj =  $this->em->getRepository(Faculty::class)->find($access_arr[1]);
-            $university_obj =  $this->em->getRepository(University::class)->find($faculty_obj->getUniversity());
-            return [$university_obj->getId()];
+        //For faculty manager, get university by relation
+        if($accessCodePerm[0] == self::FACULTY_CODE) {
+            $faculty_obj =  $this->facultyRepo->find($accessCodePerm[1]);
+            $university_obj = $this->universityRepo->find($faculty_obj->university);
+            return [$university_obj->id];
         }
-        if($access_arr[0] == self::PARTY_CODE) {
-            $party_obj =  $this->em->getRepository(Party::class)->find($access_arr[1]);
-            $university_obj =  $this->em->getRepository(University::class)->find($party_obj->getUniversity());
+        //For party, get faculty
+        if($accessCodePerm[0] == self::PARTY_CODE) {
+            $party_obj = $this->partyRepo->find($accessCodePerm[1]);
+            $university_obj = $party_obj->faculty->university;
             return [$university_obj->getId()];
         }
         if($access_arr[0] == self::TEACHER_CODE) {
@@ -98,5 +116,4 @@ class AccessService
 
         return [];
     }
-
 }

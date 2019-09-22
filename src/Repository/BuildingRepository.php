@@ -50,7 +50,12 @@ class BuildingRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
 
-        $data = ArrayHelper::map($queryResult, 'name', 'id');
+
+        foreach ($queryResult as $building_model) {
+            /** @var $building_model Building */
+            $building_model->complexName = $building_model->getComplexName();
+        }
+        $data = ArrayHelper::map($queryResult, 'complexName', 'id');
         return $data;
     }
 }

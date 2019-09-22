@@ -81,6 +81,11 @@ class User implements UserInterface
         return $this->email;
     }
 
+    public function __get($propertyName)
+    {
+        return $this->$propertyName;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

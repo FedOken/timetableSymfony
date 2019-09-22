@@ -56,17 +56,11 @@ class ArrayHelper
         return $result;
     }
 
-    public static function getColumn($array, $name, $keepKeys = true)
+    public static function getColumn($array, $name)
     {
         $result = [];
-        if ($keepKeys) {
-            foreach ($array as $k => $element) {
-                $result[$k] = static::getValue($element, $name);
-            }
-        } else {
-            foreach ($array as $element) {
-                $result[] = static::getValue($element, $name);
-            }
+        foreach ($array as $element) {
+            $result[] = static::getValue($element, $name);
         }
 
         return $result;

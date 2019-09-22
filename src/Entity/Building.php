@@ -49,34 +49,28 @@ class Building
      */
     private $schedules;
 
+    /**
+     * @var string
+     */
+    public $complexName;
+
     public function __construct()
     {
         $this->cabinets = new ArrayCollection();
         $this->schedules = new ArrayCollection();
     }
 
-    /**
-     * Set what user see in form by relation
-     * @return mixed
-     */
     public function __toString()
     {
         return $this->getComplexName();
     }
 
-    /**
-     * @param $propertyName
-     * @return mixed
-     */
     public function __get($propertyName)
     {
         return $this->$propertyName;
     }
 
-    /**
-     * @return string
-     */
-    public function getComplexName() :string
+    public function getComplexName(): ?string
     {
         return $this->name.' ('.$this->address.')';
     }

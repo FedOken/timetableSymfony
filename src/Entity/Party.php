@@ -8,6 +8,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PartyRepository")
+ *
+ * @property int $id
+ * @property string $name
+ * @property Faculty $faculty
+ * @property Course $course
+ * @property ArrayCollection $schedules
+ * @property ArrayCollection $users
  */
 class Party
 {
@@ -39,11 +46,6 @@ class Party
     private $schedules;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\University", inversedBy="parties")
-     */
-    private $university;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="party")
      */
     private $users;
@@ -54,12 +56,13 @@ class Party
         $this->users = new ArrayCollection();
     }
 
-    /**
-     * Set what user see in form by relation
-     * @return mixed
-     */
     public function __toString(){
         return $this->name;
+    }
+
+    public function __get($propertyName)
+    {
+        return $this->$propertyName;
     }
 
     public function getId(): ?int
@@ -130,18 +133,6 @@ class Party
                 $schedule->setParty(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getUniversity(): ?University
-    {
-        return $this->university;
-    }
-
-    public function setUniversity(?University $university): self
-    {
-        $this->university = $university;
 
         return $this;
     }

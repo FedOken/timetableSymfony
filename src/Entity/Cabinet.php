@@ -9,6 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CabinetRepository")
+ *
+ * @property int $id
+ * @property string $name
+ * @property Building $building
+ * @property ArrayCollection $schedules
  */
 class Cabinet
 {
@@ -35,23 +40,19 @@ class Cabinet
      */
     private $schedules;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\University", inversedBy="cabinets")
-     */
-    private $university;
-
     public function __construct()
     {
         $this->schedules = new ArrayCollection();
     }
 
-    /**
-     * Set what user see in form by relation
-     * @return mixed
-     */
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function __get($propertyName)
+    {
+        return $this->$propertyName;
     }
 
     public function getId(): ?int
@@ -110,18 +111,6 @@ class Cabinet
                 $schedule->setCabinet(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getUniversity(): ?University
-    {
-        return $this->university;
-    }
-
-    public function setUniversity(?University $university): self
-    {
-        $this->university = $university;
 
         return $this;
     }

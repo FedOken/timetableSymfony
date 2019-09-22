@@ -63,18 +63,13 @@ class Schedule
      */
     private $day;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\University", inversedBy="schedules")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $university;
-
-    /**
-     * Set what user see in form by relation
-     * @return mixed
-     */
     public function __toString(){
         return $this->lesson_name;
+    }
+
+    public function __get($propertyName)
+    {
+        return $this->$propertyName;
     }
 
     public function getId(): ?int
@@ -174,18 +169,6 @@ class Schedule
     public function setDay(?Day $day): self
     {
         $this->day = $day;
-
-        return $this;
-    }
-
-    public function getUniversity(): ?University
-    {
-        return $this->university;
-    }
-
-    public function setUniversity(?University $university): self
-    {
-        $this->university = $university;
 
         return $this;
     }
