@@ -2,15 +2,23 @@
 
 namespace App\Entity;
 
+use App\Helper\MagicTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RoleRepository")
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $label
+ * @property User[] $users
  */
 class Role
 {
+    use MagicTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -40,11 +48,6 @@ class Role
 
     public function __toString(){
         return $this->label;
-    }
-
-    public function __get($propertyName)
-    {
-        return $this->$propertyName;
     }
 
     public function getId(): ?int

@@ -20,18 +20,17 @@ class CourseRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $university_id
-     * @param $course_id
+     * @param $universityId
+     * @param $courseId
      * @return mixed
      */
-    public function checkCourseByUniversity($university_id, $course_id)
+    public function checkCourseInUniversity($universityId, $courseId)
     {
-        return $this->createQueryBuilder('table')
-            ->andWhere('table.university = :university')
-            ->andWhere('table.id = :id')
-            ->setParameter('university', $university_id)
-            ->setParameter('id', $course_id)
-            ->orderBy('table.id', 'ASC')
+        return $this->createQueryBuilder('tb')
+            ->andWhere('tb.university = :university')
+            ->andWhere('tb.id = :id')
+            ->setParameter('university', $universityId)
+            ->setParameter('id', $courseId)
             ->getQuery()
             ->getResult();
     }

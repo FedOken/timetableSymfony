@@ -3,12 +3,27 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Helper\MagicTrait;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ScheduleRepository")
+ *
+ * @property integer $id
+ * @property string $lesson_name
+ * @property Party $party
+ * @property LessonType $lesson_type
+ * @property Teacher $teacher
+ * @property Cabinet $cabinet
+ * @property Week $week
+ * @property Day $day
+ * @property UniversityTime $universityTime
  */
 class Schedule
 {
+    use MagicTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -40,12 +55,6 @@ class Schedule
     private $teacher;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Building", inversedBy="schedules")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $building;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Cabinet", inversedBy="schedules")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -63,13 +72,15 @@ class Schedule
      */
     private $day;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\UniversityTime", inversedBy="universityTimes")
+     * @ORM\JoinColumn(nullable=false)
+     */
+
+    private $universityTime;
+
     public function __toString(){
         return $this->lesson_name;
-    }
-
-    public function __get($propertyName)
-    {
-        return $this->$propertyName;
     }
 
     public function getId(): ?int
@@ -125,18 +136,6 @@ class Schedule
         return $this;
     }
 
-    public function getBuilding(): ?Building
-    {
-        return $this->building;
-    }
-
-    public function setBuilding(?Building $building): self
-    {
-        $this->building = $building;
-
-        return $this;
-    }
-
     public function getCabinet(): ?Cabinet
     {
         return $this->cabinet;
@@ -169,6 +168,18 @@ class Schedule
     public function setDay(?Day $day): self
     {
         $this->day = $day;
+
+        return $this;
+    }
+
+    public function getUniversityTime(): ?UniversityTime
+    {
+        return $this->universityTime;
+    }
+
+    public function setUniversityTime(?UniversityTime $universityTime): self
+    {
+        $this->universityTime = $universityTime;
 
         return $this;
     }

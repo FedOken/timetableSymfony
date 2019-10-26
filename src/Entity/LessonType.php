@@ -2,15 +2,23 @@
 
 namespace App\Entity;
 
+use App\Helper\MagicTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LessonTypeRepository")
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $name_full
+ * @property Schedule[] $schedules
  */
 class LessonType
 {
+    use MagicTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -41,11 +49,6 @@ class LessonType
 
     public function __toString(){
         return $this->name_full;
-    }
-
-    public function __get($propertyName)
-    {
-        return $this->$propertyName;
     }
 
     public function getId(): ?int

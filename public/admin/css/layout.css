@@ -1,0 +1,15 @@
+/* START LANGUAGE SELECTOR */
+.content-top.navbar-custom-menu {
+    display: flex;
+}
+.lang-form {
+    margin: auto 20px;
+    width: 50px;
+ }
+.lang-form .select2.select2-container {
+    width: auto !important;
+}
+.lang-form .select2-search.select2-search--dropdown {
+    display: none;
+}
+/* END LANGUAGE SELECTOR */

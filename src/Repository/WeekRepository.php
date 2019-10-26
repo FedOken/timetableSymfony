@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Teacher;
 use App\Entity\Week;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -35,5 +36,31 @@ class WeekRepository extends ServiceEntityRepository
             ->orderBy('table.id', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param array $universityIds
+     * @param bool $forChoice
+     * @return array
+     */
+    public function getWeekByUniversity(array $universityIds, bool $forChoice = false)
+    {
+        $models = $this->createQueryBuilder('tb')
+            ->andWhere('tb.university IN (:universityIds)')
+            ->setParameter('universityIds', $universityIds)
+            ->orderBy('tb.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        if ($forChoice) {
+            $data = [];
+            /** @var $model Week */
+            foreach ($models as $model) {
+                $data[$model->name] = $model;
+            }
+            return $data;
+        }
+
+        return $models;
     }
 }

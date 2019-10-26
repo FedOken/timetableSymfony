@@ -2,15 +2,24 @@
 
 namespace App\Entity;
 
+use App\Helper\MagicTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CourseRepository")
+ *
+ * @property int $id
+ * @property string $course
+ * @property string $name_full
+ * @property Party[] $parties
+ * @property University $university
  */
 class Course
 {
+    use MagicTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -45,11 +54,6 @@ class Course
 
     public function __toString(){
         return $this->course;
-    }
-
-    public function __get($propertyName)
-    {
-        return $this->$propertyName;
     }
 
     public function getId(): ?int

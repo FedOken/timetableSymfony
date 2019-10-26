@@ -25,7 +25,7 @@ class BuildingRepository extends ServiceEntityRepository
      * @param $building_id
      * @return mixed
      */
-    public function checkBuildingByUniversity($university_id, $building_id)
+    public function checkBuildingInUniversity($university_id, $building_id)
     {
         return $this->createQueryBuilder('table')
             ->andWhere('table.university = :university')
@@ -38,24 +38,29 @@ class BuildingRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param array $university_ids
+     * @param array $universityIds
+     * @param bool $forChoice
      * @return array
      */
-    public function getDataForChoice(array $university_ids)
+    public function getBuildingsByUniversity(array $universityIds, bool $forChoice = false)
     {
-        $queryResult = $this->createQueryBuilder('tb')
-            ->andWhere('tb.university IN (:university_ids)')
-            ->setParameter('university_ids', $university_ids)
+        $models = $this->createQueryBuilder('tb')
+            ->andWhere('tb.university IN (:universityIds)')
+            ->setParameter('universityIds', $universityIds)
             ->orderBy('tb.name', 'ASC')
             ->getQuery()
             ->getResult();
 
-
-        foreach ($queryResult as $building_model) {
-            /** @var $building_model Building */
-            $building_model->complexName = $building_model->getComplexName();
+        if ($forChoice) {
+            $data = [];
+            /** @var $model Building */
+            foreach ($models as $model) {
+                $model->complexName = $model->getComplexName();
+                $data[$model->complexName] = $model->id;
+            }
+            return $data;
         }
-        $data = ArrayHelper::map($queryResult, 'complexName', 'id');
-        return $data;
+
+        return $models;
     }
 }

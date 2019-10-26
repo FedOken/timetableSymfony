@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Helper\MagicTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,11 +15,13 @@ use Doctrine\ORM\Mapping as ORM;
  * @property string $name_full
  * @property TeacherPosition $position
  * @property University $university
- * @property ArrayCollection $schedules
- * @property ArrayCollection $users
+ * @property Schedule[] $schedules
+ * @property User[] $users
  */
 class Teacher
 {
+    use MagicTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -64,11 +67,6 @@ class Teacher
 
     public function __toString(){
         return $this->name;
-    }
-
-    public function __get($propertyName)
-    {
-        return $this->$propertyName;
     }
 
     public function getId(): ?int

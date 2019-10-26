@@ -15,37 +15,81 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class PartyRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    protected $facultyRepo;
+
+    public function __construct(RegistryInterface $registry, FacultyRepository $facultyRepository)
     {
         parent::__construct($registry, Party::class);
+
+        $this->facultyRepo = $facultyRepository;
     }
 
     /**
-     * @param $university_id
-     * @param $party_id
+     * @param $universityId
+     * @param $partyId
      * @return mixed
      */
-    public function checkPartyByUniversity($university_id, $party_id)
+    public function checkPartyInUniversity($universityId, $partyId)
     {
-        return $this->createQueryBuilder('table')
-            ->andWhere('table.university = :university')
-            ->andWhere('table.id = :id')
-            ->setParameter('university', $university_id)
-            ->setParameter('id', $party_id)
-            ->orderBy('table.id', 'ASC')
+        $facultyModels = $this->facultyRepo->createQueryBuilder('tb')
+            ->andWhere('tb.university = :university')
+            ->setParameter('university', $universityId)
+            ->getQuery()
+            ->getResult();
+
+        $facultyIds = ArrayHelper::getColumn($facultyModels, 'id');
+
+        return $this->createQueryBuilder('tb')
+            ->andWhere('tb.faculty IN (:faculty)')
+            ->andWhere('tb.id = :id')
+            ->setParameter('faculty', $facultyIds)
+            ->setParameter('id', $partyId)
             ->getQuery()
             ->getResult();
     }
 
     /**
-     * @param array $university_ids
+     * @param array $universityId
+     * @param bool $forChoice
+     * @return mixed
+     */
+    public function getPartiesByUniversity(array $universityId, bool $forChoice = false)
+    {
+        $facultyModels = $this->facultyRepo->createQueryBuilder('tb')
+            ->andWhere('tb.university IN (:university)')
+            ->setParameter('university', $universityId)
+            ->getQuery()
+            ->getResult();
+
+        $facultyIds = ArrayHelper::getColumn($facultyModels, 'id');
+
+        $partyModels = $this->createQueryBuilder('tb')
+            ->andWhere('tb.faculty IN (:faculty)')
+            ->setParameter('faculty', $facultyIds)
+            ->getQuery()
+            ->getResult();
+
+        if ($forChoice) {
+            $data = [];
+            /** @var $buildingModel Party */
+            foreach ($partyModels as $model) {
+                $data[$model->name] = $model;
+            }
+            return $data;
+        }
+
+        return $partyModels;
+    }
+
+    /**
+     * @param array $faculty_ids
      * @return array
      */
-    public function getDataForChoice(array $university_ids)
+    public function getDataForChoice(array $faculty_ids)
     {
         $queryResult = $this->createQueryBuilder('tb')
-            ->andWhere('tb.university IN (:university_ids)')
-            ->setParameter('university_ids', $university_ids)
+            ->andWhere('tb.faculty IN (:faculty_ids)')
+            ->setParameter('faculty_ids', $faculty_ids)
             ->orderBy('tb.name', 'ASC')
             ->getQuery()
             ->getResult();
@@ -53,4 +97,6 @@ class PartyRepository extends ServiceEntityRepository
         $data = ArrayHelper::map($queryResult, 'name', 'id');
         return $data;
     }
+
+
 }

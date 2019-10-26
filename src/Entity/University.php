@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Helper\MagicTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,19 +13,21 @@ use Doctrine\ORM\Mapping as ORM;
  * @property int $id
  * @property string $name
  * @property string $name_full
- * @property ArrayCollection $faculties
+ * @property Faculty[] $faculties
  * @property bool $enable
- * @property ArrayCollection $building
- * @property ArrayCollection $weeks
- * @property ArrayCollection $courses
- * @property ArrayCollection $teachers
- * @property ArrayCollection $cabinets
- * @property ArrayCollection $parties
- * @property ArrayCollection $schedules
+ * @property Building[] $building
+ * @property Week[] $weeks
+ * @property Course[] $courses
+ * @property Teacher[] $teachers
+ * @property Cabinet[] $cabinets
+ * @property Schedule[] $schedules
  *
  */
+
 class University
 {
+    use MagicTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -77,6 +80,11 @@ class University
      */
     private $users;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UniversityTime", mappedBy="university")
+     */
+    private $universityTimes;
+
     public function __construct()
     {
         $this->faculties = new ArrayCollection();
@@ -85,18 +93,13 @@ class University
         $this->courses = new ArrayCollection();
         $this->teachers = new ArrayCollection();
         $this->cabinets = new ArrayCollection();
-        $this->parties = new ArrayCollection();
         $this->schedules = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->universityTimes = new ArrayCollection();
     }
 
     public function __toString(){
         return $this->name_full;
-    }
-
-    public function __get($propertyName)
-    {
-        return $this->$propertyName;
     }
 
     public function getId(): ?int
@@ -141,11 +144,11 @@ class University
     }
 
     /**
-     * @return Collection|Faculty[]
+     * @return array|Faculty[]
      */
-    public function getFaculties(): Collection
+    public function getFaculties(): array
     {
-        return $this->faculties;
+        return $this->faculties->toArray();
     }
 
     public function addFaculty(Faculty $faculty): self
@@ -320,6 +323,37 @@ class University
             // set the owning side to null (unless already changed)
             if ($user->getUniversity() === $this) {
                 $user->setUniversity(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UniversityTime[]
+     */
+    public function getUniversityTimes(): Collection
+    {
+        return $this->universityTimes;
+    }
+
+    public function addUniversityTime(UniversityTime $universityTime): self
+    {
+        if (!$this->universityTimes->contains($universityTime)) {
+            $this->universityTimes[] = $universityTime;
+            $universityTime->setUniversity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUniversityTime(UniversityTime $universityTime): self
+    {
+        if ($this->universityTimes->contains($universityTime)) {
+            $this->universityTimes->removeElement($universityTime);
+            // set the owning side to null (unless already changed)
+            if ($universityTime->getUniversity() === $this) {
+                $universityTime->setUniversity(null);
             }
         }
 

@@ -2,18 +2,34 @@
 
 namespace App\Entity;
 
+use App\Helper\MagicTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints\Json;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ *
+ * @property int $id
+ * @property string $email
+ * @property array $roles
+ * @property string $password
+ * @property Role $role_label
+ * @property string $access_code
+ * @property bool $enable
+ * @property University $university
+ * @property Faculty $faculty
+ * @property Party $party
+ * @property Teacher $teacher
  */
 class User implements UserInterface
 {
+    use MagicTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -79,11 +95,6 @@ class User implements UserInterface
      */
     public function __toString() {
         return $this->email;
-    }
-
-    public function __get($propertyName)
-    {
-        return $this->$propertyName;
     }
 
     public function getId(): ?int

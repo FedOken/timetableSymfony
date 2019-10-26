@@ -2,15 +2,24 @@
 
 namespace App\Entity;
 
+use App\Helper\MagicTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DayRepository")
+ *
+ * @property integer $id
+ * @property string $name
+ * @property string $name_full
+ * @property Schedule[] $schedules
+ *
  */
 class Day
 {
+    use MagicTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -40,11 +49,6 @@ class Day
 
     public function __toString(){
         return $this->name_full;
-    }
-
-    public function __get($propertyName)
-    {
-        return $this->$propertyName;
     }
 
     public function getId(): ?int

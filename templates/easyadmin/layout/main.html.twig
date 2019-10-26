@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex, notranslate, nocache" />
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
     <meta name="generator" content="EasyAdmin" />
 
     <title>{% block page_title %}{{ block('content_title')|striptags|raw }}{% endblock %}</title>
@@ -95,7 +95,29 @@
                             {% endblock user_menu %}
                         {% endset %}
 
+                        
                         <div class="content-top navbar-custom-menu">
+                            {% set lang_arr = [] %}
+                            {% set lang_arr = lang_arr|merge({'ru':'RU'}) %}
+                            {% set lang_arr = lang_arr|merge({'uk':'UK'}) %}
+                            {% set lang_arr = lang_arr|merge({'en':'EN'}) %}
+
+
+                            <form action="" class="lang-form">
+                                <select name="_locale" id="lang-selector" data-widget="select2">
+                                    {% for lang_code, name in lang_arr %}
+                                        {% if lang_code == app.request.locale %}
+                                            <option value="{{ lang_code }}">{{ name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% for lang_code, name in lang_arr %}
+                                        {% if lang_code != app.request.locale %}
+                                            <option value="{{ lang_code }}">{{ name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </form>
+
                             {% block header_custom_menu %}
                                 <div class="user user-menu-wrapper {{ _user_is_impersonated ? 'user-is-impersonated' }}" data-toggle="popover" data-placement="bottom" data-container=".user-menu-wrapper" data-content="{{ _user_menu_content|e('html_attr') }}" data-html="true">
                                     {% if easyadmin_config('user.display_avatar') %}
@@ -188,6 +210,7 @@
 
     {% for js_asset in easyadmin_config('design.assets.js') %}
         <script src="{{ asset(js_asset) }}"></script>
+        {{ include('@EasyAdmin/default/includes/_select2_widget.html.twig') }}
     {% endfor %}
     </body>
 {% endblock body %}

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Helper\MagicTrait;
 use App\Repository\BuildingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,6 +18,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Cabinet
 {
+    use MagicTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -48,11 +51,6 @@ class Cabinet
     public function __toString()
     {
         return $this->name;
-    }
-
-    public function __get($propertyName)
-    {
-        return $this->$propertyName;
     }
 
     public function getId(): ?int

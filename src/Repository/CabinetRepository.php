@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Building;
 use App\Entity\Cabinet;
 use App\Helper\ArrayHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -25,7 +26,7 @@ class CabinetRepository extends ServiceEntityRepository
      * @param $cabinet_id
      * @return mixed
      */
-    public function checkCabinetByBuilding($building_id, $cabinet_id)
+    public function checkCabinetInBuilding($building_id, $cabinet_id)
     {
         return $this->createQueryBuilder('table')
             ->andWhere('table.building = :building')
@@ -38,19 +39,28 @@ class CabinetRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param int $building_id
+     * @param array $buildingIds
+     * @param bool $forChoice
      * @return array
      */
-    public function getDataForChoice(int $building_id)
+    public function getCabinetsByBuilding(array $buildingIds, bool $forChoice = false)
     {
-        $queryResult = $this->createQueryBuilder('tb')
-            ->andWhere('tb.building = :building_id')
-            ->setParameter('building_id', $building_id)
+        $models = $this->createQueryBuilder('tb')
+            ->andWhere('tb.building IN (:buildingIds)')
+            ->setParameter('buildingIds', $buildingIds)
             ->orderBy('tb.name', 'ASC')
             ->getQuery()
             ->getResult();
 
-        $data = ArrayHelper::map($queryResult, 'name', 'id');
-        return $data;
+        if ($forChoice) {
+            $data = [];
+            /** @var $model Cabinet */
+            foreach ($models as $model) {
+                $data[$model->name] = $model;
+            }
+            return $data;
+        }
+
+        return $models;
     }
 }

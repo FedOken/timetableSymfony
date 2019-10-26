@@ -1,5 +1,5 @@
 easy_admin:
-    site_name: 'Backend timetable <p>test</p>'
+    site_name: 'Backend timetable'
     user:
         display_name: true
         display_avatar: true
@@ -18,6 +18,7 @@ easy_admin:
                 children:
                     - { entity: 'Course', icon: 'cubes', permission: 'ROLE_UNIVERSITY_MANAGER' }
                     - { entity: 'Week', icon: 'calendar-week', permission: 'ROLE_UNIVERSITY_MANAGER' }
+                    - { entity: 'Time', icon: 'clock', permission: 'ROLE_UNIVERSITY_MANAGER' }
 
             - { entity: 'Teacher', icon: 'chalkboard-teacher', permission: 'ROLE_FACULTY_MANAGER' }
             - { entity: 'TeacherPosition', icon: 'user-tie', permission: 'ROLE_ADMIN' }
@@ -35,11 +36,14 @@ easy_admin:
 
         templates:
             layout: 'easyadmin/layout/main.html.twig'
+            edit: 'easyadmin/layout/FormGroup/form.html.twig'
+            new: 'easyadmin/layout/FormGroup/form.html.twig'
 
         assets:
             #favicon: '/assets/backend/favicon.png'
             css:
-                - ''
+                #- 'admin/css/bootstrap4.css'
+                - 'admin/css/layout.css'
             js:
                 - 'admin/js/admin.js'
                 -
@@ -124,12 +128,12 @@ easy_admin:
             list:
                 title: '%%entity_label%% list'
                 sort: ['faculty', 'ASC']
-                filters: ['university', 'faculty', 'course']
+                filters: ['faculty', 'course']
                 fields:
                     - 'name'
                     - 'course'
                     - 'faculty'
-                    - 'university'
+                    #- 'university'
                 actions:
                     - { name: 'new', label: 'Add group' }
                     - { name: 'edit', icon: 'pencil', label: false }
@@ -176,21 +180,44 @@ easy_admin:
             list:
                 title: '%%entity_label%% list'
                 sort: ['building', 'ASC']
-                filters: ['university', 'building']
-                fields: ['name', 'building', 'university', 'schedules']
+                filters: ['building']
+                fields: ['name', 'building', 'schedules']
                 actions:
                     - { name: 'new', label: 'Add cabinet' }
                     - { name: 'edit', icon: 'pencil', label: false }
                     - { name: 'delete', icon: 'trash-alt', label: false }
             form:
                 fields:
-                    - { property: 'university',  type_options: { required: true }, help: 'Choose university' }
+                    #- { property: 'university',  type_options: { required: true }, help: 'Choose university' }
                     - { property: 'building', help: 'Choose building' }
                     - { property: 'name', help: 'Enter cabinet number (2, 411, 325a)' }
             new:
                 title: 'Create cabinet'
             edit:
                 title: 'Edit cabinet'
+
+        Time:
+            class: 'App\Entity\UniversityTime'
+            controller: 'App\Controller\EasyAdmin\UniversityTimeController'
+            label: 'Class time'
+            list:
+                title: 'Class time list'
+                sort: ['university', 'ASC']
+                filters: ['university']
+                fields: ['name', 'timeFrom', 'timeTo', 'university']
+                actions:
+                    - { name: 'new', label: 'Add class time' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'university',  type_options: { required: true }, help: 'Choose university' }
+                    - { property: 'timeFrom' }
+                    - { property: 'timeTo'}
+            new:
+                title: 'Create class time'
+            edit:
+                title: 'Edit class time'
 
         Course:
             class: App\Entity\Course
@@ -284,31 +311,38 @@ easy_admin:
             label: 'Schedules'
             list:
                 title: '%%entity_label%% list'
-                sort: ['day', 'ASC']
-                filters: ['building', 'cabinet', 'day', 'week']
+                sort: ['party', 'ASC']
+                filters: ['party', 'universityTime', 'teacher', 'cabinet', 'day', 'week']
                 fields:
                     - 'lesson_name'
-                    - 'lesson_type'
+                    - 'universityTime'
                     - 'party'
                     - 'teacher'
-                    - 'building'
                     - 'cabinet'
                     - 'day'
                     - 'week'
+                    - 'lesson_type'
                 actions:
                     - { name: 'new', label: 'Add schedule' }
                     - { name: 'edit', icon: 'pencil', label: false }
                     - { name: 'delete', icon: 'trash-alt', label: false }
             form:
                 fields:
-                    - { property: 'university', help: 'Choose university'}
-                    - { property: 'building', help: 'Choose building'}
-                    - { property: 'cabinet', help: 'Choose cabinet'}
-                    - { property: 'party', help: 'Choose party'}
-                    - { property: 'teacher', help: 'Choose teacher'}
-                    - { property: 'lesson_type', help: 'Choose lesson type'}
-                    - { property: 'day', help: 'Choose day'}
-                    - { property: 'lesson_name', help: 'Set lesson name (Computer technology)'}
+                    - { type: 'group', columns: '12', label: 'Basic information', 'type_options':{'block_name': 'group-1'}, 'css_class':'col-md-4' }
+                    - { property: 'lesson_name', help: 'Enter lesson name ("Chemistry")', 'type_options':{'block_name': 'group-1'} }
+                    - { property: 'university', help: 'Choose university before choosing other data', 'css_class': 'group-1', 'format': 'gr-1', 'type_options':{'block_name': 'group-1'} }
+                    - { property: 'party', help: 'Choose party', 'type_options':{'block_name': 'group-1'}}
+                    - { property: 'teacher', help: 'Choose teacher', 'type_options':{'block_name': 'group-1'}}
+                    - { property: 'lesson_type', help: 'Choose lesson type', 'type_options':{'block_name': 'group-1'}}
+
+                    - { type: 'group', columns: '12', label: 'Class time', 'icon':'clock', 'type_options':{'block_name': 'group-2'}, 'css_class':'col-md-4' }
+                    - { property: 'week', help: 'Choose week', 'type_options':{'block_name': 'group-2'}}
+                    - { property: 'day', help: 'Choose day', 'type_options':{'block_name': 'group-2'}}
+                    - { property: 'universityTime', help: 'Choose time', 'type_options':{'block_name': 'group-2'}}
+
+                    - { type: 'group', columns: '12', label: 'Class location', 'icon':'map-marked-alt', 'type_options':{'block_name': 'group-3'}, 'css_class':'col-md-4' }
+                    - { property: 'building', help: 'Choose building', 'type_options':{'block_name': 'group-3'}}
+                    - { property: 'cabinet', help: 'Choose cabinet', 'type_options':{'block_name': 'group-3'}}
             new:
                 title: 'Create schedule'
             edit:
@@ -320,7 +354,7 @@ easy_admin:
             list:
                 title: '%%entity_label%% list'
                 sort: ['id', 'ASC']
-                fields: ['name', { property: 'name_full', label: 'Full name' }]
+                fields: ['name', { property: 'name_full', label: 'Full name'}]
                 actions:
                     - { name: 'new', label: 'Add type' }
                     - { name: 'edit', icon: 'pencil', label: false }

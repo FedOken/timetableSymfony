@@ -81,39 +81,99 @@ class AccessService
     }
 
     /**
+     * Return allowed universities ids
      * @param User|object $user_obj
      * @return array
      */
     public function getUniversityPermission(User $user_obj) {
         $accessCodePerm = explode( '-', $user_obj->getAccessCode());
 
-        //For admin get all universities
+        //For admin, university()
         if($accessCodePerm[0] == self::ADMIN_CODE) {
-            $university_objs = $this->universityRepo->findAll();
-            return ArrayHelper::getColumn($university_objs, 'id');
+            $response = $this->universityRepo->findAll();
+            return ArrayHelper::getColumn($response, 'id');
         }
-        //For university manager get university from code
+        //For university manager, university(1)
         if($accessCodePerm[0] == self::UNIVERSITY_CODE) {
             return [$accessCodePerm[1]];
         }
-        //For faculty manager, get university by relation
+        //For faculty manager, faculty(1)->university(1)
         if($accessCodePerm[0] == self::FACULTY_CODE) {
-            $faculty_obj =  $this->facultyRepo->find($accessCodePerm[1]);
-            $university_obj = $this->universityRepo->find($faculty_obj->university);
-            return [$university_obj->id];
+            $facultyModel =  $this->facultyRepo->find($accessCodePerm[1]);
+            return [ArrayHelper::getValue($facultyModel, 'university.id')];
         }
-        //For party, get faculty
+        //For party, party(1)->faculty(1)->university(1)
+        if($accessCodePerm[0] == self::PARTY_CODE) {
+            $partyModel = $this->partyRepo->find($accessCodePerm[1]);
+            return [ArrayHelper::getValue($partyModel, 'faculty.university.id')];
+        }
+        //For teacher, teacher(1)->university(1)
+        if($accessCodePerm[0] == self::TEACHER_CODE) {
+            $teacherModel =  $this->teacherRepo->find($accessCodePerm[1]);
+            return [ArrayHelper::getValue($teacherModel, 'university.id')];
+        }
+        return [];
+    }
+
+    /**
+     * Return allowed faculty ids
+     * @param User|object $user_obj
+     * @return array
+     */
+    public function getFacultyPermission($user_obj) {
+        $accessCodePerm = explode( '-', $user_obj->getAccessCode());
+
+        //For admin get all
+        if($accessCodePerm[0] == self::ADMIN_CODE) {
+            $faculty_objs = $this->facultyRepo->findAll();
+            return ArrayHelper::getColumn($faculty_objs, 'id');
+        }
+        //For university manager, university->faculty
+        if($accessCodePerm[0] == self::UNIVERSITY_CODE) {
+            $faculty_objs = $this->facultyRepo->findBy(['university' => $accessCodePerm[1]]);
+            return ArrayHelper::getColumn($faculty_objs, 'id');;
+        }
+        //For faculty manager get from code
+        if($accessCodePerm[0] == self::FACULTY_CODE) {
+            return [$accessCodePerm[1]];
+        }
+        //For party, party->faculty
         if($accessCodePerm[0] == self::PARTY_CODE) {
             $party_obj = $this->partyRepo->find($accessCodePerm[1]);
-            $university_obj = $party_obj->faculty->university;
-            return [$university_obj->getId()];
+            $faculty_obj = $party_obj->faculty;
+            return [$faculty_obj->id];
         }
-        if($access_arr[0] == self::TEACHER_CODE) {
-            $teacher_obj =  $this->em->getRepository(Teacher::class)->find($access_arr[1]);
-            $university_obj =  $this->em->getRepository(University::class)->find($teacher_obj->getUniversity());
-            return [$university_obj->getId()];
-        }
+        return [];
+    }
 
+    /**
+     * Return allowed faculty ids
+     * @param User|object $user_obj
+     * @return array
+     */
+    public function getPartyPermission($user_obj) {
+        $accessCodePerm = explode( '-', $user_obj->access_code);
+
+        //For admin get all
+        if($accessCodePerm[0] == self::ADMIN_CODE) {
+            $response = $this->partyRepo->findAll();
+            return ArrayHelper::getColumn($response, 'id');
+        }
+        //For university manager, university(1)->faculty()->party()
+        if($accessCodePerm[0] == self::UNIVERSITY_CODE) {
+            $facultyModels = $this->facultyRepo->findBy(['university' => $accessCodePerm[1]]);
+            $response = $this->partyRepo->findBy(['faculty' => ArrayHelper::getColumn($facultyModels, 'id')]);
+            return ArrayHelper::getColumn($response, 'id');
+        }
+        //For faculty manager, faculty(1)->party()
+        if($accessCodePerm[0] == self::FACULTY_CODE) {
+            $response = $this->partyRepo->findBy(['faculty' => $accessCodePerm[1]]);
+            return ArrayHelper::getColumn($response, 'id');
+        }
+        //For party, party(1)
+        if($accessCodePerm[0] == self::PARTY_CODE) {
+            return [$accessCodePerm[1]];
+        }
         return [];
     }
 }

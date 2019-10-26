@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Faculty;
+use App\Helper\ArrayHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -20,19 +21,39 @@ class FacultyRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $university_id
-     * @param $faculty_id
+     * @param $universityId
+     * @param $facultyId
      * @return mixed
      */
-    public function checkFacultyByUniversity($university_id, $faculty_id)
+    public function checkFacultyInUniversity($universityId, $facultyId)
     {
-        return $this->createQueryBuilder('table')
-            ->andWhere('table.university = :university')
-            ->andWhere('table.id = :id')
-            ->setParameter('university', $university_id)
-            ->setParameter('id', $faculty_id)
-            ->orderBy('table.id', 'ASC')
+        return $this->createQueryBuilder('tb')
+            ->andWhere('tb.university = :university')
+            ->andWhere('tb.id = :id')
+            ->setParameter('university', $universityId)
+            ->setParameter('id', $facultyId)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param array $universityId
+     * @param bool $forChoice
+     * @return mixed
+     */
+    public function getFacultiesByUniversity(array $universityId, bool $forChoice = false)
+    {
+        $models = $this->createQueryBuilder('tb')
+            ->andWhere('tb.university IN (:university)')
+            ->setParameter('university', $universityId)
+            ->orderBy('tb.id')
+            ->getQuery()
+            ->getResult();
+
+        if ($forChoice) {
+            return ArrayHelper::map($models, 'name', 'id');
+        }
+
+        return $models;
     }
 }

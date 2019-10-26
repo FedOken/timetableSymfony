@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Building;
 use App\Entity\Teacher;
 use App\Helper\ArrayHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -25,7 +26,7 @@ class TeacherRepository extends ServiceEntityRepository
      * @param $teacher_id
      * @return mixed
      */
-    public function checkTeacherByUniversity($university_id, $teacher_id)
+    public function checkTeacherInUniversity($university_id, $teacher_id)
     {
         return $this->createQueryBuilder('table')
             ->andWhere('table.university = :university')
@@ -38,19 +39,30 @@ class TeacherRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param array $university_ids
+     * @param array $universityIds
+     * @param bool $forChoice
      * @return array
      */
-    public function getDataForChoice(array $university_ids)
+    public function getTeachersByUniversity(array $universityIds, bool $forChoice = false)
     {
-        $queryResult = $this->createQueryBuilder('tb')
-            ->andWhere('tb.university IN (:university_ids)')
-            ->setParameter('university_ids', $university_ids)
+        $models = $this->createQueryBuilder('tb')
+            ->andWhere('tb.university IN (:universityIds)')
+            ->setParameter('universityIds', $universityIds)
             ->orderBy('tb.name', 'ASC')
             ->getQuery()
             ->getResult();
 
-        $data = ArrayHelper::map($queryResult, 'name', 'id');
-        return $data;
+        if ($forChoice) {
+            $data = [];
+            /** @var $model Teacher */
+            foreach ($models as $model) {
+                $data[$model->name] = $model;
+            }
+            return $data;
+        }
+
+        return $models;
     }
+
+
 }

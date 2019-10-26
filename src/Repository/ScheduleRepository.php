@@ -19,32 +19,15 @@ class ScheduleRepository extends ServiceEntityRepository
         parent::__construct($registry, Schedule::class);
     }
 
-    // /**
-    //  * @return Schedule[] Returns an array of Schedule objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function checkUniqueEntity(Schedule $entity)
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $model = $this->findBy([
+            'lesson_name' => $entity->getLessonName(),
+            'party' => $entity->getParty()->id,
+        ]);
+        if ($model) {
+            return false;
+        }
+        return true;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Schedule
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

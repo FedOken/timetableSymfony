@@ -2,15 +2,26 @@
 
 namespace App\Entity;
 
+use App\Helper\MagicTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BuildingRepository")
+ *
+ * @property integer $id
+ * @property string $name
+ * @property string $name_full
+ * @property string $address
+ * @property University $university
+ * @property Cabinet[] $cabinets
+ * @property string $complexName
  */
 class Building
 {
+    use MagicTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -44,15 +55,6 @@ class Building
      */
     private $cabinets;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Schedule", mappedBy="building")
-     */
-    private $schedules;
-
-    /**
-     * @var string
-     */
-    public $complexName;
 
     public function __construct()
     {
@@ -63,11 +65,6 @@ class Building
     public function __toString()
     {
         return $this->getComplexName();
-    }
-
-    public function __get($propertyName)
-    {
-        return $this->$propertyName;
     }
 
     public function getComplexName(): ?string
@@ -153,37 +150,6 @@ class Building
             // set the owning side to null (unless already changed)
             if ($cabinet->getBuilding() === $this) {
                 $cabinet->setBuilding(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Schedule[]
-     */
-    public function getSchedules(): Collection
-    {
-        return $this->schedules;
-    }
-
-    public function addSchedule(Schedule $schedule): self
-    {
-        if (!$this->schedules->contains($schedule)) {
-            $this->schedules[] = $schedule;
-            $schedule->setBuilding($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSchedule(Schedule $schedule): self
-    {
-        if ($this->schedules->contains($schedule)) {
-            $this->schedules->removeElement($schedule);
-            // set the owning side to null (unless already changed)
-            if ($schedule->getBuilding() === $this) {
-                $schedule->setBuilding(null);
             }
         }
 

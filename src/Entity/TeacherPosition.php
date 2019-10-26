@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Helper\MagicTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,9 +10,16 @@ use Symfony\Component\Translation\Translator;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TeacherPositionRepository")
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $name_full
+ * @property Teacher[] $teachers
  */
 class TeacherPosition
 {
+    use MagicTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -41,11 +49,6 @@ class TeacherPosition
 
     public function __toString(){
         return $this->name_full;
-    }
-
-    public function __get($propertyName)
-    {
-        return $this->$propertyName;
     }
 
     public function getId(): ?int
