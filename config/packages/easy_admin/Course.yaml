@@ -1,0 +1,24 @@
+easy_admin:
+    entities:
+        Course:
+            class: 'App\Entity\Course'
+            controller: 'App\Controller\EasyAdmin\CourseController'
+            label: 'Courses'
+            list:
+                title: 'Course list'
+                sort: ['university', 'ASC']
+                filters: ['university']
+                fields: ['course', { property: 'name_full', label: 'Full name' }, 'university']
+                actions:
+                    - { name: 'new', label: 'Add course' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'university', type_options: { required: true }, help: 'Choose university'}
+                    - { property: 'course', type_options: { required: true }, help: 'Set course as number (1, 2, 5)' }
+                    - { property: 'name_full', label: 'Full name', help: 'Set full name (First course, Second course)' }
+            new:
+                title: 'Create course'
+            edit:
+                title: 'Edit course'

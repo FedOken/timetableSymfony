@@ -1,0 +1,25 @@
+easy_admin:
+    entities:
+        Building:
+            class: 'App\Entity\Building'
+            controller: 'App\Controller\EasyAdmin\BuildingController'
+            label: 'Buildings'
+            list:
+                title: 'Building list'
+                sort: ['university', 'ASC']
+                filters: ['university']
+                fields: ['name', { property: 'name_full', label: 'Full name' }, 'address', 'university', 'cabinets']
+                actions:
+                    - { name: 'new', label: 'Add building' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'university', type_options: { required: true }, help: 'Choose university' }
+                    - { property: 'name',  type_options: { required: true }, help: 'Set short building name (K1, K6)' }
+                    - { property: 'name_full', label: 'Full name', help: 'Set full building name (Main campus, Learning campus)' }
+                    - { property: 'address',   type_options: { required: true }, help: 'Set building address (Kiev, st. Khreschatyk, 1)' }
+            new:
+                title: 'Create building'
+            edit:
+                title: 'Edit building'

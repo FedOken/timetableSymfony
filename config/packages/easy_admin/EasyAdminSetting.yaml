@@ -1,0 +1,49 @@
+easy_admin:
+    site_name: 'Backend timetable'
+    user:
+        display_name: true
+        display_avatar: true
+    design:
+        menu:
+            - { entity: 'University', icon: 'university', permission: 'ROLE_UNIVERSITY_MANAGER' }
+            - { entity: 'Faculty', icon: 'puzzle-piece', permission: 'ROLE_FACULTY_MANAGER' }
+            - { entity: 'Party', icon: 'users', permission: 'ROLE_PARTY_MANAGER' }
+
+            - { entity: 'Building', icon: 'building', permission: 'ROLE_UNIVERSITY_MANAGER' }
+            - { entity: 'Cabinet', icon: 'door-open', permission: 'ROLE_FACULTY_MANAGER' }
+
+            -   label: 'Setting'
+                permission: 'ROLE_UNIVERSITY_MANAGER'
+                icon: 'dot-circle'
+                children:
+                    - { entity: 'Course', icon: 'cubes', permission: 'ROLE_UNIVERSITY_MANAGER' }
+                    - { entity: 'Week', icon: 'calendar-week', permission: 'ROLE_UNIVERSITY_MANAGER' }
+                    - { entity: 'Time', icon: 'clock', permission: 'ROLE_UNIVERSITY_MANAGER' }
+
+            - { entity: 'Teacher', icon: 'chalkboard-teacher', permission: 'ROLE_FACULTY' }
+            - { entity: 'Schedule', icon: 'clipboard-list', permission: 'ROLE_PARTY_MANAGER' }
+
+            -   label: 'Constant'
+                permission: 'ROLE_ADMIN'
+                icon: 'cog'
+                children:
+                    - { entity: 'Day', icon: 'calendar-day', permission: 'ROLE_ADMIN' }
+                    - { entity: 'LessonType', icon: 'bookmark', permission: 'ROLE_ADMIN' }
+                    - { entity: 'Role', icon: 'user', permission: 'ROLE_ADMIN' }
+                    - { entity: 'TeacherPosition', icon: 'user-tie', permission: 'ROLE_ADMIN' }
+
+            - { entity: 'User', icon: 'user', permission: 'ROLE_ADMIN' }
+
+        templates:
+            layout: 'easyadmin/layout/main.html.twig'
+            show: 'easyadmin/layout/Show/show.html.twig'
+            edit: 'easyadmin/layout/FormGroup/form.html.twig'
+            new: 'easyadmin/layout/FormGroup/form.html.twig'
+
+        assets:
+            #favicon: '/assets/backend/favicon.png'
+            css:
+                #- 'admin/css/bootstrap4.css'
+                - 'admin/css/layout.css'
+            js:
+                - 'admin/js/admin.js'

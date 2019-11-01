@@ -1,0 +1,24 @@
+easy_admin:
+    entities:
+        Teacher:
+            class: App\Entity\Teacher
+            label: Teachers
+            list:
+                title: '%%entity_label%% list'
+                sort: ['university', 'ASC']
+                filters: ['university', 'position']
+                fields: ['name', { property: 'name_full', label: 'Full name' }, 'position', 'university']
+                actions:
+                    - { name: 'new', label: 'Add teacher' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'university', type_options: { required: true }, help: 'Choose university'}
+                    - { property: 'name',  help: 'Set name with abbreviation (Fedorenko O.B.)' }
+                    - { property: 'name_full', label: 'Full name', help: 'Set full name (Fedorenko Oleksandr Borisovich)' }
+                    - { property: 'position', type_options: { required: true }, help: 'Choose teacher position'}
+            new:
+                title: 'Create teacher'
+            edit:
+                title: 'Edit teacher'

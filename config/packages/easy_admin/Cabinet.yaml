@@ -1,0 +1,23 @@
+easy_admin:
+    entities:
+        Cabinet:
+            class: App\Entity\Cabinet
+            label: 'Cabinets'
+            list:
+                title: '%%entity_label%% list'
+                sort: ['building', 'ASC']
+                filters: ['building']
+                fields: ['name', 'building', 'schedules']
+                actions:
+                    - { name: 'new', label: 'Add cabinet' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    #- { property: 'university',  type_options: { required: true }, help: 'Choose university' }
+                    - { property: 'building', help: 'Choose building' }
+                    - { property: 'name', help: 'Enter cabinet number (2, 411, 325a)' }
+            new:
+                title: 'Create cabinet'
+            edit:
+                title: 'Edit cabinet'

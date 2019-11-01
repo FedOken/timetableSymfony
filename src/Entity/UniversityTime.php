@@ -5,9 +5,16 @@ namespace App\Entity;
 use App\Helper\MagicTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UniversityTimeRepository")
+ *
+ * @UniqueEntity(
+ *     fields={"university", "timeFrom", "timeTo"},
+ *     errorPath="timeFrom",
+ *     message="entity_exist"
+ * )
  *
  * @property int $id
  * @property string $name

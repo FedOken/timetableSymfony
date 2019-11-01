@@ -30,7 +30,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Validation;
 
-class UniversityTimeController extends EasyAdminController
+class WeekController extends EasyAdminController
 {
     protected $accessService;
     protected $universityHandler;
@@ -58,40 +58,6 @@ class UniversityTimeController extends EasyAdminController
         $response->andWhere('entity.university IN (:universityIds)')->setParameter('universityIds', $universityIds);
 
         return $response;
-    }
-
-    /**
-     * Action Edit, on update
-     *
-     * @param UniversityTime $entity
-     */
-    protected function updateEntity($entity)
-    {
-        $this->beforeSave($entity);
-    }
-
-    /**
-     * Action New, on save
-     *
-     * @param UniversityTime $entity
-     */
-    protected function persistEntity($entity)
-    {
-        $this->beforeSave($entity);
-    }
-
-    /**
-     * @param UniversityTime $entity
-     * @return bool
-     */
-    private function beforeSave($entity) {
-        $entity->setName();
-
-        //Save entity
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($entity);
-        $entityManager->flush();
-        return true;
     }
 
     /**

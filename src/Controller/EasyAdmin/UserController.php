@@ -8,6 +8,8 @@ use App\Entity\Role;
 use App\Entity\Teacher;
 use App\Entity\University;
 use App\Entity\User;
+use App\Helper\ArrayHelper;
+use App\Repository\RoleRepository;
 use App\Service\AccessService;
 use Doctrine\DBAL\Types\TextType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
@@ -21,17 +23,26 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends EasyAdminController
 {
+    protected $roleRepo;
+
+    public function __construct(RoleRepository $roleRepository)
+    {
+        $this->roleRepo = $roleRepository;
+    }
+
     /**
      * Action Edit, on update
      *
      * @param User $entity
+     * @return bool|void
      */
     protected function updateEntity($entity)
     {
-        //If request not ajax, load params
-        if($this->request->request->get('user')) {
-            //Set role, password, access_code
-            $this->loadUserParam($entity);
+        if(!$this->request->isXmlHttpRequest()) {
+            //Set role by role label
+            if (!$this->setRoleByRoleLabel($entity)) {
+                return false;
+            }
         }
 
         //Save entity
@@ -44,20 +55,23 @@ class UserController extends EasyAdminController
      * Action New, on save
      *
      * @param User $entity
+     * @return bool|void
      */
     protected function persistEntity($entity)
     {
-        $property_accessor = PropertyAccess::createPropertyAccessor();
         $encoder = new NativePasswordEncoder();
 
-        //Set role, password, access_code
-        $this->loadUserParam($entity);
+        //Set role by role label
+        if (!$this->setRoleByRoleLabel($entity)) {
+            return false;
+        }
+
         //Set status
         $entity->setEnable(false);
 
         //Set password
         $request = $this->request->request->get('user');
-        $password = $property_accessor->getValue($request, '[password]');
+        $password = ArrayHelper::getValue($request, 'password');
         $password_encode = $encoder->encodePassword($password, null);
         $entity->setPassword($password_encode);
 
@@ -70,48 +84,58 @@ class UserController extends EasyAdminController
     /**
      * Load params from request to model, by some rules
      * @param User $entity
+     * @return bool
      */
-    private function loadUserParam(User $entity) {
-        $property_accessor = PropertyAccess::createPropertyAccessor();
-        $access_service = new AccessService();
-
+    private function setRoleByRoleLabel(User $entity) {
         $request = $this->request->request->get('user');
 
         //Set role
-        $role_obj_id = $property_accessor->getValue($request, '[role_label]');
-        $role_obj = $this->getDoctrine()->getRepository(Role::class)->find($role_obj_id);
-        $entity->setRoles([$role_obj->getName()]);
-
-        //Set relation to null
-        $entity->setUniversity(null);
-        $entity->setFaculty(null);
-        $entity->setParty(null);
-        $entity->setTeacher(null);
+        $roleId = ArrayHelper::getValue($request, 'role_label');
+        $roleModel = $this->roleRepo->find($roleId);
+        $entity->roles = [$roleModel->name];
 
         //Search access element
-        $access_id = null;
-        if ($role_obj->getName() === AccessService::ROLE_UNIVERSITY_MANAGER) {
-            $access_id = $property_accessor->getValue($request, '[university]');
-            $entity->setUniversity($this->getDoctrine()->getRepository(University::class)->find($access_id));
+        $accessId = 0;
+        switch ($roleModel->name) {
+            case AccessService::ROLE_UNIVERSITY_MANAGER:
+                $accessId = ArrayHelper::getValue($entity, 'university.id');
+                $entity->faculty = null;
+                $entity->party = null;
+                $entity->teacher = null;
+                break;
+            case AccessService::ROLE_FACULTY_MANAGER:
+                $accessId = ArrayHelper::getValue($entity, 'faculty.id');
+                $entity->university = null;
+                $entity->party = null;
+                $entity->teacher = null;
+                break;
+            case AccessService::ROLE_PARTY_MANAGER:
+                $accessId = ArrayHelper::getValue($entity, 'party.id');
+                $entity->university = null;
+                $entity->faculty = null;
+                $entity->teacher = null;
+                break;
+            case AccessService::ROLE_TEACHER:
+                $accessId = ArrayHelper::getValue($entity, 'teacher.id');
+                $entity->university = null;
+                $entity->faculty = null;
+                $entity->party = null;
+                break;
+            default:
+                $entity->university = null;
+                $entity->faculty = null;
+                $entity->party = null;
+                $entity->teacher = null;
         }
-        if($role_obj->getName() === AccessService::ROLE_FACULTY_MANAGER) {
-            $access_id = $property_accessor->getValue($request, '[faculty]');
-            $entity->setFaculty($this->getDoctrine()->getRepository(Faculty::class)->find($access_id));
-        }
-        if($role_obj->getName() === AccessService::ROLE_PARTY_MANAGER) {
-            $access_id = $property_accessor->getValue($request, '[party]');
-            $entity->setParty($this->getDoctrine()->getRepository(Party::class)->find($access_id));
-        }
-        if($role_obj->getName() === AccessService::ROLE_TEACHER) {
-            $access_id = $property_accessor->getValue($request, '[teacher]');
-            $entity->setTeacher($this->getDoctrine()->getRepository(Teacher::class)->find($access_id));
-        }
-        if (!$access_id) {
-            $access_id = 0;
+
+        if ($accessId === null) {
+            $this->addFlash('warning', 'The selected role is not assigned an access object!');
+            return false;
         }
 
         //Set access code
-        $entity->setAccessCode($access_service->creatAccessCode($role_obj->getName(), $access_id));
+        $entity->access_code = AccessService::creatAccessCode($roleModel->name, $accessId);
+        return true;
     }
 
 }

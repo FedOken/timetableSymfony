@@ -1,0 +1,23 @@
+easy_admin:
+    entities:
+        Day:
+            class: App\Entity\Day
+            label: 'Days'
+            list:
+                title: 'Days list'
+                sort: ['id', 'ASC']
+                fields: ['name', { property: 'name_full', label: 'Full name' }]
+                actions:
+                    - { name: 'new', label: 'Add day' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'name', help: 'Set day abbreviation (Mo, Tu)'}
+                    - { property: 'name_full', label: 'Full name', help: 'Set full name (Monday, Tuesday)' }
+            new:
+                title: 'Create day'
+                fields: ['name', { property: 'name_full', label: 'Full name' }]
+            edit:
+                title: 'Edit day number %%entity_id%%'
+                fields: ['name', { property: 'name_full', label: 'Full name' }]

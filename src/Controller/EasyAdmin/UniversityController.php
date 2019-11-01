@@ -11,92 +11,30 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UniversityController extends EasyAdminController
 {
-    private $access_service;
+    protected $accessService;
 
-    public function __construct(AccessService $access_service)
+    public function __construct(AccessService $accessService)
     {
-        $this->access_service = $access_service;
+        $this->accessService = $accessService;
     }
 
-    /**
-     * @param string $entityClass
-     * @param string $sortDirection
-     * @param null $sortField
-     * @param null $dqlFilter
-     * @return QueryBuilder Faculty query
-     */
-    protected function createListQueryBuilder($entityClass, $sortDirection, $sortField = null, $dqlFilter = null)
-    {
-        $response = parent::createListQueryBuilder($entityClass, $sortDirection, $sortField, $dqlFilter);
-
-        $university_ids = $this->access_service->getUniversityPermission($this->getUser());
-
-        $response->andWhere('entity.id IN (:university_ids)')->setParameter('university_ids', $university_ids);
-        return $response;
-    }
-
-    /**
-     * @return bool|\Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
     protected function listAction()
     {
         if ($this->isGranted(AccessService::ROLE_ADMIN)) {
             return parent::listAction();
-        }
-        if ($this->isGranted(AccessService::ROLE_UNIVERSITY_MANAGER)) {
-
-            $university_ids = $this->access_service->getUniversityPermission($this->getUser());
-            return $this->redirect('?action=show&entity=University&id='.$university_ids[0]);
         } else {
-            $this->denyAccessUnlessGranted(AccessService::ROLE_UNIVERSITY_MANAGER);
+            $universityIds = $this->accessService->getUniversityPermission($this->getUser());
+            return $this->redirect('?action=show&entity=University&id='.$universityIds[0]);
         }
-        return false;
     }
 
     protected function editAction()
     {
-        if ($this->isGranted(AccessService::ROLE_ADMIN)) {
-            return parent::editAction();
-        }
         if ($this->isGranted(AccessService::ROLE_UNIVERSITY_MANAGER)) {
-            $university_ids = $this->access_service->getUniversityPermission($this->getUser());
-            if ($this->request->get('id') == $university_ids[0]) {
-                return parent::editAction();
-            } else {
-                return $this->redirect('?action=edit&entity=University&id='.$university_ids[0]);
-            }
+            return parent::editAction();
         } else {
-            $this->denyAccessUnlessGranted(AccessService::ROLE_UNIVERSITY_MANAGER);
+            $universityIds = $this->accessService->getUniversityPermission($this->getUser());
+            return $this->redirect('?action=show&entity=University&id='.$universityIds[0]);
         }
-        return false;
-    }
-
-    protected function showAction()
-    {
-        $response = parent::showAction();
-
-        return $response;
-    }
-
-    protected function autocompleteAction()
-    {
-//        if ('Lugar' === $this->request->query->get('entity')) {
-//            $results = // make custom query and see Autocomplete class to know how to parse the results.
-//
-//            return new JsonResponse($results);
-//        }
-        $results = $this->get('easyadmin.autocomplete')->find(
-            $this->request->query->get('entity'),
-            $this->request->query->get('query'),
-            $this->request->query->get('page', 1),
-            'entity.activo = true'
-        );
-
-        $result_2 = ['results' => [['id' => 12, 'text' => 'klilik']]];
-
-        return new JsonResponse($result_2);
-
-
-        return parent::autocompleteAction();
     }
 }

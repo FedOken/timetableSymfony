@@ -1,0 +1,29 @@
+easy_admin:
+    entities:
+        Party:
+            class: App\Entity\Party
+            controller: App\Controller\EasyAdmin\PartyController
+            label: 'Groups'
+            list:
+                title: '%%entity_label%% list'
+                sort: ['faculty', 'ASC']
+                filters: ['faculty', 'course']
+                fields:
+                    - 'name'
+                    - 'course'
+                    - 'faculty'
+                    #- 'university'
+                actions:
+                    - { name: 'new', label: 'Add group' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'university', type_options: { required: true }, help: 'Choose university' }
+                    - { property: 'faculty',  type_options: { required: true }, help: 'Choose faculty after university' }
+                    - { property: 'course', type_options: { required: true }, help: 'Choose course after university' }
+                    - { property: 'name',  help: 'Set group name (GN-2-1, GN-5-1m, GN-3-1tec)' }
+            new:
+                title: 'Create group'
+            edit:
+                title: 'Edit group'

@@ -1,0 +1,21 @@
+easy_admin:
+    entities:
+        LessonType:
+            class: App\Entity\LessonType
+            label: 'Lesson types'
+            list:
+                title: 'Lesson types list'
+                sort: ['id', 'ASC']
+                fields: ['name', { property: 'name_full', label: 'Full name'}]
+                actions:
+                    - { name: 'new', label: 'Add type' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'name', help: 'Set short name (lec, pr)'}
+                    - { property: 'name_full', label: 'Full name', help: 'Set full name (Lecture, Practice)' }
+            new:
+                title: 'Create lesson type'
+            edit:
+                title: 'Edit lesson type'

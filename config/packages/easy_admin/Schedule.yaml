@@ -1,0 +1,44 @@
+easy_admin:
+    entities:
+        Schedule:
+            class: App\Entity\Schedule
+            controller: App\Controller\EasyAdmin\ScheduleController
+            label: 'Schedules'
+            list:
+                title: 'Lessons list'
+                sort: ['party', 'ASC']
+                filters: ['party', 'universityTime', 'teacher', 'cabinet', 'day', 'week']
+                fields:
+                    - 'lesson_name'
+                    - { property: 'universityTime', label: 'Time' }
+                    - 'party'
+                    - 'teacher'
+                    - 'cabinet'
+                    - 'day'
+                    - 'week'
+                    - 'lesson_type'
+                actions:
+                    - { name: 'new', label: 'Add lesson' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { type: 'group', columns: '12', label: 'Basic information', 'type_options':{'block_name': 'group-1'}, 'css_class':'col-md-4' }
+                    - { property: 'lesson_name', help: 'Enter lesson name ("Chemistry")', 'type_options':{'block_name': 'group-1'} }
+                    - { property: 'university', help: 'Choose university before choosing other data', 'css_class': 'group-1', 'format': 'gr-1', 'type_options':{'block_name': 'group-1'} }
+                    - { property: 'party', help: 'Choose party', 'type_options':{'block_name': 'group-1'}}
+                    - { property: 'teacher', help: 'Choose teacher', 'type_options':{'block_name': 'group-1'}}
+                    - { property: 'lesson_type', help: 'Choose lesson type', 'type_options':{'block_name': 'group-1'}}
+
+                    - { type: 'group', columns: '12', label: 'Class time', 'icon':'clock', 'type_options':{'block_name': 'group-2'}, 'css_class':'col-md-4' }
+                    - { property: 'week', help: 'Choose week', 'type_options':{'block_name': 'group-2'}}
+                    - { property: 'day', help: 'Choose day', 'type_options':{'block_name': 'group-2'}}
+                    - { property: 'universityTime', help: 'Choose time', 'type_options':{'block_name': 'group-2'}}
+
+                    - { type: 'group', columns: '12', label: 'Class location', 'icon':'map-marked-alt', 'type_options':{'block_name': 'group-3'}, 'css_class':'col-md-4' }
+                    - { property: 'building', help: 'Choose building', 'type_options':{'block_name': 'group-3'}}
+                    - { property: 'cabinet', help: 'Choose cabinet', 'type_options':{'block_name': 'group-3'}}
+            new:
+                title: 'Create lesson'
+            edit:
+                title: 'Edit lesson'

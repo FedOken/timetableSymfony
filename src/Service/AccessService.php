@@ -18,7 +18,6 @@ use App\Repository\UniversityRepository;
 
 class AccessService
 {
-    private $em;
     protected $universityRepo;
     protected $facultyRepo;
     protected $buildingRepo;
@@ -31,12 +30,14 @@ class AccessService
     const ROLE_FACULTY_MANAGER = 'ROLE_FACULTY_MANAGER';
     const ROLE_PARTY_MANAGER = 'ROLE_PARTY_MANAGER';
     const ROLE_TEACHER = 'ROLE_TEACHER';
+    const ROLE_USER = 'ROLE_USER';
 
     const ADMIN_CODE = 'A';
     const UNIVERSITY_CODE = 'U';
     const FACULTY_CODE = 'F';
     const PARTY_CODE = 'P';
     const TEACHER_CODE = 'T';
+    const USER_CODE = 'User';
 
     public function __construct(FacultyRepository $facultyRepository, TeacherRepository $teacherRepository, DayRepository $dayRepository, PartyRepository $partyRepository, UniversityRepository $universityRepo, CabinetRepository $cabinetRepository, BuildingRepository $buildingRepository)
     {
@@ -58,7 +59,7 @@ class AccessService
      * @param int $id
      * @return string|null
      */
-    public function creatAccessCode(string $role, int $id = 0)
+    public static function creatAccessCode(string $role, int $id = 0)
     {
         switch ($role) {
             case self::ROLE_ADMIN:
@@ -75,6 +76,9 @@ class AccessService
                 break;
             case self::ROLE_TEACHER:
                 return self::TEACHER_CODE.'-'.$id;
+                break;
+            case self::ROLE_USER:
+                return self::USER_CODE;
                 break;
         }
         return null;

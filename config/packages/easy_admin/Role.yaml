@@ -1,0 +1,20 @@
+easy_admin:
+    entities:
+        Role:
+            class: App\Entity\Role
+            label: 'Roles'
+            list:
+                title: 'Roles list'
+                fields: ['name', 'label']
+                actions:
+                    - { name: 'new', label: 'Add role' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'name' }
+                    - { property: 'label' }
+            new:
+                title: 'Create role'
+            edit:
+                title: 'Edit role'

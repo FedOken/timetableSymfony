@@ -11,6 +11,113 @@ Full name: Полное имя
 University: Университет
 Faculty: Факультет
 Senior lecturer: Старшый преподаватель
+Schedules: Расписание
+Lessons list: Список занятий
+Add lesson: Добавить занятие
+Lesson name: Имя занятия
+Party: Группа
+Time: Время
+Teacher: Преподаватель
+Cabinet: Кабинет
+Day: День
+Week: Неделя
+Weeks: Недели
+Weeks list: Список недель
+Add week: Добавить неделю
+Lesson type: Тип занятия
+Edit lesson: Редактировать занятие
+Create lesson: Создать занятие
+Enter lesson name ("Chemistry"): Введите название занятия ("Химия")
+Choose university before choosing other data: Выберите университет перед тем как выбирать другие параметры
+Choose university: Выберите университет
+Choose party: Выберите группу
+Choose teacher: Выберите преподавателя
+Choose lesson type: Выберите тип занятия
+Choose week: Выберите неделю
+Choose day: Выберите день
+Choose time: Выберите время
+Choose building: Выберите корпус
+Choose cabinet: Выберите кабинет
+Basic information: Базовая информация
+Class time: Время занятий
+Class location: Место проведения занятия
+Groups: Группы
+Buildings: Корпуса
+Cabinets: Кабинеты
+Setting: Настройки
+Teachers: Преподаватели
+Teachers position: Должности преподавателей
+Constant: Константы
+Users: Пользователи
+Users list: Список пользователей
+Email: Email
+Role label: Роль
+Access code: Код доступа
+Days: Дни
+Lesson types: Типы занятий
+Roles: Роли
+Add user: Добавить пользователя
+Courses: Курсы
+The selected role is not assigned an access object!: Выбраной роли не назначен обьект доступа!
+Access object: Объект доступа
+The access object must match the selected role: Объект доступа должен соответствовать выбраной роли
+Edit user: Редактировать пользователя
+Days list: Список дней
+Add day: Добавить день
+Create day: Создать день
+Set day abbreviation (Mo, Tu): Введите аббревиатуру (Пн, Вт)
+Set full name (Monday, Tuesday): Введите полное имя (Понедельник, Вторник)
+Lesson types list: Список типов занятий
+Add type: Добавить тип
+Create lesson type: Создать тип занятия
+Edit lesson type: Редактировать тип занятия
+Set short name (lec, pr): Введите короткое имя (лек. пр.)
+Set full name (Lecture, Practice): Введите полное имя (Лекция, Практика)
+Roles list: Список ролей
+Add role: Добавить роль
+Create role: Создать роль
+Edit role: Редактировать роль
+Label: Представление
+Teachers position list: Список должностей преподавателей
+Add position: Добавить должность
+Create position: Создать должность
+Edit position: Редактировать должность
+Set short name (prof.): Укажите аббревиатуру (проф.)
+Set full name (Professor): Укажите полное имя (Профессор)
+Position: Должности
+Class time list: Время занятий
+Add class time: Добавить время
+Start: Начало
+End: Конец
+Create class time: Создать время занятия
+Set class time start: Укажите время начала занятия
+Set class time end: Укажите время окончания занятия
+Set full name (First week, Second week): Укажите полное имя (Первая неделя, Вторая неделя)
+Create week: Создать неделю
+Edit week: Редактировать неделю
+Course: Курс
+Course list: Список курсов
+Add course: Добавить курс
+Create course: Создать курс
+Edit course: Редактировать курс
+Set course as number (1, 2, 5): Установите курс в виде номера (1, 2, 5)
+Set full name (First course, Second course): Установите полное имя (Первый курс, Второй курс)
+Building list: Список корпусов
+Add building: Добавить корпус
+Create building: Создать корпус
+Edit building: Редактировать корпус
+Address: Адрес
+Set short building name (K1, K6): Установите короткое имя корпуса (К1, К6)
+Set full building name (Main campus, Learning campus): Установите полное имя корпуса (Главный корпус, Учебный корпус)
+Set building address (Kiev, st. Khreschatyk, 1): Установите адрес (Киев, ул. Хрещатик, 1)
+University list: Список университетов
+Add university: Добавить университет
+Create university: Создать университет
+Edit university: Редактировать университет
+Set short name (NU): Установите короткое имя (НУ)
+Set full university name (National University): Установите полное имя (Национальный Университет)
+University view: Просмотр университета
+
 
 #Days full_name
 Monday: Понедельник
@@ -20,6 +127,7 @@ Thursday: Четверг
 Friday: Пятница
 Saturday: Суббота
 Sunday: Воскресенье
+
 #Days name
 Mo: Пн
 Tu: Вт

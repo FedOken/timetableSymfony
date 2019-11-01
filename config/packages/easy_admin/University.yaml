@@ -1,0 +1,42 @@
+easy_admin:
+    entities:
+        University:
+            class: App\Entity\University
+            controller: App\Controller\EasyAdmin\UniversityController
+            label: 'Universities'
+            list:
+                title: 'University list'
+                sort: ['name_full', 'ASC']
+                fields:
+                    - 'name'
+                    - { property: 'name_full', label: 'Full name' }
+                    - { property: 'enable', label: 'Status' }
+                    - 'faculties'
+                    - 'buildings'
+
+                actions:
+                    - { name: 'new', label: 'Add university' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'name',  help: 'Set short name (NU)' }
+                    - { property: 'name_full', label: 'Full name', help: 'Set full university name (National University)'}
+                    - { property: 'enable', label: 'Status' }
+            new:
+                title: 'Create university'
+            edit:
+                title: 'Edit university'
+                actions: ['-delete']
+            show:
+                title: 'University view'
+                fields:
+                    - { type: 'group', label: 'Basic information', 'css_class':'col-md-6' }
+                    - { property: 'name',  label: 'Short name' }
+                    - { property: 'name_full', label: 'Full name'}
+                    - { property: 'enable', label: 'Enable'}
+                    #- { type: 'group', label: 'Related data', 'css_class':'col-md-6' }
+                    - { property: 'faculties' }
+                    - { property: 'buildings' }
+                    - { property: 'courses' }
+                actions: ['-delete']

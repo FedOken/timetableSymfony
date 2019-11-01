@@ -2,6 +2,7 @@
 
 {% set _entity_config = easyadmin_entity(app.request.query.get('entity')) %}
 {% set _entity_id = attribute(entity, _entity_config.primary_key_field_name) %}
+
 {% trans_default_domain _entity_config.translation_domain %}
 {% set _trans_parameters = { '%entity_name%': _entity_config.name|trans, '%entity_label%': _entity_config.label|trans, '%entity_id%': _entity_id } %}
 
@@ -13,7 +14,11 @@
 {% block content_title %}
     {% apply spaceless %}
         {% set _default_title = 'edit.page_title'|trans(_trans_parameters, 'EasyAdminBundle') %}
-        {{ _entity_config.edit.title is defined ? _entity_config.edit.title|trans(_trans_parameters) : _default_title }}
+        {% if app.request.query.get('action') == 'edit' %}
+            {{ _entity_config.edit.title is defined ? _entity_config.edit.title|trans(_trans_parameters) : _default_title }}
+        {% elseif app.request.query.get('action') == 'new' %}
+            {{ _entity_config.new.title is defined ? _entity_config.new.title|trans(_trans_parameters) : _default_title }}
+        {% endif %}
     {% endapply %}
 {% endblock %}
 

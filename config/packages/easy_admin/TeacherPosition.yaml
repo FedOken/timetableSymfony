@@ -1,0 +1,21 @@
+easy_admin:
+    entities:
+        TeacherPosition:
+            class: App\Entity\TeacherPosition
+            label: 'Position'
+            list:
+                title: 'Teachers position list'
+                sort: ['id', 'ASC']
+                fields: ['name', { property: 'name_full', label: 'Full name' }, 'teachers']
+                actions:
+                    - { name: 'new', label: 'Add position' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'name',  help: 'Set short name (prof.)' }
+                    - { property: 'name_full', label: 'Full name', help: 'Set full name (Professor)' }
+            new:
+                title: 'Create position'
+            edit:
+                title: 'Edit position'

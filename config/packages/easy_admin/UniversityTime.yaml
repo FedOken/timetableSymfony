@@ -1,0 +1,28 @@
+easy_admin:
+    entities:
+        Time:
+            class: 'App\Entity\UniversityTime'
+            controller: 'App\Controller\EasyAdmin\UniversityTimeController'
+            label: 'Class time'
+            list:
+                title: 'Class time list'
+                sort: ['university', 'ASC']
+                filters: ['university']
+                fields:
+                    - { property: 'name', label: 'Label'}
+                    - { property: 'timeFrom', label: 'Start'}
+                    - { property: 'timeTo', label: 'End'}
+                    - { property: 'university'}
+                actions:
+                    - { name: 'new', label: 'Add class time' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'university',  type_options: { required: true }, help: 'Choose university' }
+                    - { property: 'timeFrom', label: 'Start', help: 'Set class time start'  }
+                    - { property: 'timeTo', label: 'End', help: 'Set class time end' }
+            new:
+                title: 'Create class time'
+            edit:
+                title: 'Edit class time'

@@ -1,0 +1,23 @@
+easy_admin:
+    entities:
+        Week:
+            class: 'App\Entity\Week'
+            controller: 'App\Controller\EasyAdmin\WeekController'
+            label: 'Weeks'
+            list:
+                title: 'Weeks list'
+                sort: ['university', 'ASC']
+                filters: ['university']
+                fields: ['name', 'university', 'schedules']
+                actions:
+                    - { name: 'new', label: 'Add week' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'university', type_options: { required: true }, help: 'Choose university'}
+                    - { property: 'name',  help: 'Set full name (First week, Second week)' }
+            new:
+                title: 'Create week'
+            edit:
+                title: 'Edit week'

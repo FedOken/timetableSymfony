@@ -1,0 +1,42 @@
+easy_admin:
+    entities:
+        User:
+            class: 'App\Entity\User'
+            controller: 'App\Controller\EasyAdmin\UserController'
+            label: 'Users'
+            list:
+                title: 'Users list'
+                fields:
+                    - { property: 'email' }
+                    - { property: 'role_label' }
+                    - { property: 'access_code' }
+                    - { property: 'enable', label: 'Status' }
+                actions:
+                    - { name: 'new', label: 'Add user' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            new:
+                title: 'Add user'
+                fields:
+                    - { type: 'group', columns: '12', label: 'Basic information', 'type_options':{'block_name': 'group-1'}, 'css_class':'col-md-6' }
+                    - { property: 'email' }
+                    - { property: 'role_label' }
+                    - { property: 'password', type: 'password'}
+                    - { property: 'enable', label: 'Status' }
+                    - { type: 'group', columns: '12', label: 'Access object', help: 'The access object must match the selected role', 'type_options':{'block_name': 'group-2'}, 'css_class':'col-md-6' }
+                    - { property: 'university' }
+                    - { property: 'faculty' }
+                    - { property: 'party' }
+                    - { property: 'teacher' }
+            edit:
+                title: 'Edit user'
+                fields:
+                    - { type: 'group', columns: '12', label: 'Basic information', 'type_options':{'block_name': 'group-1'}, 'css_class':'col-md-6' }
+                    - { property: 'email' }
+                    - { property: 'role_label' }
+                    - { property: 'enable', label: 'Status' }
+                    - { type: 'group', columns: '12', label: 'Access object', help: 'The access object must match the selected role', 'type_options':{'block_name': 'group-2'}, 'css_class':'col-md-6' }
+                    - { property: 'university' }
+                    - { property: 'faculty' }
+                    - { property: 'party' }
+                    - { property: 'teacher' }

@@ -217,6 +217,8 @@ class ScheduleController extends EasyAdminController
         return $formBuilder;
     }
 
+    /*PRIVATE FUNCTION*/
+
     /**
      * Add new field to form
      * @param FormInterface $form

@@ -1,0 +1,29 @@
+easy_admin:
+    entities:
+        Faculty:
+            class: App\Entity\Faculty
+            controller: App\Controller\EasyAdmin\FacultyController
+            label: 'Faculties'
+            list:
+                title: '%%entity_label%% list'
+                sort: ['university', 'ASC']
+                filters: ['university', 'enable']
+                fields:
+                    - 'name'
+                    - {property: 'name_full', label: 'Full name'}
+                    - 'university'
+                    - {property: 'enable', label: 'Status'}
+                    - 'parties'
+                actions:
+                    - { name: 'new', label: 'Add faculty' }
+                    - { name: 'edit', icon: 'pencil', label: false }
+                    - { name: 'delete', icon: 'trash-alt', label: false }
+            form:
+                fields:
+                    - { property: 'name',  help: 'Set short name (FAT)' }
+                    - { property: 'name_full', label: 'Full name',  help: 'Set full name (Faculty of advanced technology)' }
+                    #- { property: 'university', type_options: { required: true }, help: 'Choose your university',  permission: ROLE_ADMIN }
+            new:
+                title: 'Create faculty'
+            edit:
+                title: 'Edit faculty'

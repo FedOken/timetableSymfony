@@ -6,9 +6,16 @@ use App\Helper\MagicTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\WeekRepository")
+ *
+ * @UniqueEntity(
+ *     fields={"name", "university"},
+ *     errorPath="name",
+ *     message="entity_exist"
+ * )
  *
  * @property integer $id
  * @property string $name

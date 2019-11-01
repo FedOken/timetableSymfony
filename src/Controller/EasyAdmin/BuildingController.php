@@ -8,12 +8,17 @@ use App\Entity\Party;
 use App\Entity\Schedule;
 use App\Entity\Teacher;
 use App\Entity\User;
+use App\Handler\UniversityHandler;
+use App\Helper\ArrayHelper;
 use App\Repository\BuildingRepository;
 use App\Repository\CabinetRepository;
 use App\Repository\PartyRepository;
 use App\Repository\TeacherRepository;
+use App\Service\AccessService;
 use Doctrine\DBAL\Types\TextType;
+use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Core\Encoder\NativePasswordEncoder;
@@ -22,52 +27,55 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class BuildingController extends EasyAdminController
 {
-    /**
-     * Action Edit, on update
-     *
-     * @param Building $entity
-     */
-    protected function updateEntity($entity)
+    protected $accessService;
+    protected $universityHandler;
+
+    public function __construct(UniversityHandler $universityHandler, AccessService $accessService)
     {
-        $this->beforeSave($entity);
+        //Access service
+        $this->accessService = $accessService;
+        //Repository
+        $this->universityHandler = $universityHandler;
     }
 
     /**
-     * Action New, on save
-     *
-     * @param Building $entity
+     * @param string $entityClass
+     * @param string $sortDirection
+     * @param null $sortField
+     * @param null $dqlFilter
+     * @return QueryBuilder Faculty query
      */
-    protected function persistEntity($entity)
+    protected function createListQueryBuilder($entityClass, $sortDirection, $sortField = null, $dqlFilter = null)
     {
-        $this->beforeSave($entity);
+        $response = parent::createListQueryBuilder($entityClass, $sortDirection, $sortField, $dqlFilter);
+
+        $universityIds = $this->accessService->getUniversityPermission($this->getUser());
+        $response->andWhere('entity.university IN (:universityIds)')->setParameter('universityIds', $universityIds);
+
+        return $response;
     }
 
-    private function beforeSave($entity) {
-        $pa = PropertyAccess::createPropertyAccessor();
+    /**
+     * Rewriting standard easy admin function
+     * @param Schedule $entity
+     * @param string $view
+     * @return \Symfony\Component\Form\FormBuilder
+     */
+    protected function createEntityFormBuilder($entity, $view)
+    {
+        $formBuilder = parent::createEntityFormBuilder($entity, $view);
 
-        $request = $this->request->request->get('building');
+        $universityToChoice = $this->universityHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'university.id'), $this->getUser());
 
-        $university_id = $pa->getValue($request, '[university]');
-        $building_id = $pa->getValue($request, '[building]');
+        $formBuilder->add('university', EntityType::class, [
+            'choices' => $universityToChoice,
+            'class' => 'App\Entity\University',
+            'attr' => ['data-widget' => 'select2'],
+        ]);
 
-
-        if (!$university_id || !$building_id) {
-            return false;
-        }
-
-        /** @var $building_repo BuildingRepository */
-        $building_repo = $this->getDoctrine()->getRepository(Building::class);
-        $building_valid = $building_repo->checkBuildingByUniversity($university_id, $building_id);
-
-        if (!$building_valid) {
-            return false;
-        }
-
-        //Save entity
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($entity);
-        $entityManager->flush();
+        return $formBuilder;
     }
+
 
 
 }
