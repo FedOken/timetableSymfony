@@ -216,12 +216,12 @@ class ScheduleController extends AdminController
             'class' => 'App\Entity\Week',
             'required' => false,
             'attr' => ['data-widget' => 'select2'],
-            'disabled' => true,
+            'disabled' => (ArrayHelper::getValue($entity, 'week.id') == false),
         ])->add('week_enable', CheckboxType::class, [
             'label' => 'Lesson every week',
             'required' => false,
             'mapped' => false,
-            'data' => true
+            'data' => (ArrayHelper::getValue($entity, 'week.id') == false)
         ]);
 
         //Listener change data in form on actual before submit. Need for form validation.

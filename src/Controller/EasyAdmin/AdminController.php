@@ -3,14 +3,19 @@
 namespace App\Controller\EasyAdmin;
 
 use App\Handler\UniversityHandler;
+use App\Helper\ArrayHelper;
 use App\Service\AccessService;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AdminControllerTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
+use EasyCorp\Bundle\EasyAdminBundle\Exception\ForbiddenActionException;
+use EasyCorp\Bundle\EasyAdminBundle\Exception\NoPermissionException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends EasyAdminController
 {
+
     protected $accessService;
     protected $translator;
     protected $universityHandler;
@@ -25,20 +30,32 @@ class AdminController extends EasyAdminController
         $this->translator = $translator;
     }
 
-//    /** @Route("/", name="easyadmin") */
-//    public function indexAction(Request $request)
-//    {
-//        if ($this->isGranted(AccessService::ROLE_ADMIN)) {
-//            return $this->redirect('?action=list&entity=University');
-//        } elseif($this->isGranted(AccessService::ROLE_FACULTY_MANAGER)) {
-//            return $this->redirect('?action=list&entity=Faculty');
-//        } elseif($this->isGranted(AccessService::ROLE_PARTY_MANAGER)) {
-//            return $this->redirect('?action=list&entity=Party');
-//        } elseif($this->isGranted(AccessService::ROLE_TEACHER)) {
-//            return $this->redirect('?action=list&entity=Teacher');
-//        }
-//        return $this->redirect('/login');
-//    }
+    /** @Route("/", name="easyadmin") */
+    public function indexAction(Request $request)
+    {
+        if ($request->query->get('action')) {
+            return parent::indexAction($request);
+        }
+        //return $this->redirect('/login');
+
+
+
+
+        //$this->indexAction($request);
+        //indexAction($request);
+        //AdminControllerTrait->$this->indexAction();
+
+        if ($this->isGranted(AccessService::ROLE_ADMIN)) {
+            return $this->redirect('?action=list&entity=University');
+        } elseif($this->isGranted(AccessService::ROLE_FACULTY_MANAGER)) {
+            return $this->redirect('?action=list&entity=Faculty');
+        } elseif($this->isGranted(AccessService::ROLE_PARTY_MANAGER)) {
+            return $this->redirect('?action=list&entity=Party');
+        } elseif($this->isGranted(AccessService::ROLE_TEACHER)) {
+            return $this->redirect('?action=list&entity=Teacher');
+        }
+        return $this->redirect('/login');
+    }
 
     /**
      * @param array $validIds
