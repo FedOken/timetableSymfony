@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Course;
+use App\Helper\ArrayHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -33,5 +34,26 @@ class CourseRepository extends ServiceEntityRepository
             ->setParameter('id', $courseId)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param array $universityId
+     * @param bool $forChoice
+     * @return mixed
+     */
+    public function getCourseByUniversity(array $universityId, bool $forChoice = false)
+    {
+        $models = $this->createQueryBuilder('tb')
+            ->andWhere('tb.university IN (:university)')
+            ->setParameter('university', $universityId)
+            ->orderBy('tb.id')
+            ->getQuery()
+            ->getResult();
+
+        if ($forChoice) {
+            return ArrayHelper::map($models, 'name', 'id');
+        }
+
+        return $models;
     }
 }

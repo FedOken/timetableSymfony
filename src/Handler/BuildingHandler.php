@@ -1,36 +1,33 @@
 <?php
 
-
 namespace App\Handler;
 
-
 use App\Entity\User;
-use App\Repository\UniversityRepository;
+use App\Repository\BuildingRepository;
 use App\Service\AccessService;
 
-class UniversityHandler
+class BuildingHandler
 {
     protected $accessService;
-    protected $universityRepo;
+    protected $buildingRepo;
 
-    public function __construct(AccessService $accessService, UniversityRepository $universityRepo)
+    public function __construct(AccessService $accessService, BuildingRepository $buildingRepo)
     {
         //Access service
         $this->accessService = $accessService;
         //Repository
-        $this->universityRepo = $universityRepo;
+        $this->buildingRepo = $buildingRepo;
     }
 
     /**
      * Set select2 data by permission and selected entity
      * @param int|null $currentId
-     * @param User|object $user
+     * @param int|null $universityId
      * @return array
      */
-    public function setSelect2EasyAdmin($currentId, $user)
+    public function setSelect2EasyAdmin($currentId, $universityId)
     {
-        $universityPermission = $this->accessService->getUniversityPermission($user);
-        $entityModels = $this->universityRepo->getUniversityByUniversity($universityPermission);
+        $entityModels = $this->buildingRepo->getBuildingsByUniversity([$universityId]);
 
         if ($currentId) {
             $currentModel = [];
@@ -45,6 +42,18 @@ class UniversityHandler
         }
 
         return $entityModels;
+    }
+
+    public function checkEntityExist(int $id, int $universityId)
+    {
+        $model = $this->buildingRepo->findBy([
+            'id' => $id,
+            'university' => $universityId]
+        );
+        if ($model) {
+            return true;
+        }
+        return false;
     }
 
 }

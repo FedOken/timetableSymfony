@@ -1,2 +1,3 @@
 group_existing: The group {group} already has a class at a given time!
 validation_error: An error occurred while validating the data, please contact the administrator to fix the problem.
+no_permission: You do not have permissions to edit the request object.

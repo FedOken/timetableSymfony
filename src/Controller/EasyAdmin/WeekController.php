@@ -19,6 +19,7 @@ use App\Repository\PartyRepository;
 use App\Repository\ScheduleRepository;
 use App\Repository\TeacherRepository;
 use App\Repository\UniversityRepository;
+use App\Repository\WeekRepository;
 use App\Service\AccessService;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
@@ -29,25 +30,11 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Validation;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-class WeekController extends EasyAdminController
+class WeekController extends AdminController
 {
-    protected $accessService;
-    protected $universityHandler;
-
-    public function __construct(UniversityHandler $universityHandler, AccessService $accessService)
-    {
-        //Access service
-        $this->accessService = $accessService;
-        //Repository
-        $this->universityHandler = $universityHandler;
-    }
-
     /**
-     * @param string $entityClass
-     * @param string $sortDirection
-     * @param null $sortField
-     * @param null $dqlFilter
      * @return QueryBuilder Faculty query
      */
     protected function createListQueryBuilder($entityClass, $sortDirection, $sortField = null, $dqlFilter = null)
@@ -58,6 +45,26 @@ class WeekController extends EasyAdminController
         $response->andWhere('entity.university IN (:universityIds)')->setParameter('universityIds', $universityIds);
 
         return $response;
+    }
+
+    /**
+     * List action override
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    protected function listAction()
+    {
+        $validIds = $this->accessService->getCourseWeekTimePermission($this->getUser(), 'week');
+        return $this->listCheckPermissionAndRedirect($validIds, 'Week', AccessService::ROLE_UNIVERSITY_MANAGER);
+    }
+
+    /**
+     * Edit action override
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    protected function editAction()
+    {
+        $validIds = $this->accessService->getCourseWeekTimePermission($this->getUser(), 'week');
+        return $this->editCheckPermissionAndRedirect($validIds, 'Week', AccessService::ROLE_UNIVERSITY_MANAGER);
     }
 
     /**

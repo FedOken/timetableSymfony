@@ -13,8 +13,10 @@ easy_admin:
                     - { property: 'timeFrom', label: 'Start'}
                     - { property: 'timeTo', label: 'End'}
                     - { property: 'university'}
+                    - { property: 'schedules'}
                 actions:
                     - { name: 'new', label: 'Add class time' }
+                    - { name: 'show', icon: 'eye', label: false }
                     - { name: 'edit', icon: 'pencil', label: false }
                     - { name: 'delete', icon: 'trash-alt', label: false }
             form:
@@ -26,3 +28,16 @@ easy_admin:
                 title: 'Create class time'
             edit:
                 title: 'Edit class time'
+                actions: ['-delete']
+            show:
+                title: 'Class time view'
+                fields:
+                    - { type: 'group-1', label: 'Basic information', 'css_class':'col-md-6' }
+                    - { property: 'name',  label: 'Label',  'type_options':{'block_name': 'group-1'} }
+                    - { property: 'timeFrom', label: 'Start','type_options':{'block_name': 'group-1'} }
+                    - { property: 'timeTo', label: 'End', 'type_options':{'block_name': 'group-1'} }
+
+                    - { type: 'group-2', label: 'Related data', 'css_class':'col-md-6' }
+                    - { property: 'university', 'type_options':{'block_name': 'group-2'} }
+                    - { property: 'schedules', 'type_options':{'block_name': 'group-2'} }
+                actions: ['-delete']

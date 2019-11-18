@@ -1,36 +1,35 @@
 <?php
 
-
 namespace App\Handler;
 
-
+use App\Entity\University;
 use App\Entity\User;
-use App\Repository\UniversityRepository;
+use App\Repository\TeacherRepository;
+use App\Repository\WeekRepository;
 use App\Service\AccessService;
 
-class UniversityHandler
+class WeekHandler
 {
     protected $accessService;
-    protected $universityRepo;
+    protected $weekRepo;
 
-    public function __construct(AccessService $accessService, UniversityRepository $universityRepo)
+    public function __construct(AccessService $accessService, WeekRepository $weekRepo)
     {
         //Access service
         $this->accessService = $accessService;
         //Repository
-        $this->universityRepo = $universityRepo;
+        $this->weekRepo = $weekRepo;
     }
 
     /**
      * Set select2 data by permission and selected entity
      * @param int|null $currentId
-     * @param User|object $user
+     * @param int|null $universityId
      * @return array
      */
-    public function setSelect2EasyAdmin($currentId, $user)
+    public function setSelect2EasyAdmin($currentId, $universityId)
     {
-        $universityPermission = $this->accessService->getUniversityPermission($user);
-        $entityModels = $this->universityRepo->getUniversityByUniversity($universityPermission);
+        $entityModels = $this->weekRepo->getWeekByUniversity([$universityId]);
 
         if ($currentId) {
             $currentModel = [];

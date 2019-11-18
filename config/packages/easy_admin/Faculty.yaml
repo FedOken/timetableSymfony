@@ -5,9 +5,9 @@ easy_admin:
             controller: App\Controller\EasyAdmin\FacultyController
             label: 'Faculties'
             list:
-                title: '%%entity_label%% list'
+                title: 'Faculty list'
                 sort: ['university', 'ASC']
-                filters: ['university', 'enable']
+                filters: ['university']
                 fields:
                     - 'name'
                     - {property: 'name_full', label: 'Full name'}
@@ -15,15 +15,28 @@ easy_admin:
                     - {property: 'enable', label: 'Status'}
                     - 'parties'
                 actions:
-                    - { name: 'new', label: 'Add faculty' }
+                    - { name: 'new', label: 'Add university' }
+                    - { name: 'show', icon: 'eye', label: false }
                     - { name: 'edit', icon: 'pencil', label: false }
                     - { name: 'delete', icon: 'trash-alt', label: false }
             form:
                 fields:
                     - { property: 'name',  help: 'Set short name (FAT)' }
                     - { property: 'name_full', label: 'Full name',  help: 'Set full name (Faculty of advanced technology)' }
-                    #- { property: 'university', type_options: { required: true }, help: 'Choose your university',  permission: ROLE_ADMIN }
+                    - { property: 'university', help: 'Choose university' }
             new:
                 title: 'Create faculty'
             edit:
                 title: 'Edit faculty'
+                actions: ['-delete']
+            show:
+                title: 'Faculty view'
+                fields:
+                    - { type: 'group-1', label: 'Basic information', 'css_class':'col-md-6' }
+                    - { property: 'name', 'type_options':{'block_name': 'group-1'} }
+                    - { property: 'name_full', label: 'Full name', 'type_options':{'block_name': 'group-1'} }
+
+                    - { type: 'group-2', label: 'Related data', 'css_class':'col-md-6' }
+                    - { property: 'parties', 'type_options':{'block_name': 'group-2'} }
+                    - { property: 'university', 'type_options':{'block_name': 'group-2'} }
+                actions: ['-delete']

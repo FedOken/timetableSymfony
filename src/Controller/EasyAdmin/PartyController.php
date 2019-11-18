@@ -8,6 +8,10 @@ use App\Entity\Course;
 use App\Entity\Faculty;
 use App\Entity\Party;
 use App\Entity\Schedule;
+use App\Entity\University;
+use App\Handler\CourseHandler;
+use App\Handler\FacultyHandler;
+use App\Handler\UniversityHandler;
 use App\Helper\ArrayHelper;
 use App\Repository\BuildingRepository;
 use App\Repository\CabinetRepository;
@@ -18,80 +22,61 @@ use App\Repository\TeacherRepository;
 use App\Repository\UniversityRepository;
 use App\Service\AccessService;
 use Doctrine\DBAL\Types\TextType;
+use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Core\Encoder\NativePasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
-class PartyController extends EasyAdminController
+class PartyController extends AdminController
 {
-    protected $accessService;
-    protected $courseRepo;
-    protected $partyRepo;
-    protected $facultyRepo;
-    protected $universityRepo;
+    protected $facultyHandler;
+    protected $courseHandler;
 
-    public function __construct(UniversityRepository $universityRepo, CourseRepository $courseRepository, PartyRepository $partyRepository, AccessService $accessService, FacultyRepository $facultyRepository)
+
+    public function __construct(CourseHandler $courseHandler, FacultyHandler $facultyHandler, TranslatorInterface $translator, UniversityHandler $universityHandler, AccessService $accessService)
     {
-        //Access service
-        $this->accessService = $accessService;
-        //Repository
-        $this->universityRepo = $universityRepo;
-        $this->courseRepo = $courseRepository;
-        $this->facultyRepo = $facultyRepository;
-        $this->partyRepo = $partyRepository;
-    }
-    /**
-     * Action Edit, on update
-     *
-     * @param Party $entity
-     */
-    protected function updateEntity($entity)
-    {
-        $this->beforeSave($entity);
+        parent::__construct($translator, $universityHandler, $accessService);
+        //Handler
+        $this->facultyHandler = $facultyHandler;
+        $this->courseHandler = $courseHandler;
     }
 
     /**
-     * Action New, on save
-     *
-     * @param Party $entity
+     * @return QueryBuilder query
      */
-    protected function persistEntity($entity)
+    protected function createListQueryBuilder($entityClass, $sortDirection, $sortField = null, $dqlFilter = null)
     {
-        $this->beforeSave($entity);
+        $response = parent::createListQueryBuilder($entityClass, $sortDirection, $sortField, $dqlFilter);
+
+        $facultyIds = $this->accessService->getFacultyPermission($this->getUser());
+        $response->andWhere('entity.faculty IN (:facultyIds)')->setParameter('facultyIds', $facultyIds);
+
+        return $response;
     }
 
     /**
-     * @param Party $entity
-     * @return bool
+     * List action override
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    private function beforeSave($entity) {
-        $request = $this->request->request->get('party');
+    protected function listAction()
+    {
+        $validIds = $this->accessService->getPartyPermission($this->getUser());
+        return $this->listCheckPermissionAndRedirect($validIds, 'Party', AccessService::ROLE_FACULTY_MANAGER);
+    }
 
-        $universityId = ArrayHelper::getValue($request, 'university');
-        $facultyId = ArrayHelper::getValue($request, 'faculty');
-        $courseId = ArrayHelper::getValue($request, 'course');
-
-        if (!$universityId || !$facultyId || !$courseId) {
-            return false;
-        }
-
-        $facultyValid = $this->facultyRepo->checkFacultyInUniversity($universityId, $facultyId);
-        $courseValid = $this->courseRepo->checkCourseInUniversity($universityId, $courseId);
-
-        if (!$facultyValid || !$courseValid) {
-            return false;
-        }
-
-        $entity->setFaculty($this->facultyRepo->findOneBy(['id' => $facultyId]));
-
-        //Save entity
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($entity);
-        $entityManager->flush();
-        return true;
+    /**
+     * Edit action override
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    protected function editAction()
+    {
+        $validIds = $this->accessService->getPartyPermission($this->getUser());
+        return $this->editCheckPermissionAndRedirect($validIds, 'Party', AccessService::ROLE_FACULTY_MANAGER);
     }
 
     /**
@@ -104,31 +89,20 @@ class PartyController extends EasyAdminController
     {
         $formBuilder = parent::createEntityFormBuilder($entity, $view);
 
-        $userToAccess = $this->getUser();
+        $facultyToChoice = $this->facultyHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'faculty.id'), $this->getUser());
+        $courseToChoice = $this->courseHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'course.id'), $this->getUser());
 
-        //Set university permission
-        $universityPermission = $this->accessService->getUniversityPermission($userToAccess);
-        //Set faculty permission
-        $facultyPermission = $this->accessService->getFacultyPermission($userToAccess);
-
-        /*DATA FOR SELECT*/
-        $universityToChoice = $this->universityRepo->getDataForChoice($universityPermission);
-        //Select building by university
-        count($universityToChoice) > 0 ? $facultyToChoice = $this->facultyRepo->getFacultiesByUniversity([reset($universityToChoice)], true) : $facultyToChoice = [];
-
-        $formBuilder->add('university', ChoiceType::class, [
-            'choices' => $universityToChoice,
-            'mapped' => false,
-            'attr' => ['data-widget' => 'select2']
-        ]);
-        $formBuilder->add('faculty', ChoiceType::class, [
+        $formBuilder->add('faculty', EntityType::class, [
             'choices' => $facultyToChoice,
-            'mapped' => false,
-            'attr' => ['data-widget' => 'select2']
+            'class' => 'App\Entity\Faculty',
+            'attr' => ['data-widget' => 'select2'],
+        ]);
+        $formBuilder->add('course', EntityType::class, [
+            'choices' => $courseToChoice,
+            'class' => 'App\Entity\Course',
+            'attr' => ['data-widget' => 'select2'],
         ]);
 
         return $formBuilder;
     }
-
-
 }

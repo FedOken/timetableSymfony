@@ -1,7 +1,8 @@
 easy_admin:
     entities:
         LessonType:
-            class: App\Entity\LessonType
+            class: 'App\Entity\LessonType'
+            controller: 'App\Controller\EasyAdmin\LessonTypeController'
             label: 'Lesson types'
             list:
                 title: 'Lesson types list'
@@ -9,6 +10,7 @@ easy_admin:
                 fields: ['name', { property: 'name_full', label: 'Full name'}]
                 actions:
                     - { name: 'new', label: 'Add type' }
+                    - { name: 'show', icon: 'eye', label: false }
                     - { name: 'edit', icon: 'pencil', label: false }
                     - { name: 'delete', icon: 'trash-alt', label: false }
             form:
@@ -19,3 +21,14 @@ easy_admin:
                 title: 'Create lesson type'
             edit:
                 title: 'Edit lesson type'
+                actions: ['-delete']
+            show:
+                title: 'Lesson type view'
+                fields:
+                    - { type: 'group-1', label: 'Basic information', 'css_class':'col-md-6' }
+                    - { property: 'name', 'type_options':{'block_name': 'group-1'} }
+                    - { property: 'name_full', label: 'Full name', 'type_options':{'block_name': 'group-1'} }
+
+                    - { type: 'group-2', label: 'Related data', 'css_class':'col-md-6' }
+                    - { property: 'schedules', 'type_options':{'block_name': 'group-2'} }
+                actions: ['-delete']

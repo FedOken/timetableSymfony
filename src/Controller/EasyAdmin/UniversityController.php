@@ -2,39 +2,45 @@
 
 namespace App\Controller\EasyAdmin;
 
-
+use App\Entity\University;
 use App\Service\AccessService;
-use Doctrine\ORM\QueryBuilder;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
-
-class UniversityController extends EasyAdminController
+class UniversityController extends AdminController
 {
-    protected $accessService;
-
-    public function __construct(AccessService $accessService)
-    {
-        $this->accessService = $accessService;
-    }
-
+    /**
+     * List action override
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     protected function listAction()
     {
-        if ($this->isGranted(AccessService::ROLE_ADMIN)) {
-            return parent::listAction();
-        } else {
-            $universityIds = $this->accessService->getUniversityPermission($this->getUser());
-            return $this->redirect('?action=show&entity=University&id='.$universityIds[0]);
-        }
+        $validIds = $this->accessService->getUniversityPermission($this->getUser());
+        return $this->listCheckPermissionAndRedirect($validIds, 'University', AccessService::ROLE_ADMIN);
     }
 
+    /**
+     * Edit action override
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     protected function editAction()
     {
-        if ($this->isGranted(AccessService::ROLE_UNIVERSITY_MANAGER)) {
-            return parent::editAction();
-        } else {
-            $universityIds = $this->accessService->getUniversityPermission($this->getUser());
-            return $this->redirect('?action=show&entity=University&id='.$universityIds[0]);
-        }
+        $validIds = $this->accessService->getUniversityPermission($this->getUser());
+        return $this->editCheckPermissionAndRedirect($validIds, 'University', AccessService::ROLE_UNIVERSITY_MANAGER);
+    }
+
+    /**
+     * Action New, on save
+     *
+     * @param University $entity
+     * @return bool|void
+     */
+    protected function persistEntity($entity)
+    {
+        $entity->enable = true;
+
+        //Save entity
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($entity);
+        $entityManager->flush();
+        return true;
     }
 }

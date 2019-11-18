@@ -23,6 +23,10 @@ class ArrayHelper
      */
     public static function getValue($array, string $key, $default = null)
     {
+        $propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
+            ->disableExceptionOnInvalidPropertyPath()
+            ->getPropertyAccessor();
+
         if (is_array($key)) {
             $lastKey = array_pop($key);
             foreach ($key as $keyPart) {
@@ -41,7 +45,7 @@ class ArrayHelper
         }
 
         if (is_object($array)) {
-            return $array->$key;
+            return $propertyAccessor->getValue($array, $key);
         } elseif (is_array($array)) {
             return (isset($array[$key]) || array_key_exists($key, $array)) ? $array[$key] : $default;
         }

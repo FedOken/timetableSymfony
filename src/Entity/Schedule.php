@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Helper\ArrayHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -62,7 +63,7 @@ class Schedule
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Week", inversedBy="schedules")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $week;
 
@@ -73,10 +74,9 @@ class Schedule
     private $day;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\UniversityTime", inversedBy="universityTimes")
+     * @ORM\ManyToOne(targetEntity="App\Entity\UniversityTime", inversedBy="schedules")
      * @ORM\JoinColumn(nullable=false)
      */
-
     private $universityTime;
 
     public function __toString(){
@@ -177,10 +177,13 @@ class Schedule
         return $this->universityTime;
     }
 
-    public function setUniversityTime(?UniversityTime $universityTime): self
+    public function getBuilding()
     {
-        $this->universityTime = $universityTime;
+        return ArrayHelper::getValue($this, 'cabinet.building');
+    }
 
-        return $this;
+    public function getUniversity()
+    {
+        return ArrayHelper::getValue($this, 'cabinet.building.university');
     }
 }

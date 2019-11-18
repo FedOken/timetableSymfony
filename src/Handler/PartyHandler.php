@@ -1,36 +1,36 @@
 <?php
 
-
 namespace App\Handler;
 
-
+use App\Entity\University;
 use App\Entity\User;
-use App\Repository\UniversityRepository;
+use App\Repository\PartyRepository;
+use App\Repository\TeacherRepository;
+use App\Repository\WeekRepository;
 use App\Service\AccessService;
 
-class UniversityHandler
+class PartyHandler
 {
     protected $accessService;
-    protected $universityRepo;
+    protected $partyRepo;
 
-    public function __construct(AccessService $accessService, UniversityRepository $universityRepo)
+    public function __construct(AccessService $accessService, PartyRepository $partyRepo)
     {
         //Access service
         $this->accessService = $accessService;
         //Repository
-        $this->universityRepo = $universityRepo;
+        $this->partyRepo = $partyRepo;
     }
 
     /**
      * Set select2 data by permission and selected entity
      * @param int|null $currentId
-     * @param User|object $user
+     * @param int|null $universityId
      * @return array
      */
-    public function setSelect2EasyAdmin($currentId, $user)
+    public function setSelect2EasyAdmin($currentId, $universityId)
     {
-        $universityPermission = $this->accessService->getUniversityPermission($user);
-        $entityModels = $this->universityRepo->getUniversityByUniversity($universityPermission);
+        $entityModels = $this->partyRepo->getPartiesByUniversity([$universityId]);
 
         if ($currentId) {
             $currentModel = [];
@@ -45,6 +45,18 @@ class UniversityHandler
         }
 
         return $entityModels;
+    }
+
+    public function checkEntityExist(int $id, $facultyId)
+    {
+        $model = $this->partyRepo->findBy([
+                'id' => $id,
+                'faculty' => $facultyId]
+        );
+        if ($model) {
+            return true;
+        }
+        return false;
     }
 
 }

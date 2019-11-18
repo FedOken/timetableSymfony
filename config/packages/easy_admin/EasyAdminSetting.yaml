@@ -5,8 +5,8 @@ easy_admin:
         display_avatar: true
     design:
         menu:
-            - { entity: 'University', icon: 'university', permission: 'ROLE_UNIVERSITY_MANAGER' }
-            - { entity: 'Faculty', icon: 'puzzle-piece', permission: 'ROLE_FACULTY_MANAGER' }
+            - { entity: 'University', icon: 'university', permission: 'ROLE_PARTY_MANAGER' }
+            - { entity: 'Faculty', icon: 'puzzle-piece', permission: 'ROLE_PARTY_MANAGER' }
             - { entity: 'Party', icon: 'users', permission: 'ROLE_PARTY_MANAGER' }
 
             - { entity: 'Building', icon: 'building', permission: 'ROLE_UNIVERSITY_MANAGER' }
@@ -20,7 +20,7 @@ easy_admin:
                     - { entity: 'Week', icon: 'calendar-week', permission: 'ROLE_UNIVERSITY_MANAGER' }
                     - { entity: 'Time', icon: 'clock', permission: 'ROLE_UNIVERSITY_MANAGER' }
 
-            - { entity: 'Teacher', icon: 'chalkboard-teacher', permission: 'ROLE_FACULTY' }
+            - { entity: 'Teacher', icon: 'chalkboard-teacher', permission: 'ROLE_FACULTY_MANAGER' }
             - { entity: 'Schedule', icon: 'clipboard-list', permission: 'ROLE_PARTY_MANAGER' }
 
             -   label: 'Constant'
@@ -45,5 +45,6 @@ easy_admin:
             css:
                 #- 'admin/css/bootstrap4.css'
                 - 'admin/css/layout.css'
+                - 'admin/css/show.css'
             js:
                 - 'admin/js/admin.js'

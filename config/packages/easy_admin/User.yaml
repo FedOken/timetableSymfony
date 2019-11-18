@@ -22,7 +22,6 @@ easy_admin:
                     - { property: 'email' }
                     - { property: 'role_label' }
                     - { property: 'password', type: 'password'}
-                    - { property: 'enable', label: 'Status' }
                     - { type: 'group', columns: '12', label: 'Access object', help: 'The access object must match the selected role', 'type_options':{'block_name': 'group-2'}, 'css_class':'col-md-6' }
                     - { property: 'university' }
                     - { property: 'faculty' }
@@ -40,3 +39,4 @@ easy_admin:
                     - { property: 'faculty' }
                     - { property: 'party' }
                     - { property: 'teacher' }
+                actions: ['-delete']

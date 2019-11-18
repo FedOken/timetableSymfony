@@ -19,30 +19,55 @@
 {% block content_footer_wrapper '' %}
 
 {% block main %}
-    <div class="form-horizontal">
+    {% set _translation_domain = _entity_config.translation_domain %}
+    <div class="row show">
         {% block show_fields %}
             {% set _fields_visible_by_user = fields|filter((metadata, field) => easyadmin_is_granted(metadata.permission)) %}
-            {% for field, metadata in _fields_visible_by_user %}
-                {% block show_field %}
-                    <div class="form-group field-{{ metadata.type|default('default')|lower }} {{ metadata.css_class|default('') }}">
-                        <label class="control-label">
-                            {{ metadata.label|trans(_trans_parameters)|raw }}
-                        </label>
-                        <div class="form-widget">
-                            <div class="form-control">
-                                {{ dump(_entity_config) }}
-                                {{ dump(entity) }}
-                                {{ dump(metadata) }}
-{#                                {{ easyadmin_render_field_for_show_view(_entity_config.name, entity, metadata) }}#}
-                            </div>
+            {% set groups = _fields_visible_by_user|filter(value => 'group' in value.dataType) %}
+            {% set fields = _fields_visible_by_user|filter(value => 'group' not in value.dataType) %}
 
-                            {% if metadata.help|default('') != '' %}
-                                <small class="form-help"><i class="fa fa-fw fa-info-circle"></i> {{ metadata.help|trans|raw }}</small>
+            {% for group_config in groups %}
+                <div class="field-group col-{{ group_config.columns|default('12') }} {{ group_config.css_class|default('') }}">
+                    <fieldset>
+                        {% if group_config.label|default(false) or group_config.icon|default(false) or group_config.collapsible|default(false) %}
+                            <legend class="{{ group_config.icon|default(false) ? 'with-icon' }}">
+                                {% if group_config.icon|default(false) %}
+                                    <i class="fa fa-fw fa-{{ group_config.icon }}"></i>
+                                {% endif %}
+                                {{ group_config.label|trans(domain = _translation_domain)|raw }}
+                            </legend>
+
+                            {% if group_config.help|default(false) %}
+                                <div class="legend-help">{{ group_config.help|trans(domain = _translation_domain)|raw }}</div>
                             {% endif %}
+                        {% endif %}
+
+                        <div class="row">
+                            {% for field, metadata in fields|filter(value => (value.type_options.block_name is defined and value.type_options.block_name == group_config.dataType) or value.type_options.block_name is not defined) %}
+                                {% block show_field %}
+                                    <div class="col-12">
+                                    <div class="form-group field-{{ metadata.type|default('default')|lower }} {{ metadata.css_class|default('') }}">
+                                        <label class="control-label">
+                                            {{ metadata.label|trans(_trans_parameters)|raw }}
+                                        </label>
+                                        <div class="form-widget">
+                                            <div class="form-control">
+                                                {{ easyadmin_render_field_for_show_view(_entity_config.name, entity, metadata) }}
+                                            </div>
+                                            {% if metadata.help|default('') != '' %}
+                                                <small class="form-help"><i class="fa fa-fw fa-info-circle"></i> {{ metadata.help|trans|raw }}</small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    </div>
+                                {% endblock %}
+                            {% endfor %}
                         </div>
-                    </div>
-                {% endblock %}
+
+                    </fieldset>
+                </div>
             {% endfor %}
+
         {% endblock %}
     </div>
 

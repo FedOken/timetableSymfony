@@ -23,27 +23,12 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Core\Encoder\NativePasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-
-class BuildingController extends EasyAdminController
+class BuildingController extends AdminController
 {
-    protected $accessService;
-    protected $universityHandler;
-
-    public function __construct(UniversityHandler $universityHandler, AccessService $accessService)
-    {
-        //Access service
-        $this->accessService = $accessService;
-        //Repository
-        $this->universityHandler = $universityHandler;
-    }
-
     /**
-     * @param string $entityClass
-     * @param string $sortDirection
-     * @param null $sortField
-     * @param null $dqlFilter
-     * @return QueryBuilder Faculty query
+     * @return QueryBuilder query
      */
     protected function createListQueryBuilder($entityClass, $sortDirection, $sortField = null, $dqlFilter = null)
     {
@@ -53,6 +38,26 @@ class BuildingController extends EasyAdminController
         $response->andWhere('entity.university IN (:universityIds)')->setParameter('universityIds', $universityIds);
 
         return $response;
+    }
+
+    /**
+     * List action override
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    protected function listAction()
+    {
+        $validIds = $this->accessService->getBuildingPermission($this->getUser());
+        return $this->listCheckPermissionAndRedirect($validIds, 'Building', AccessService::ROLE_UNIVERSITY_MANAGER);
+    }
+
+    /**
+     * Edit action override
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    protected function editAction()
+    {
+        $validIds = $this->accessService->getBuildingPermission($this->getUser());
+        return $this->editCheckPermissionAndRedirect($validIds, 'Building', AccessService::ROLE_UNIVERSITY_MANAGER);
     }
 
     /**

@@ -1,23 +1,35 @@
 easy_admin:
     entities:
         Cabinet:
-            class: App\Entity\Cabinet
+            class: 'App\Entity\Cabinet'
+            controller: 'App\Controller\EasyAdmin\CabinetController'
             label: 'Cabinets'
             list:
-                title: '%%entity_label%% list'
+                title: 'Cabinet list'
                 sort: ['building', 'ASC']
                 filters: ['building']
                 fields: ['name', 'building', 'schedules']
                 actions:
                     - { name: 'new', label: 'Add cabinet' }
+                    - { name: 'show', icon: 'eye', label: false }
                     - { name: 'edit', icon: 'pencil', label: false }
                     - { name: 'delete', icon: 'trash-alt', label: false }
             form:
                 fields:
-                    #- { property: 'university',  type_options: { required: true }, help: 'Choose university' }
                     - { property: 'building', help: 'Choose building' }
                     - { property: 'name', help: 'Enter cabinet number (2, 411, 325a)' }
             new:
                 title: 'Create cabinet'
             edit:
                 title: 'Edit cabinet'
+                actions: ['-delete']
+            show:
+                title: 'Cabinet view'
+                fields:
+                    - { type: 'group-1', label: 'Basic information', 'css_class':'col-md-6' }
+                    - { property: 'name', 'type_options':{'block_name': 'group-1'} }
+
+                    - { type: 'group-2', label: 'Related data', 'css_class':'col-md-6' }
+                    - { property: 'building', 'type_options':{'block_name': 'group-2'} }
+                    - { property: 'schedules', 'type_options':{'block_name': 'group-2'} }
+                actions: ['-delete']

@@ -6,9 +6,26 @@ use App\Helper\MagicTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\FacultyRepository")
+ *
+ * @UniqueEntity(
+ *     fields={"name", "name_full", "university"},
+ *     errorPath="name",
+ *     message="entity_exist"
+ * )
+ * @UniqueEntity(
+ *     fields={"name", "university"},
+ *     errorPath="name",
+ *     message="entity_exist"
+ * )
+ * @UniqueEntity(
+ *     fields={"name_full", "university"},
+ *     errorPath="name_full",
+ *     message="entity_exist"
+ * )
  *
  * @property int $id
  * @property string $name

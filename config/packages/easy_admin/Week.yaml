@@ -11,6 +11,7 @@ easy_admin:
                 fields: ['name', 'university', 'schedules']
                 actions:
                     - { name: 'new', label: 'Add week' }
+                    - { name: 'show', icon: 'eye', label: false }
                     - { name: 'edit', icon: 'pencil', label: false }
                     - { name: 'delete', icon: 'trash-alt', label: false }
             form:
@@ -21,3 +22,13 @@ easy_admin:
                 title: 'Create week'
             edit:
                 title: 'Edit week'
+            show:
+                title: 'Week view'
+                fields:
+                    - { type: 'group-1', label: 'Basic information', 'css_class':'col-md-6' }
+                    - { property: 'name', 'type_options':{'block_name': 'group-1'} }
+
+                    - { type: 'group-2', label: 'Related data', 'css_class':'col-md-6' }
+                    - { property: 'university', 'type_options':{'block_name': 'group-2'} }
+                    - { property: 'schedules', 'type_options':{'block_name': 'group-2'} }
+                actions: ['-delete']

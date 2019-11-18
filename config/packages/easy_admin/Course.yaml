@@ -8,9 +8,10 @@ easy_admin:
                 title: 'Course list'
                 sort: ['university', 'ASC']
                 filters: ['university']
-                fields: ['course', { property: 'name_full', label: 'Full name' }, 'university']
+                fields: ['course', { property: 'name_full', label: 'Full name' }, 'university', 'parties']
                 actions:
                     - { name: 'new', label: 'Add course' }
+                    - { name: 'show', icon: 'eye', label: false }
                     - { name: 'edit', icon: 'pencil', label: false }
                     - { name: 'delete', icon: 'trash-alt', label: false }
             form:
@@ -22,3 +23,15 @@ easy_admin:
                 title: 'Create course'
             edit:
                 title: 'Edit course'
+                actions: ['-delete']
+            show:
+                title: 'Course view'
+                fields:
+                    - { type: 'group-1', label: 'Basic information', 'css_class':'col-md-6' }
+                    - { property: 'course', 'type_options':{'block_name': 'group-1'} }
+                    - { property: 'name_full', label: 'Full name', 'type_options':{'block_name': 'group-1'} }
+
+                    - { type: 'group-2', label: 'Related data', 'css_class':'col-md-6' }
+                    - { property: 'university', 'type_options':{'block_name': 'group-2'} }
+                    - { property: 'parties', 'type_options':{'block_name': 'group-2'} }
+                actions: ['-delete']

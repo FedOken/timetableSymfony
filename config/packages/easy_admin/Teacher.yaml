@@ -1,15 +1,17 @@
 easy_admin:
     entities:
         Teacher:
-            class: App\Entity\Teacher
-            label: Teachers
+            class: 'App\Entity\Teacher'
+            controller: 'App\Controller\EasyAdmin\TeacherController'
+            label: 'Teachers'
             list:
-                title: '%%entity_label%% list'
+                title: 'Teacher list'
                 sort: ['university', 'ASC']
                 filters: ['university', 'position']
-                fields: ['name', { property: 'name_full', label: 'Full name' }, 'position', 'university']
+                fields: ['name', { property: 'name_full', label: 'Full name' }, 'position', 'university', 'schedules']
                 actions:
                     - { name: 'new', label: 'Add teacher' }
+                    - { name: 'show', icon: 'eye', label: false }
                     - { name: 'edit', icon: 'pencil', label: false }
                     - { name: 'delete', icon: 'trash-alt', label: false }
             form:
@@ -17,8 +19,22 @@ easy_admin:
                     - { property: 'university', type_options: { required: true }, help: 'Choose university'}
                     - { property: 'name',  help: 'Set name with abbreviation (Fedorenko O.B.)' }
                     - { property: 'name_full', label: 'Full name', help: 'Set full name (Fedorenko Oleksandr Borisovich)' }
-                    - { property: 'position', type_options: { required: true }, help: 'Choose teacher position'}
+                    - { property: 'position', help: 'Choose teacher position'}
+                actions: ['-delete']
             new:
                 title: 'Create teacher'
             edit:
                 title: 'Edit teacher'
+                actions: ['-delete']
+            show:
+                title: 'Teacher view'
+                fields:
+                    - { type: 'group-1', label: 'Basic information', 'css_class':'col-md-6' }
+                    - { property: 'name', 'type_options':{'block_name': 'group-1'} }
+                    - { property: 'name_full', label: 'Full name', 'type_options':{'block_name': 'group-1'} }
+
+                    - { type: 'group-2', label: 'Related data', 'css_class':'col-md-6' }
+                    - { property: 'university', 'type_options':{'block_name': 'group-2'} }
+                    - { property: 'position', 'type_options':{'block_name': 'group-2'} }
+                    - { property: 'schedules', 'type_options':{'block_name': 'group-2'} }
+                actions: ['-delete']

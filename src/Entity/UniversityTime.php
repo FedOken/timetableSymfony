@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Helper\MagicTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -20,7 +22,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @property string $name
  * @property DateTime $timeFrom
  * @property DateTime $timeTo
- * @property University[] $university
+ * @property University $university
+ * @property Schedule[] $schedules
  */
 class UniversityTime
 {
@@ -52,6 +55,16 @@ class UniversityTime
      * @ORM\ManyToOne(targetEntity="App\Entity\University", inversedBy="universityTimes")
      */
     private $university;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Schedule", mappedBy="universityTime")
+     */
+    private $schedules;
+
+    public function __construct()
+    {
+        $this->schedules = new ArrayCollection();
+    }
 
     public function __toString(){
         return $this->name;
@@ -110,5 +123,12 @@ class UniversityTime
         $this->university = $university;
 
         return $this;
+    }
+    /**
+     * @return Collection|Schedule[]
+     */
+    public function getSchedules(): Collection
+    {
+        return $this->schedules;
     }
 }

@@ -30,24 +30,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Validation;
 
-class UniversityTimeController extends EasyAdminController
+class UniversityTimeController extends AdminController
 {
-    protected $accessService;
-    protected $universityHandler;
-
-    public function __construct(UniversityHandler $universityHandler, AccessService $accessService)
-    {
-        //Access service
-        $this->accessService = $accessService;
-        //Repository
-        $this->universityHandler = $universityHandler;
-    }
-
     /**
-     * @param string $entityClass
-     * @param string $sortDirection
-     * @param null $sortField
-     * @param null $dqlFilter
      * @return QueryBuilder Faculty query
      */
     protected function createListQueryBuilder($entityClass, $sortDirection, $sortField = null, $dqlFilter = null)
@@ -61,8 +46,27 @@ class UniversityTimeController extends EasyAdminController
     }
 
     /**
+     * List action override
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    protected function listAction()
+    {
+        $validIds = $this->accessService->getCourseWeekTimePermission($this->getUser(), 'time');
+        return $this->listCheckPermissionAndRedirect($validIds, 'Time', AccessService::ROLE_UNIVERSITY_MANAGER);
+    }
+
+    /**
+     * Edit action override
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    protected function editAction()
+    {
+        $validIds = $this->accessService->getCourseWeekTimePermission($this->getUser(), 'time');
+        return $this->editCheckPermissionAndRedirect($validIds, 'Time', AccessService::ROLE_UNIVERSITY_MANAGER);
+    }
+
+    /**
      * Action Edit, on update
-     *
      * @param UniversityTime $entity
      */
     protected function updateEntity($entity)
@@ -72,7 +76,6 @@ class UniversityTimeController extends EasyAdminController
 
     /**
      * Action New, on save
-     *
      * @param UniversityTime $entity
      */
     protected function persistEntity($entity)
@@ -103,7 +106,6 @@ class UniversityTimeController extends EasyAdminController
     protected function createEntityFormBuilder($entity, $view)
     {
         $formBuilder = parent::createEntityFormBuilder($entity, $view);
-
         $universityToChoice = $this->universityHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'university.id'), $this->getUser());
 
         $formBuilder->add('university', EntityType::class, [
@@ -111,7 +113,6 @@ class UniversityTimeController extends EasyAdminController
             'class' => 'App\Entity\University',
             'attr' => ['data-widget' => 'select2'],
         ]);
-
         return $formBuilder;
     }
 }

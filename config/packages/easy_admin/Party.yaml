@@ -5,25 +5,37 @@ easy_admin:
             controller: App\Controller\EasyAdmin\PartyController
             label: 'Groups'
             list:
-                title: '%%entity_label%% list'
+                title: 'Party list'
                 sort: ['faculty', 'ASC']
                 filters: ['faculty', 'course']
                 fields:
                     - 'name'
                     - 'course'
                     - 'faculty'
-                    #- 'university'
+                    - 'schedules'
                 actions:
-                    - { name: 'new', label: 'Add group' }
+                    - { name: 'new', label: 'Add party' }
+                    - { name: 'show', icon: 'eye', label: false }
                     - { name: 'edit', icon: 'pencil', label: false }
                     - { name: 'delete', icon: 'trash-alt', label: false }
             form:
                 fields:
-                    - { property: 'university', type_options: { required: true }, help: 'Choose university' }
-                    - { property: 'faculty',  type_options: { required: true }, help: 'Choose faculty after university' }
-                    - { property: 'course', type_options: { required: true }, help: 'Choose course after university' }
+                    - { property: 'faculty',  type_options: { required: true }, help: 'Choose faculty' }
+                    - { property: 'course', type_options: { required: true }, help: 'Choose course' }
                     - { property: 'name',  help: 'Set group name (GN-2-1, GN-5-1m, GN-3-1tec)' }
             new:
                 title: 'Create group'
             edit:
                 title: 'Edit group'
+                actions: ['-delete']
+            show:
+                title: 'Group view'
+                fields:
+                    - { type: 'group-1', label: 'Basic information', 'css_class':'col-md-6' }
+                    - { property: 'name', 'type_options':{'block_name': 'group-1'} }
+                    - { property: 'course', 'type_options':{'block_name': 'group-1'} }
+
+                    - { type: 'group-2', label: 'Related data', 'css_class':'col-md-6' }
+                    - { property: 'faculty', 'type_options':{'block_name': 'group-2'} }
+                    - { property: 'schedules', 'type_options':{'block_name': 'group-2'} }
+                actions: ['-delete']

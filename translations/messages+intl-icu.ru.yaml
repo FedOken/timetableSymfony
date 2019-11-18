@@ -1,6 +1,7 @@
 #Aliases
-group_existing: 'У группы {group} уже есть занятие в заданное время!'
-validation_error: 'Возникла ошибка при валидации данных, пожалуйста, обратитесь к администратору для устранения проблеммы.'
+group_existing: У группы {group} уже есть занятие в заданное время!
+validation_error: Возникла ошибка при валидации данных, пожалуйста, обратитесь к администратору для устранения проблеммы.
+no_permission: У вас не хватает прав для редактирование запрошенного объекта.
 
 #Easy admin
 Status: Статус
@@ -39,7 +40,7 @@ Choose time: Выберите время
 Choose building: Выберите корпус
 Choose cabinet: Выберите кабинет
 Basic information: Базовая информация
-Class time: Время занятий
+Class time: Время занятия
 Class location: Место проведения занятия
 Groups: Группы
 Buildings: Корпуса
@@ -84,7 +85,8 @@ Create position: Создать должность
 Edit position: Редактировать должность
 Set short name (prof.): Укажите аббревиатуру (проф.)
 Set full name (Professor): Укажите полное имя (Профессор)
-Position: Должности
+Position: Должность
+Positions: Должности
 Class time list: Время занятий
 Add class time: Добавить время
 Start: Начало
@@ -100,24 +102,67 @@ Course list: Список курсов
 Add course: Добавить курс
 Create course: Создать курс
 Edit course: Редактировать курс
-Set course as number (1, 2, 5): Установите курс в виде номера (1, 2, 5)
-Set full name (First course, Second course): Установите полное имя (Первый курс, Второй курс)
+Set course as number (1, 2, 5): Введите курс в виде номера (1, 2, 5)
+Set full name (First course, Second course): Введите полное имя (Первый курс, Второй курс)
 Building list: Список корпусов
 Add building: Добавить корпус
 Create building: Создать корпус
 Edit building: Редактировать корпус
 Address: Адрес
-Set short building name (K1, K6): Установите короткое имя корпуса (К1, К6)
-Set full building name (Main campus, Learning campus): Установите полное имя корпуса (Главный корпус, Учебный корпус)
-Set building address (Kiev, st. Khreschatyk, 1): Установите адрес (Киев, ул. Хрещатик, 1)
+Set short building name (K1, K6): Введите короткое имя корпуса (К1, К6)
+Set full building name (Main campus, Learning campus): Введите полное имя корпуса (Главный корпус, Учебный корпус)
+Set building address (Kiev, st. Khreschatyk, 1): Введите адрес (Киев, ул. Хрещатик, 1)
 University list: Список университетов
 Add university: Добавить университет
 Create university: Создать университет
 Edit university: Редактировать университет
-Set short name (NU): Установите короткое имя (НУ)
-Set full university name (National University): Установите полное имя (Национальный Университет)
-University view: Просмотр университета
-
+Set short name (NU): Введите короткое имя (НУ)
+Set full university name (National University): Введите полное имя (Национальный Университет)
+University view: Просмотр записи - университет
+Related data: Связанные данные
+Related data - constants: Связанные данные - константы
+Related data - mutable: Связанные данные - изменяемые
+Lesson times: Время занятий
+Enabled: Включен
+Faculty list: Список факультетов
+Parties: Группы
+Add faculty: Добавить факультет
+Edit faculty: Редактировать факультет
+Set full name (Faculty of advanced technology): Введите полное имя (Факультет передовых технологий)
+Set short name (FAT): Введите короткое имя (ФПТ)
+Faculty view: Просмотр записи - факультет
+Teacher list: Список преподавателей
+Add teacher: Добавить преподавателя
+Create teacher: Создать преподавателя
+Edit teacher: Редактировать преподавателя
+Set name with abbreviation (Fedorenko O.B.): Введите имя с аббревиатурой (Федоренко А.Б.)
+Set full name (Fedorenko Oleksandr Borisovich): Введите полное имя (Федоренко Александр Борисович)
+Choose teacher position: Выберите должность преподавателя
+Add party: Добавить группу
+Party list: Список групп
+Edit group: Редактировать групу
+Choose faculty: Выберите факультет
+Choose course: Выберите курс
+Set group name (GN-2-1, GN-5-1m, GN-3-1tec): Введите имя группы (ГН-2-1, ГН-5-1м, ГН-3-1тех)
+Group view: Просмотр записи - группа
+Building view: Просмотр записи - корпус
+Cabinet list: Список кабинетов
+Edit cabinet: Редактировать кабинет
+Cabinet view: Просмотр записи - кабинет
+Building: Корпус
+Add cabinet: Добавить кабинет
+Enter cabinet number (2, 411, 325a): Введите номер кабинета (2, 411, 325а)
+Course view: Просмотр записи - курс
+Week view: Просмотр записи - неделя
+Class time view: Просмотр записи - время занятия
+Edit class time: Редактировать время занятия
+Teacher view: Просмотр записи - преподаватель
+Lesson view: Просмотр записи - занятие
+Edit day: Редактировать день
+Day view: Просмотр записи - день
+Lesson type view: Просмотр записи - тип занятий
+Teacher position view: Просмотр записи - должность преподавателя
+Role view: Просмотр записи - роль
 
 #Days full_name
 Monday: Понедельник

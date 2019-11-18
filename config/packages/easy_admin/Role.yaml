@@ -1,13 +1,15 @@
 easy_admin:
     entities:
         Role:
-            class: App\Entity\Role
+            class: 'App\Entity\Role'
+            controller: 'App\Controller\EasyAdmin\RoleController'
             label: 'Roles'
             list:
                 title: 'Roles list'
                 fields: ['name', 'label']
                 actions:
                     - { name: 'new', label: 'Add role' }
+                    - { name: 'show', icon: 'eye', label: false }
                     - { name: 'edit', icon: 'pencil', label: false }
                     - { name: 'delete', icon: 'trash-alt', label: false }
             form:
@@ -18,3 +20,14 @@ easy_admin:
                 title: 'Create role'
             edit:
                 title: 'Edit role'
+                actions: ['-delete']
+            show:
+                title: 'Role view'
+                fields:
+                    - { type: 'group-1', label: 'Basic information', 'css_class':'col-md-6' }
+                    - { property: 'name', 'type_options':{'block_name': 'group-1'} }
+                    - { property: 'label', 'type_options':{'block_name': 'group-1'} }
+
+                    - { type: 'group-2', label: 'Related data', 'css_class':'col-md-6' }
+                    - { property: 'users', 'type_options':{'block_name': 'group-2'} }
+                actions: ['-delete']

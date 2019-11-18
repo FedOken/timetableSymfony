@@ -13,16 +13,17 @@ easy_admin:
                     - { property: 'enable', label: 'Status' }
                     - 'faculties'
                     - 'buildings'
+                    - 'teachers'
 
                 actions:
                     - { name: 'new', label: 'Add university' }
+                    - { name: 'show', icon: 'eye', label: false }
                     - { name: 'edit', icon: 'pencil', label: false }
                     - { name: 'delete', icon: 'trash-alt', label: false }
             form:
                 fields:
                     - { property: 'name',  help: 'Set short name (NU)' }
                     - { property: 'name_full', label: 'Full name', help: 'Set full university name (National University)'}
-                    - { property: 'enable', label: 'Status' }
             new:
                 title: 'Create university'
             edit:
@@ -31,12 +32,18 @@ easy_admin:
             show:
                 title: 'University view'
                 fields:
-                    - { type: 'group', label: 'Basic information', 'css_class':'col-md-6' }
-                    - { property: 'name',  label: 'Short name' }
-                    - { property: 'name_full', label: 'Full name'}
-                    - { property: 'enable', label: 'Enable'}
-                    #- { type: 'group', label: 'Related data', 'css_class':'col-md-6' }
-                    - { property: 'faculties' }
-                    - { property: 'buildings' }
-                    - { property: 'courses' }
+                    - { type: 'group-1', label: 'Basic information', 'css_class':'col-md-4' }
+                    - { property: 'name',  label: 'Short name', 'type_options':{'block_name': 'group-1'} }
+                    - { property: 'name_full', label: 'Full name', 'type_options':{'block_name': 'group-1'}}
+                    - { property: 'enable', label: 'Enabled', 'type_options':{'block_name': 'group-1'}}
+
+                    - { type: 'group-2', label: 'Related data - mutable', 'css_class':'col-md-4' }
+                    - { property: 'faculties', 'type_options':{'block_name': 'group-2'} }
+                    - { property: 'buildings', 'type_options':{'block_name': 'group-2'} }
+                    - { property: 'teachers', 'type_options':{'block_name': 'group-2'} }
+
+                    - { type: 'group-3', label: 'Related data - constants', 'css_class':'col-md-4' }
+                    - { property: 'weeks', 'type_options':{'block_name': 'group-3'} }
+                    - { property: 'courses', 'type_options':{'block_name': 'group-3'} }
+                    - { property: 'universityTimes', label: 'Lesson times', 'type_options':{'block_name': 'group-3'} }
                 actions: ['-delete']

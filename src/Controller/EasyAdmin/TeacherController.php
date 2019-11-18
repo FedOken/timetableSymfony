@@ -2,39 +2,20 @@
 
 namespace App\Controller\EasyAdmin;
 
-use App\Entity\Building;
-use App\Entity\Cabinet;
-use App\Entity\Party;
-use App\Entity\Schedule;
+use App\Entity\Faculty;
 use App\Entity\Teacher;
 use App\Entity\University;
-use App\Entity\UniversityTime;
-use App\Entity\Week;
 use App\Handler\UniversityHandler;
 use App\Helper\ArrayHelper;
-use App\Repository\BuildingRepository;
-use App\Repository\CabinetRepository;
-use App\Repository\DayRepository;
-use App\Repository\PartyRepository;
-use App\Repository\ScheduleRepository;
-use App\Repository\TeacherRepository;
-use App\Repository\UniversityRepository;
 use App\Service\AccessService;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\Validator\Validation;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class CourseController extends AdminController
+class TeacherController extends AdminController
 {
     /**
-     * @return QueryBuilder query
+     * @return QueryBuilder Faculty query
      */
     protected function createListQueryBuilder($entityClass, $sortDirection, $sortField = null, $dqlFilter = null)
     {
@@ -52,8 +33,8 @@ class CourseController extends AdminController
      */
     protected function listAction()
     {
-        $validIds = $this->accessService->getCourseWeekTimePermission($this->getUser(), 'course');
-        return $this->listCheckPermissionAndRedirect($validIds, 'Course', AccessService::ROLE_UNIVERSITY_MANAGER);
+        $validIds = $this->accessService->getTeacherPermission($this->getUser());
+        return $this->listCheckPermissionAndRedirect($validIds, 'Teacher', AccessService::ROLE_FACULTY_MANAGER);
     }
 
     /**
@@ -62,13 +43,13 @@ class CourseController extends AdminController
      */
     protected function editAction()
     {
-        $validIds = $this->accessService->getCourseWeekTimePermission($this->getUser(), 'course');
-        return $this->editCheckPermissionAndRedirect($validIds, 'Course', AccessService::ROLE_UNIVERSITY_MANAGER);
+        $validIds = $this->accessService->getTeacherPermission($this->getUser());
+        return $this->editCheckPermissionAndRedirect($validIds, 'Teacher', AccessService::ROLE_TEACHER);
     }
 
     /**
      * Rewriting standard easy admin function
-     * @param Schedule $entity
+     * @param University $entity
      * @param string $view
      * @return \Symfony\Component\Form\FormBuilder
      */

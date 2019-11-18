@@ -1,7 +1,8 @@
 easy_admin:
     entities:
         TeacherPosition:
-            class: App\Entity\TeacherPosition
+            class: 'App\Entity\TeacherPosition'
+            controller: 'App\Controller\EasyAdmin\TeacherPositionController'
             label: 'Position'
             list:
                 title: 'Teachers position list'
@@ -9,6 +10,7 @@ easy_admin:
                 fields: ['name', { property: 'name_full', label: 'Full name' }, 'teachers']
                 actions:
                     - { name: 'new', label: 'Add position' }
+                    - { name: 'show', icon: 'eye', label: false }
                     - { name: 'edit', icon: 'pencil', label: false }
                     - { name: 'delete', icon: 'trash-alt', label: false }
             form:
@@ -19,3 +21,14 @@ easy_admin:
                 title: 'Create position'
             edit:
                 title: 'Edit position'
+                actions: ['-delete']
+            show:
+                title: 'Teacher position view'
+                fields:
+                    - { type: 'group-1', label: 'Basic information', 'css_class':'col-md-6' }
+                    - { property: 'name', 'type_options':{'block_name': 'group-1'} }
+                    - { property: 'name_full', label: 'Full name', 'type_options':{'block_name': 'group-1'} }
+
+                    - { type: 'group-2', label: 'Related data', 'css_class':'col-md-6' }
+                    - { property: 'teachers', 'type_options':{'block_name': 'group-2'} }
+                actions: ['-delete']

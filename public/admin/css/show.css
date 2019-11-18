@@ -1,0 +1,9 @@
+.row.show {
+    padding: 15px;
+}
+.form-group.form-group {
+    width: 100%;
+}
+body.show .field-string .form-widget {
+    max-width: none;
+}

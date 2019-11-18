@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Schedule;
+use App\Helper\ArrayHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -19,15 +20,30 @@ class ScheduleRepository extends ServiceEntityRepository
         parent::__construct($registry, Schedule::class);
     }
 
+    /**
+     * @param Schedule $entity
+     * @return Schedule|null
+     */
     public function checkUniqueEntity(Schedule $entity)
     {
-        $model = $this->findBy([
-            'lesson_name' => $entity->getLessonName(),
-            'party' => $entity->getParty()->id,
+        $scheduleWithoutWeek = $this->findOneBy([
+            'party' => ArrayHelper::getValue($entity,'party.id'),
+            'day' => ArrayHelper::getValue($entity,'day.id'),
+            'week' => null,
+            'universityTime' => ArrayHelper::getValue($entity,'universityTime.id'),
         ]);
-        if ($model) {
-            return false;
+
+        if ($scheduleWithoutWeek) {
+            return $scheduleWithoutWeek;
         }
-        return true;
+
+        $scheduleWithWeek = $this->findOneBy([
+            'party' => ArrayHelper::getValue($entity,'party.id'),
+            'day' => ArrayHelper::getValue($entity,'day.id'),
+            'week' => ArrayHelper::getValue($entity,'week.id'),
+            'universityTime' => ArrayHelper::getValue($entity,'universityTime.id'),
+        ]);
+
+        return $scheduleWithWeek;
     }
 }

@@ -6,21 +6,33 @@ use App\Helper\MagicTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UniversityRepository")
+ *
+ * @UniqueEntity(
+ *     fields={"name", "name_full"},
+ *     errorPath="name",
+ *     message="entity_exist"
+ * )
+ * @UniqueEntity(
+ *     fields={"name_full"},
+ *     errorPath="name_full",
+ *     message="entity_exist"
+ * )
  *
  * @property int $id
  * @property string $name
  * @property string $name_full
  * @property Faculty[] $faculties
  * @property bool $enable
- * @property Building[] $building
+ * @property Building[] $buildings
  * @property Week[] $weeks
  * @property Course[] $courses
  * @property Teacher[] $teachers
- * @property Cabinet[] $cabinets
- * @property Schedule[] $schedules
+ * @property UniversityTime[] $universityTimes
+ * @property User[] $users
  *
  */
 
@@ -92,8 +104,6 @@ class University
         $this->weeks = new ArrayCollection();
         $this->courses = new ArrayCollection();
         $this->teachers = new ArrayCollection();
-        $this->cabinets = new ArrayCollection();
-        $this->schedules = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->universityTimes = new ArrayCollection();
     }
