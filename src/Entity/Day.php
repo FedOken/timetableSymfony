@@ -81,11 +81,11 @@ class Day
     }
 
     /**
-     * @return Collection|Schedule[]
+     * @return Schedule[]
      */
-    public function getSchedules(): Collection
+    public function getSchedules(): array
     {
-        return $this->schedules;
+        return $this->schedules->getValues();
     }
 
     public function addSchedule(Schedule $schedule): self

@@ -35,11 +35,13 @@ class Party
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Faculty", inversedBy="parties")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $faculty;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Course", inversedBy="parties")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $course;
 
@@ -105,11 +107,11 @@ class Party
     }
 
     /**
-     * @return Collection|Schedule[]
+     * @return Schedule[]
      */
-    public function getSchedules(): Collection
+    public function getSchedules(): array
     {
-        return $this->schedules;
+        return $this->schedules->getValues();
     }
 
     public function addSchedule(Schedule $schedule): self
@@ -136,11 +138,11 @@ class Party
     }
 
     /**
-     * @return Collection|User[]
+     * @return User[]
      */
-    public function getUsers(): Collection
+    public function getUsers(): array
     {
-        return $this->users;
+        return $this->users->getValues();
     }
 
     public function addUser(User $user): self

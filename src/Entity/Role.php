@@ -80,11 +80,11 @@ class Role
     }
 
     /**
-     * @return Collection|User[]
+     * @return User[]
      */
-    public function getUsers(): Collection
+    public function getUsers(): array
     {
-        return $this->users;
+        return $this->users->getValues();
     }
 
     public function addUser(User $user): self

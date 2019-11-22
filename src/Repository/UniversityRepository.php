@@ -22,10 +22,9 @@ class UniversityRepository extends ServiceEntityRepository
 
     /**
      * @param array $universityIds
-     * @param bool $forChoice
      * @return array
      */
-    public function getUniversityByUniversity(array $universityIds, bool $forChoice = false)
+    public function getByUniversity(array $universityIds)
     {
         $models = $this->createQueryBuilder('tb')
             ->andWhere('tb.id IN (:universityIds)')
@@ -33,15 +32,6 @@ class UniversityRepository extends ServiceEntityRepository
             ->orderBy('tb.name', 'ASC')
             ->getQuery()
             ->getResult();
-
-        if ($forChoice) {
-            $data = [];
-            /** @var $model University */
-            foreach ($models as $model) {
-                $data[$model->name_full] = $model->id;
-            }
-            return $data;
-        }
 
         return $models;
     }

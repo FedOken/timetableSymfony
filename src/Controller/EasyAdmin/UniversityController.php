@@ -3,28 +3,32 @@
 namespace App\Controller\EasyAdmin;
 
 use App\Entity\University;
-use App\Service\AccessService;
+use App\Service\Access\AccessService;
+use App\Service\Access\AdminAccessService;
+use App\Service\Access\UniversityAccessService;
 
 class UniversityController extends AdminController
 {
-    /**
-     * List action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    protected function listAction()
+    private $validIds = [];
+
+    /** Set params */
+    private function init()
     {
-        $validIds = $this->accessService->getUniversityPermission($this->getUser());
-        return $this->listCheckPermissionAndRedirect($validIds, 'University', AccessService::ROLE_ADMIN);
+        $this->validIds = $this->accessService->getAccessObject($this->getUser())->getAccessibleUniversityIds();
     }
 
-    /**
-     * Edit action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
+    /** List action override */
+    protected function listAction()
+    {
+        $this->init();
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'University', AdminAccessService::getAccessRole());
+    }
+
+    /** Edit action override */
     protected function editAction()
     {
-        $validIds = $this->accessService->getUniversityPermission($this->getUser());
-        return $this->editCheckPermissionAndRedirect($validIds, 'University', AccessService::ROLE_UNIVERSITY_MANAGER);
+        $this->init();
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'University', UniversityAccessService::getAccessRole());
     }
 
     /**

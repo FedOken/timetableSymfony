@@ -4,7 +4,12 @@ namespace App\Controller\EasyAdmin;
 
 use App\Handler\UniversityHandler;
 use App\Helper\ArrayHelper;
-use App\Service\AccessService;
+use App\Service\Access\AccessService;
+use App\Service\Access\AdminAccessService;
+use App\Service\Access\FacultyAccessService;
+use App\Service\Access\PartyAccessService;
+use App\Service\Access\TeacherAccessService;
+use App\Service\Access\UniversityAccessService;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AdminControllerTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use EasyCorp\Bundle\EasyAdminBundle\Exception\ForbiddenActionException;
@@ -36,23 +41,17 @@ class AdminController extends EasyAdminController
         if ($request->query->get('action')) {
             return parent::indexAction($request);
         }
-        //return $this->redirect('/login');
 
-
-
-
-        //$this->indexAction($request);
-        //indexAction($request);
-        //AdminControllerTrait->$this->indexAction();
-
-        if ($this->isGranted(AccessService::ROLE_ADMIN)) {
+        if ($this->isGranted(AdminAccessService::getAccessRole())) {
             return $this->redirect('?action=list&entity=University');
-        } elseif($this->isGranted(AccessService::ROLE_FACULTY_MANAGER)) {
+        } elseif($this->isGranted(UniversityAccessService::getAccessRole())) {
+            return $this->redirect('?action=list&entity=University');
+        } elseif($this->isGranted(FacultyAccessService::getAccessRole())) {
             return $this->redirect('?action=list&entity=Faculty');
-        } elseif($this->isGranted(AccessService::ROLE_PARTY_MANAGER)) {
-            return $this->redirect('?action=list&entity=Party');
-        } elseif($this->isGranted(AccessService::ROLE_TEACHER)) {
-            return $this->redirect('?action=list&entity=Teacher');
+        } elseif($this->isGranted(PartyAccessService::getAccessRole())) {
+            return $this->redirect('?action=list&entity=Schedule');
+        } elseif($this->isGranted(TeacherAccessService::getAccessRole())) {
+            return $this->redirect('?action=list&entity=Schedule');
         }
         return $this->redirect('/login');
     }
@@ -66,7 +65,7 @@ class AdminController extends EasyAdminController
     protected function editCheckPermissionAndRedirect(array $validIds, string $entityName, string $grantedEditRole)
     {
         //Allow any edit for admin
-        if ($this->isGranted(AccessService::ROLE_ADMIN)) {
+        if ($this->isGranted(AdminAccessService::getAccessRole())) {
             return parent::editAction();
         }
 

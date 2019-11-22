@@ -39,43 +39,43 @@ class Schedule
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Party", inversedBy="schedules")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $party;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\LessonType", inversedBy="schedules")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $lesson_type;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Teacher", inversedBy="schedules")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $teacher;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Cabinet", inversedBy="schedules")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $cabinet;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Week", inversedBy="schedules")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $week;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Day", inversedBy="schedules")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $day;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\UniversityTime", inversedBy="schedules")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $universityTime;
 

@@ -53,7 +53,7 @@ class Building
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\University", inversedBy="buildings")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $university;
 
@@ -133,11 +133,11 @@ class Building
     }
 
     /**
-     * @return Collection|Cabinet[]
+     * @return Cabinet[]
      */
-    public function getCabinets(): Collection
+    public function getCabinets(): array
     {
-        return $this->cabinets;
+        return $this->cabinets->getValues();
     }
 
     public function addCabinet(Cabinet $cabinet): self

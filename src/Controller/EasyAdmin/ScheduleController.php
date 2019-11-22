@@ -27,7 +27,8 @@ use App\Repository\TeacherRepository;
 use App\Repository\UniversityRepository;
 use App\Repository\UniversityTimeRepository;
 use App\Repository\WeekRepository;
-use App\Service\AccessService;
+use App\Service\Access\AccessService;
+use App\Service\Access\PartyAccessService;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -57,6 +58,8 @@ class ScheduleController extends AdminController
     protected $universityTimeHandler;
     protected $cabinetHandler;
 
+    private $validIds = [];
+    private $user;
 
     public function __construct(PartyHandler $partyHandler, WeekHandler $weekHandler, UniversityTimeHandler $universityTimeHandler , CabinetHandler $cabinetHandler, TeacherHandler $teacherHandler, UniversityHandler $universityHandler, BuildingHandler $buildingHandler, CourseHandler $courseHandler, FacultyHandler $facultyHandler, TranslatorInterface $translator, WeekRepository $weekRepository, UniversityTimeRepository $universityTimeRepository, ScheduleRepository $scheduleRepository, TeacherRepository $teacherRepository, PartyRepository $partyRepository, AccessService $accessService, UniversityRepository $universityRepo, CabinetRepository $cabinetRepository, BuildingRepository $buildingRepository)
     {
@@ -88,30 +91,28 @@ class ScheduleController extends AdminController
     {
         $response = parent::createListQueryBuilder($entityClass, $sortDirection, $sortField, $dqlFilter);
 
-        $partyIds = $this->accessService->getPartyPermission($this->getUser());
+        $partyIds = $this->accessService->getAccessObject($this->getUser())->getAccessiblePartyIds();
         $response->andWhere('entity.party IN (:partyIds)')->setParameter('partyIds', $partyIds);
 
         return $response;
     }
 
-    /**
-     * List action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    protected function listAction()
+    private function init()
     {
-        $validIds = $this->accessService->getSchedulePermission($this->getUser());
-        return $this->listCheckPermissionAndRedirect($validIds, 'Schedule', AccessService::ROLE_PARTY_MANAGER);
+        $this->validIds = $this->accessService->getAccessObject($this->getUser())->getAccessibleScheduleIds();
+        $this->user = $this->getUser();
     }
 
-    /**
-     * Edit action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
+    protected function listAction()
+    {
+        $this->init();
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Schedule', PartyAccessService::getAccessRole());
+    }
+
     protected function editAction()
     {
-        $validIds = $this->accessService->getSchedulePermission($this->getUser());
-        return $this->editCheckPermissionAndRedirect($validIds, 'Schedule', AccessService::ROLE_PARTY_MANAGER);
+        $this->init();
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Schedule', PartyAccessService::getAccessRole());
     }
 
     /**
@@ -138,6 +139,7 @@ class ScheduleController extends AdminController
      * @return bool
      */
     private function beforeSave($entity) {
+        $this->init();
         $request = $this->request->request->get('schedule');
 
         $universityId = ArrayHelper::getValue($request, 'university');
@@ -174,16 +176,17 @@ class ScheduleController extends AdminController
      */
     protected function createEntityFormBuilder($entity, $view)
     {
+        $this->init();
         $formBuilder = parent::createEntityFormBuilder($entity, $view);
 
         /*DATA FOR SELECT*/
-        $universityToChoice = $this->universityHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'cabinet.building.university.id'), $this->getUser());
-        $teacherToChoice = $this->teacherHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'teacher.id'), current($universityToChoice));
-        $buildingsToChoice = $this->buildingHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'cabinet.building.id'), current($universityToChoice));
-        $weekToChoice = $this->weekHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'week.id'), current($universityToChoice));
-        $partyToChoice = $this->partyHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'party.id'), current($universityToChoice));
-        $timeToChoice = $this->universityTimeHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'universityTime.id'), current($universityToChoice));
-        $cabinetToChoice = $this->cabinetHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'cabinet.id'), current($buildingsToChoice));
+        $universityToChoice = $this->universityHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'cabinet.building.university.id'), $this->user);
+        $teacherToChoice = $this->teacherHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'teacher.id'), $this->user);
+        $buildingsToChoice = $this->buildingHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'cabinet.building.id'), $this->user);
+        $weekToChoice = $this->weekHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'week.id'), $this->user);
+        $partyToChoice = $this->partyHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'party.id'), $this->user);
+        $timeToChoice = $this->universityTimeHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'universityTime.id'), $this->user);
+        $cabinetToChoice = $this->cabinetHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'cabinet.id'), $this->user);
 
         $formBuilder->add('university', EntityType::class, [
             'choices' => $universityToChoice,

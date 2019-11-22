@@ -22,7 +22,8 @@ use App\Repository\TeacherPositionRepository;
 use App\Repository\TeacherRepository;
 use App\Repository\UniversityRepository;
 use App\Repository\WeekRepository;
-use App\Service\AccessService;
+use App\Service\Access\AccessService;
+use App\Service\Access\TeacherAccessService;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -37,6 +38,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class TeacherPositionController extends AdminController
 {
     private $teacherPosition;
+    private $validIds = [];
 
     public function __construct(TeacherPositionRepository $teacherPositionRepository, TranslatorInterface $translator, UniversityHandler $universityHandler, AccessService $accessService)
     {
@@ -45,23 +47,20 @@ class TeacherPositionController extends AdminController
         $this->teacherPosition = $teacherPositionRepository;
     }
 
-    /**
-     * List action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    protected function listAction()
+    private function init()
     {
-        $validIds = ArrayHelper::getColumn($this->teacherPosition->findAll(),'id');
-        return $this->listCheckPermissionAndRedirect($validIds, 'TeacherPosition', AccessService::ROLE_ADMIN);
+        $this->validIds = ArrayHelper::getColumn($this->teacherPosition->findAll(),'id');
     }
 
-    /**
-     * Edit action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
+    protected function listAction()
+    {
+        $this->init();
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'TeacherPosition', TeacherAccessService::getAccessRole());
+    }
+
     protected function editAction()
     {
-        $validIds = ArrayHelper::getColumn($this->teacherPosition->findAll(),'id');
-        return $this->editCheckPermissionAndRedirect($validIds, 'TeacherPosition', AccessService::ROLE_ADMIN);
+        $this->init();
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'TeacherPosition', TeacherAccessService::getAccessRole());
     }
 }

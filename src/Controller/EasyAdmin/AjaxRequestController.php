@@ -19,7 +19,7 @@ use App\Repository\TeacherRepository;
 use App\Repository\UniversityRepository;
 use App\Repository\UniversityTimeRepository;
 use App\Repository\WeekRepository;
-use App\Service\AccessService;
+use App\Service\Access\AccessService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

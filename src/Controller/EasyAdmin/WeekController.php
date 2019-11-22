@@ -2,69 +2,39 @@
 
 namespace App\Controller\EasyAdmin;
 
-use App\Entity\Building;
-use App\Entity\Cabinet;
-use App\Entity\Party;
 use App\Entity\Schedule;
-use App\Entity\Teacher;
-use App\Entity\University;
-use App\Entity\UniversityTime;
-use App\Entity\Week;
-use App\Handler\UniversityHandler;
 use App\Helper\ArrayHelper;
-use App\Repository\BuildingRepository;
-use App\Repository\CabinetRepository;
-use App\Repository\DayRepository;
-use App\Repository\PartyRepository;
-use App\Repository\ScheduleRepository;
-use App\Repository\TeacherRepository;
-use App\Repository\UniversityRepository;
-use App\Repository\WeekRepository;
-use App\Service\AccessService;
-use Doctrine\ORM\QueryBuilder;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
+use App\Service\Access\UniversityAccessService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\Validator\Validation;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WeekController extends AdminController
 {
-    /**
-     * @return QueryBuilder Faculty query
-     */
+    private $validIds = [];
+
+    private function init()
+    {
+        $this->validIds = $this->accessService->getAccessObject($this->getUser())->getAccessibleWeekIds();
+    }
+
     protected function createListQueryBuilder($entityClass, $sortDirection, $sortField = null, $dqlFilter = null)
     {
         $response = parent::createListQueryBuilder($entityClass, $sortDirection, $sortField, $dqlFilter);
 
-        $universityIds = $this->accessService->getUniversityPermission($this->getUser());
-        $response->andWhere('entity.university IN (:universityIds)')->setParameter('universityIds', $universityIds);
-
+        $this->init();
+        $response->andWhere('entity.id IN (:ids)')->setParameter('ids', $this->validIds);
         return $response;
     }
 
-    /**
-     * List action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
     protected function listAction()
     {
-        $validIds = $this->accessService->getCourseWeekTimePermission($this->getUser(), 'week');
-        return $this->listCheckPermissionAndRedirect($validIds, 'Week', AccessService::ROLE_UNIVERSITY_MANAGER);
+        $this->init();
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Week', UniversityAccessService::getAccessRole());
     }
 
-    /**
-     * Edit action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
     protected function editAction()
     {
-        $validIds = $this->accessService->getCourseWeekTimePermission($this->getUser(), 'week');
-        return $this->editCheckPermissionAndRedirect($validIds, 'Week', AccessService::ROLE_UNIVERSITY_MANAGER);
+        $this->init();
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Week', UniversityAccessService::getAccessRole());
     }
 
     /**

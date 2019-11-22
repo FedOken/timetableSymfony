@@ -43,7 +43,7 @@ class TeacherRepository extends ServiceEntityRepository
      * @param bool $forChoice
      * @return array
      */
-    public function getTeachersByUniversity(array $universityIds, bool $forChoice = false)
+    public function getByUniversity(array $universityIds, bool $forChoice = false)
     {
         $models = $this->createQueryBuilder('tb')
             ->andWhere('tb.university IN (:universityIds)')

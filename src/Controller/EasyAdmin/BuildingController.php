@@ -14,7 +14,8 @@ use App\Repository\BuildingRepository;
 use App\Repository\CabinetRepository;
 use App\Repository\PartyRepository;
 use App\Repository\TeacherRepository;
-use App\Service\AccessService;
+use App\Service\Access\AccessService;
+use App\Service\Access\UniversityAccessService;
 use Doctrine\DBAL\Types\TextType;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
@@ -27,45 +28,34 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BuildingController extends AdminController
 {
-    /**
-     * @return QueryBuilder query
-     */
+    private $validIds = [];
+
+    private function init()
+    {
+        $this->validIds = $this->accessService->getAccessObject($this->getUser())->getAccessibleBuildingIds();
+    }
+
     protected function createListQueryBuilder($entityClass, $sortDirection, $sortField = null, $dqlFilter = null)
     {
         $response = parent::createListQueryBuilder($entityClass, $sortDirection, $sortField, $dqlFilter);
 
-        $universityIds = $this->accessService->getUniversityPermission($this->getUser());
-        $response->andWhere('entity.university IN (:universityIds)')->setParameter('universityIds', $universityIds);
-
+        $this->init();
+        $response->andWhere('entity.id IN (:ids)')->setParameter('ids', $this->validIds);
         return $response;
     }
 
-    /**
-     * List action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
     protected function listAction()
     {
-        $validIds = $this->accessService->getBuildingPermission($this->getUser());
-        return $this->listCheckPermissionAndRedirect($validIds, 'Building', AccessService::ROLE_UNIVERSITY_MANAGER);
+        $this->init();
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Building', UniversityAccessService::getAccessRole());
     }
 
-    /**
-     * Edit action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
     protected function editAction()
     {
-        $validIds = $this->accessService->getBuildingPermission($this->getUser());
-        return $this->editCheckPermissionAndRedirect($validIds, 'Building', AccessService::ROLE_UNIVERSITY_MANAGER);
+        $this->init();
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Building', UniversityAccessService::getAccessRole());
     }
 
-    /**
-     * Rewriting standard easy admin function
-     * @param Schedule $entity
-     * @param string $view
-     * @return \Symfony\Component\Form\FormBuilder
-     */
     protected function createEntityFormBuilder($entity, $view)
     {
         $formBuilder = parent::createEntityFormBuilder($entity, $view);

@@ -57,6 +57,7 @@ class Course
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\University", inversedBy="courses")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $university;
 

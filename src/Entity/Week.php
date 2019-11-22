@@ -45,6 +45,7 @@ class Week
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\University", inversedBy="weeks")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $university;
 
@@ -75,11 +76,11 @@ class Week
     }
 
     /**
-     * @return Collection|Schedule[]
+     * @return Schedule[]
      */
-    public function getSchedules(): Collection
+    public function getSchedules(): array
     {
-        return $this->schedules;
+        return $this->schedules->getValues();
     }
 
     public function addSchedule(Schedule $schedule): self

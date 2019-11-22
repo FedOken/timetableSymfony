@@ -53,6 +53,7 @@ class UniversityTime
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\University", inversedBy="universityTimes")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $university;
 
@@ -125,10 +126,10 @@ class UniversityTime
         return $this;
     }
     /**
-     * @return Collection|Schedule[]
+     * @return Schedule[]
      */
-    public function getSchedules(): Collection
+    public function getSchedules(): array
     {
-        return $this->schedules;
+        return $this->schedules->getValues();
     }
 }

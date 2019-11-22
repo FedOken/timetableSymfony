@@ -26,7 +26,7 @@ class WeekRepository extends ServiceEntityRepository
      * @param $week_id
      * @return mixed
      */
-    public function checkWeekByUniversity($university_id, $week_id)
+    public function checkByUniversity($university_id, $week_id)
     {
         return $this->createQueryBuilder('table')
             ->andWhere('table.university = :university')
@@ -43,7 +43,7 @@ class WeekRepository extends ServiceEntityRepository
      * @param bool $forChoice
      * @return array
      */
-    public function getWeekByUniversity(array $universityIds, bool $forChoice = false)
+    public function getByUniversity(array $universityIds, bool $forChoice = false)
     {
         $models = $this->createQueryBuilder('tb')
             ->andWhere('tb.university IN (:universityIds)')

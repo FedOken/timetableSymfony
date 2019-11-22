@@ -1,26 +1,12 @@
 <?php
 
-
 namespace App\Handler;
 
-
+use App\Entity\University;
 use App\Entity\User;
-use App\Repository\UniversityRepository;
-use App\Service\AccessService;
 
-class UniversityHandler
+class UniversityHandler extends BaseHandler
 {
-    protected $accessService;
-    protected $universityRepo;
-
-    public function __construct(AccessService $accessService, UniversityRepository $universityRepo)
-    {
-        //Access service
-        $this->accessService = $accessService;
-        //Repository
-        $this->universityRepo = $universityRepo;
-    }
-
     /**
      * Set select2 data by permission and selected entity
      * @param int|null $currentId
@@ -29,8 +15,8 @@ class UniversityHandler
      */
     public function setSelect2EasyAdmin($currentId, $user)
     {
-        $universityPermission = $this->accessService->getUniversityPermission($user);
-        $entityModels = $this->universityRepo->getUniversityByUniversity($universityPermission);
+        $validIds = $this->accessService->getAccessObject($user)->getAccessibleUniversityIds();
+        $entityModels = $this->em->getRepository(University::class)->findBy(['id' => $validIds]);
 
         if ($currentId) {
             $currentModel = [];

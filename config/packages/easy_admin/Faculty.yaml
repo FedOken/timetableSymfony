@@ -15,7 +15,7 @@ easy_admin:
                     - {property: 'enable', label: 'Status'}
                     - 'parties'
                 actions:
-                    - { name: 'new', label: 'Add university' }
+                    - { name: 'new', label: 'Add faculty' }
                     - { name: 'show', icon: 'eye', label: false }
                     - { name: 'edit', icon: 'pencil', label: false }
                     - { name: 'delete', icon: 'trash-alt', label: false }

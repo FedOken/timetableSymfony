@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Building;
 use App\Entity\Cabinet;
+use App\Entity\Party;
+use App\Entity\University;
 use App\Helper\ArrayHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -39,28 +41,25 @@ class CabinetRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param array $buildingIds
-     * @param bool $forChoice
-     * @return array
+     * @param array $universityIds
+     * @return mixed
      */
-    public function getCabinetsByBuilding(array $buildingIds, bool $forChoice = false)
+    public function getByUniversity(array $universityIds)
     {
-        $models = $this->createQueryBuilder('tb')
-            ->andWhere('tb.building IN (:buildingIds)')
-            ->setParameter('buildingIds', $buildingIds)
-            ->orderBy('tb.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+        $universityModel = $this->getEntityManager()->getRepository(University::class)->findBy(['id' => $universityIds]);
 
-        if ($forChoice) {
-            $data = [];
-            /** @var $model Cabinet */
-            foreach ($models as $model) {
-                $data[$model->name] = $model;
-            }
-            return $data;
+        $buildingModels = [];
+        /** @var University $university */
+        foreach ($universityModel as $university) {
+            $buildingModels = array_merge($buildingModels, $university->buildings);
         }
 
-        return $models;
+        $cabinetModels = [];
+        /** @var Building $building */
+        foreach ($buildingModels as $building) {
+            $cabinetModels = array_merge($cabinetModels, $building->cabinets);
+        }
+
+        return $cabinetModels;
     }
 }

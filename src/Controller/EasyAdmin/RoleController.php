@@ -5,12 +5,14 @@ namespace App\Controller\EasyAdmin;
 use App\Handler\UniversityHandler;
 use App\Helper\ArrayHelper;
 use App\Repository\RoleRepository;
-use App\Service\AccessService;
+use App\Service\Access\AccessService;
+use App\Service\Access\AdminAccessService;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RoleController extends AdminController
 {
     private $role;
+    private $validIds = [];
 
     public function __construct(RoleRepository $roleRepository, TranslatorInterface $translator, UniversityHandler $universityHandler, AccessService $accessService)
     {
@@ -19,23 +21,20 @@ class RoleController extends AdminController
         $this->role = $roleRepository;
     }
 
-    /**
-     * List action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    protected function listAction()
+    private function init()
     {
-        $validIds = ArrayHelper::getColumn($this->role->findAll(),'id');
-        return $this->listCheckPermissionAndRedirect($validIds, 'Role', AccessService::ROLE_ADMIN);
+        $this->validIds = ArrayHelper::getColumn($this->role->findAll(),'id');
     }
 
-    /**
-     * Edit action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
+    protected function listAction()
+    {
+        $this->init();
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Role', AdminAccessService::getAccessRole());
+    }
+
     protected function editAction()
     {
-        $validIds = ArrayHelper::getColumn($this->role->findAll(),'id');
-        return $this->editCheckPermissionAndRedirect($validIds, 'Role', AccessService::ROLE_ADMIN);
+        $this->init();
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Role', AdminAccessService::getAccessRole());
     }
 }

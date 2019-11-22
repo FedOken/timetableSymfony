@@ -7,7 +7,9 @@ use App\Entity\Faculty;
 use App\Entity\University;
 use App\Handler\UniversityHandler;
 use App\Helper\ArrayHelper;
-use App\Service\AccessService;
+use App\Service\Access\AccessService;
+use App\Service\Access\FacultyAccessService;
+use App\Service\Access\UniversityAccessService;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -16,45 +18,34 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FacultyController extends AdminController
 {
-    /**
-     * @return QueryBuilder query
-     */
+    private $validIds = [];
+
+    private function init()
+    {
+        $this->validIds = $this->accessService->getAccessObject($this->getUser())->getAccessibleFacultyIds();
+    }
+
     protected function createListQueryBuilder($entityClass, $sortDirection, $sortField = null, $dqlFilter = null)
     {
         $response = parent::createListQueryBuilder($entityClass, $sortDirection, $sortField, $dqlFilter);
 
-        $universityIds = $this->accessService->getUniversityPermission($this->getUser());
-        $response->andWhere('entity.university IN (:universityIds)')->setParameter('universityIds', $universityIds);
-
+        $this->init();
+        $response->andWhere('entity.id IN (:ids)')->setParameter('ids', $this->validIds);
         return $response;
     }
 
-    /**
-     * List action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
     protected function listAction()
     {
-        $validIds = $this->accessService->getFacultyPermission($this->getUser());
-        return $this->listCheckPermissionAndRedirect($validIds, 'Faculty', AccessService::ROLE_UNIVERSITY_MANAGER);
+        $this->init();
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Faculty', UniversityAccessService::getAccessRole());
     }
 
-    /**
-     * Edit action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
     protected function editAction()
     {
-        $validIds = $this->accessService->getFacultyPermission($this->getUser());
-        return $this->editCheckPermissionAndRedirect($validIds, 'Faculty', AccessService::ROLE_FACULTY_MANAGER);
+        $this->init();
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Faculty', FacultyAccessService::getAccessRole());
     }
 
-    /**
-     * Action New, on save
-     *
-     * @param Faculty $entity
-     * @return bool|void
-     */
     protected function persistEntity($entity)
     {
         $entity->enable = true;
@@ -66,12 +57,6 @@ class FacultyController extends AdminController
         return true;
     }
 
-    /**
-     * Rewriting standard easy admin function
-     * @param University $entity
-     * @param string $view
-     * @return \Symfony\Component\Form\FormBuilder
-     */
     protected function createEntityFormBuilder($entity, $view)
     {
         $formBuilder = parent::createEntityFormBuilder($entity, $view);

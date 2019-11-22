@@ -23,15 +23,15 @@ class UniversityTimeRepository extends ServiceEntityRepository
 
 
     /**
-     * @param array $universityId
+     * @param array $universityIds
      * @param bool $forChoice
      * @return mixed
      */
-    public function getTimesByUniversity(array $universityId, bool $forChoice = false)
+    public function getByUniversity(array $universityIds, bool $forChoice = false)
     {
         $models = $this->createQueryBuilder('tb')
             ->andWhere('tb.university IN (:university)')
-            ->setParameter('university', $universityId)
+            ->setParameter('university', $universityIds)
             ->orderBy('tb.timeFrom', 'ASC')
             ->getQuery()
             ->getResult();

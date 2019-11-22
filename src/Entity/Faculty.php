@@ -64,6 +64,7 @@ class Faculty
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\University", inversedBy="faculties")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $university;
 
@@ -141,11 +142,11 @@ class Faculty
     }
 
     /**
-     * @return Collection|Party[]
+     * @return Party[]
      */
-    public function getParties(): Collection
+    public function getParties(): array
     {
-        return $this->parties;
+        return $this->parties->getValues();
     }
 
     public function addParty(Party $party): self
@@ -172,11 +173,11 @@ class Faculty
     }
 
     /**
-     * @return Collection|User[]
+     * @return User[]
      */
-    public function getUsers(): Collection
+    public function getUsers(): array
     {
-        return $this->users;
+        return $this->users->getValues();
     }
 
     public function addUser(User $user): self

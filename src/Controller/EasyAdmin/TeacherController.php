@@ -7,44 +7,40 @@ use App\Entity\Teacher;
 use App\Entity\University;
 use App\Handler\UniversityHandler;
 use App\Helper\ArrayHelper;
-use App\Service\AccessService;
+use App\Service\Access\AccessService;
+use App\Service\Access\FacultyAccessService;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class TeacherController extends AdminController
 {
-    /**
-     * @return QueryBuilder Faculty query
-     */
+    private $validIds = [];
+
+    private function init()
+    {
+        $this->validIds = $this->accessService->getAccessObject($this->getUser())->getAccessibleTeacherIds();
+    }
+
     protected function createListQueryBuilder($entityClass, $sortDirection, $sortField = null, $dqlFilter = null)
     {
         $response = parent::createListQueryBuilder($entityClass, $sortDirection, $sortField, $dqlFilter);
 
-        $universityIds = $this->accessService->getUniversityPermission($this->getUser());
-        $response->andWhere('entity.university IN (:universityIds)')->setParameter('universityIds', $universityIds);
-
+        $this->init();
+        $response->andWhere('entity.id IN (:ids)')->setParameter('ids', $this->validIds);
         return $response;
     }
 
-    /**
-     * List action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
     protected function listAction()
     {
-        $validIds = $this->accessService->getTeacherPermission($this->getUser());
-        return $this->listCheckPermissionAndRedirect($validIds, 'Teacher', AccessService::ROLE_FACULTY_MANAGER);
+        $this->init();
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Teacher', FacultyAccessService::getAccessRole());
     }
 
-    /**
-     * Edit action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
     protected function editAction()
     {
-        $validIds = $this->accessService->getTeacherPermission($this->getUser());
-        return $this->editCheckPermissionAndRedirect($validIds, 'Teacher', AccessService::ROLE_TEACHER);
+        $this->init();
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Teacher', FacultyAccessService::getAccessRole());
     }
 
     /**

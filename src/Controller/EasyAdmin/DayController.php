@@ -20,7 +20,8 @@ use App\Repository\ScheduleRepository;
 use App\Repository\TeacherRepository;
 use App\Repository\UniversityRepository;
 use App\Repository\WeekRepository;
-use App\Service\AccessService;
+use App\Service\Access\AccessService;
+use App\Service\Access\AdminAccessService;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -35,6 +36,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class DayController extends AdminController
 {
     private $dayRepo;
+    private $validIds = [];
 
     public function __construct(DayRepository $dayRepository, TranslatorInterface $translator, UniversityHandler $universityHandler, AccessService $accessService)
     {
@@ -43,23 +45,29 @@ class DayController extends AdminController
         $this->dayRepo = $dayRepository;
     }
 
-    /**
-     * List action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    protected function listAction()
+    private function init()
     {
-        $validIds = ArrayHelper::getColumn($this->dayRepo->findAll(),'id');
-        return $this->listCheckPermissionAndRedirect($validIds, 'Day', AccessService::ROLE_ADMIN);
+        $this->validIds = ArrayHelper::getColumn($this->dayRepo->findAll(),'id');
     }
 
-    /**
-     * Edit action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
+    protected function createListQueryBuilder($entityClass, $sortDirection, $sortField = null, $dqlFilter = null)
+    {
+        $response = parent::createListQueryBuilder($entityClass, $sortDirection, $sortField, $dqlFilter);
+
+        $this->init();
+        $response->andWhere('entity.id IN (:ids)')->setParameter('ids', $this->validIds);
+        return $response;
+    }
+
+    protected function listAction()
+    {
+        $this->init();
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Day', AdminAccessService::getAccessRole());
+    }
+
     protected function editAction()
     {
-        $validIds = ArrayHelper::getColumn($this->dayRepo->findAll(),'id');
-        return $this->editCheckPermissionAndRedirect($validIds, 'Day', AccessService::ROLE_ADMIN);
+        $this->init();
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Day', AdminAccessService::getAccessRole());
     }
 }

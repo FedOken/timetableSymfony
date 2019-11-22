@@ -2,7 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Faculty;
+use App\Entity\Party;
 use App\Entity\Schedule;
+use App\Entity\University;
 use App\Helper\ArrayHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -45,5 +48,34 @@ class ScheduleRepository extends ServiceEntityRepository
         ]);
 
         return $scheduleWithWeek;
+    }
+
+    /**
+     * @param array $universityIds
+     * @return mixed
+     */
+    public function getByUniversity(array $universityIds)
+    {
+        $universityModel = $this->getEntityManager()->getRepository(University::class)->findBy(['id' => $universityIds]);
+
+        $facultyModels = [];
+        /** @var University $university */
+        foreach ($universityModel as $university) {
+            $facultyModels = array_merge($facultyModels, $university->faculties);
+        }
+
+        $partyModels = [];
+        /** @var Faculty $faculty */
+        foreach ($facultyModels as $faculty) {
+            $partyModels = array_merge($partyModels, $faculty->parties);
+        }
+
+        $scheduleModels = [];
+        /** @var Party $party */
+        foreach ($partyModels as $party) {
+            $scheduleModels = array_merge($partyModels, $party->schedules);
+        }
+
+        return $scheduleModels;
     }
 }

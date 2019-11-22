@@ -42,7 +42,7 @@ class BuildingRepository extends ServiceEntityRepository
      * @param bool $forChoice
      * @return array
      */
-    public function getBuildingsByUniversity(array $universityIds, bool $forChoice = false)
+    public function getByUniversity(array $universityIds, bool $forChoice = false)
     {
         $models = $this->createQueryBuilder('tb')
             ->andWhere('tb.university IN (:universityIds)')

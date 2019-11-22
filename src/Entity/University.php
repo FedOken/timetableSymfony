@@ -185,11 +185,11 @@ class University
     }
 
     /**
-     * @return Collection|Building[]
+     * @return Building[]
      */
-    public function getBuildings(): Collection
+    public function getBuildings(): array
     {
-        return $this->buildings;
+        return $this->buildings->getValues();
     }
 
     public function addBuilding(Building $building): self
@@ -216,11 +216,11 @@ class University
     }
 
     /**
-     * @return Collection|Week[]
+     * @return Week[]
      */
-    public function getWeeks(): Collection
+    public function getWeeks(): array
     {
-        return $this->weeks;
+        return $this->weeks->getValues();
     }
 
     public function addWeek(Week $week): self
@@ -247,11 +247,11 @@ class University
     }
 
     /**
-     * @return Collection|Course[]
+     * @return Course[]
      */
-    public function getCourses(): Collection
+    public function getCourses(): array
     {
-        return $this->courses;
+        return $this->courses->getValues();
     }
 
     public function addCourse(Course $course): self
@@ -278,11 +278,11 @@ class University
     }
 
     /**
-     * @return Collection|Teacher[]
+     * @return Teacher[]
      */
-    public function getTeachers(): Collection
+    public function getTeachers(): array
     {
-        return $this->teachers;
+        return $this->teachers->getValues();
     }
 
     public function addTeacher(Teacher $teacher): self
@@ -309,11 +309,11 @@ class University
     }
 
     /**
-     * @return Collection|User[]
+     * @return User[]
      */
-    public function getUsers(): Collection
+    public function getUsers(): array
     {
-        return $this->users;
+        return $this->users->getValues();
     }
 
     public function addUser(User $user): self
@@ -340,11 +340,11 @@ class University
     }
 
     /**
-     * @return Collection|UniversityTime[]
+     * @return UniversityTime[]
      */
-    public function getUniversityTimes(): Collection
+    public function getUniversityTimes(): array
     {
-        return $this->universityTimes;
+        return $this->universityTimes->getValues();
     }
 
     public function addUniversityTime(UniversityTime $universityTime): self

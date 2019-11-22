@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Faculty;
 use App\Entity\Party;
+use App\Entity\University;
 use App\Helper\ArrayHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -49,54 +51,25 @@ class PartyRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param array $universityId
-     * @param bool $forChoice
+     * @param array $universityIds
      * @return mixed
      */
-    public function getPartiesByUniversity(array $universityId, bool $forChoice = false)
+    public function getByUniversity(array $universityIds)
     {
-        $facultyModels = $this->facultyRepo->createQueryBuilder('tb')
-            ->andWhere('tb.university IN (:university)')
-            ->setParameter('university', $universityId)
-            ->getQuery()
-            ->getResult();
+        $universityModel = $this->getEntityManager()->getRepository(University::class)->findBy(['id' => $universityIds]);
 
-        $facultyIds = ArrayHelper::getColumn($facultyModels, 'id');
+        $facultyModels = [];
+        /** @var University $university */
+        foreach ($universityModel as $university) {
+            $facultyModels = array_merge($facultyModels, $university->faculties);
+        }
 
-        $partyModels = $this->createQueryBuilder('tb')
-            ->andWhere('tb.faculty IN (:faculty)')
-            ->setParameter('faculty', $facultyIds)
-            ->getQuery()
-            ->getResult();
-
-        if ($forChoice) {
-            $data = [];
-            /** @var $buildingModel Party */
-            foreach ($partyModels as $model) {
-                $data[$model->name] = $model;
-            }
-            return $data;
+        $partyModels = [];
+        /** @var Faculty $faculty */
+        foreach ($facultyModels as $faculty) {
+            $partyModels = array_merge($partyModels, $faculty->parties);
         }
 
         return $partyModels;
     }
-
-    /**
-     * @param array $faculty_ids
-     * @return array
-     */
-    public function getDataForChoice(array $faculty_ids)
-    {
-        $queryResult = $this->createQueryBuilder('tb')
-            ->andWhere('tb.faculty IN (:faculty_ids)')
-            ->setParameter('faculty_ids', $faculty_ids)
-            ->orderBy('tb.name', 'ASC')
-            ->getQuery()
-            ->getResult();
-
-        $data = ArrayHelper::map($queryResult, 'name', 'id');
-        return $data;
-    }
-
-
 }

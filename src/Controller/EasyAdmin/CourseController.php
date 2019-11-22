@@ -19,7 +19,8 @@ use App\Repository\PartyRepository;
 use App\Repository\ScheduleRepository;
 use App\Repository\TeacherRepository;
 use App\Repository\UniversityRepository;
-use App\Service\AccessService;
+use App\Service\Access\AccessService;
+use App\Service\Access\UniversityAccessService;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -33,37 +34,32 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CourseController extends AdminController
 {
-    /**
-     * @return QueryBuilder query
-     */
+    private $validIds = [];
+
+    private function init()
+    {
+        $this->validIds = $this->accessService->getAccessObject($this->getUser())->getAccessibleCourseIds();
+    }
+
     protected function createListQueryBuilder($entityClass, $sortDirection, $sortField = null, $dqlFilter = null)
     {
         $response = parent::createListQueryBuilder($entityClass, $sortDirection, $sortField, $dqlFilter);
 
-        $universityIds = $this->accessService->getUniversityPermission($this->getUser());
-        $response->andWhere('entity.university IN (:universityIds)')->setParameter('universityIds', $universityIds);
-
+        $this->init();
+        $response->andWhere('entity.id IN (:ids)')->setParameter('ids', $this->validIds);
         return $response;
     }
 
-    /**
-     * List action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
     protected function listAction()
     {
-        $validIds = $this->accessService->getCourseWeekTimePermission($this->getUser(), 'course');
-        return $this->listCheckPermissionAndRedirect($validIds, 'Course', AccessService::ROLE_UNIVERSITY_MANAGER);
+        $this->init();
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Course', UniversityAccessService::getAccessRole());
     }
 
-    /**
-     * Edit action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
     protected function editAction()
     {
-        $validIds = $this->accessService->getCourseWeekTimePermission($this->getUser(), 'course');
-        return $this->editCheckPermissionAndRedirect($validIds, 'Course', AccessService::ROLE_UNIVERSITY_MANAGER);
+        $this->init();
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Course', UniversityAccessService::getAccessRole());
     }
 
     /**

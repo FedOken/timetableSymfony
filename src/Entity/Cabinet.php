@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @property int $id
  * @property string $name
  * @property Building $building
- * @property ArrayCollection $schedules
+ * @property Schedule[] $schedules
  */
 class Cabinet
 {
@@ -34,7 +34,7 @@ class Cabinet
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Building", inversedBy="cabinets")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $building;
 
@@ -83,11 +83,11 @@ class Cabinet
     }
 
     /**
-     * @return Collection|Schedule[]
+     * @return Schedule[]
      */
-    public function getSchedules(): Collection
+    public function getSchedules(): array
     {
-        return $this->schedules;
+        return $this->schedules->getValues();
     }
 
     public function addSchedule(Schedule $schedule): self

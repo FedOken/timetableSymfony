@@ -48,6 +48,7 @@ class Teacher
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TeacherPosition", inversedBy="teachers")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $position;
 
@@ -58,6 +59,7 @@ class Teacher
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\University", inversedBy="teachers")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $university;
 
@@ -118,11 +120,11 @@ class Teacher
     }
 
     /**
-     * @return Collection|Schedule[]
+     * @return Schedule[]
      */
-    public function getSchedules(): Collection
+    public function getSchedules(): array
     {
-        return $this->schedules;
+        return $this->schedules->getValues();
     }
 
     public function addSchedule(Schedule $schedule): self
@@ -161,11 +163,11 @@ class Teacher
     }
 
     /**
-     * @return Collection|User[]
+     * @return User[]
      */
-    public function getUsers(): Collection
+    public function getUsers(): array
     {
-        return $this->users;
+        return $this->users->getValues();
     }
 
     public function addUser(User $user): self

@@ -55,7 +55,7 @@ class User implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Role", inversedBy="users")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $role_label;
 
@@ -71,21 +71,25 @@ class User implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\University", inversedBy="users")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $university;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Faculty", inversedBy="users")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $faculty;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Party", inversedBy="users")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $party;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Teacher", inversedBy="users")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $teacher;
 

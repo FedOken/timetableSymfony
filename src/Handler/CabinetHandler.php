@@ -2,34 +2,21 @@
 
 namespace App\Handler;
 
+use App\Entity\Cabinet;
 use App\Entity\User;
-use App\Repository\CabinetRepository;
-use App\Repository\TeacherRepository;
-use App\Repository\WeekRepository;
-use App\Service\AccessService;
 
-class CabinetHandler
+class CabinetHandler extends BaseHandler
 {
-    protected $accessService;
-    protected $cabinetRepository;
-
-    public function __construct(AccessService $accessService, CabinetRepository $cabinetRepository)
-    {
-        //Access service
-        $this->accessService = $accessService;
-        //Repository
-        $this->cabinetRepository = $cabinetRepository;
-    }
-
     /**
      * Set select2 data by permission and selected entity
      * @param int|null $currentId
-     * @param int|null $buildingId
+     * @param User|object $user
      * @return array
      */
-    public function setSelect2EasyAdmin($currentId, $buildingId)
+    public function setSelect2EasyAdmin($currentId, $user)
     {
-        $entityModels = $this->cabinetRepository->getCabinetsByBuilding([$buildingId]);
+        $validIds = $this->accessService->getAccessObject($user)->getAccessibleCabinetIds();
+        $entityModels = $this->em->getRepository(Cabinet::class)->findBy(['id' => $validIds]);
 
         if ($currentId) {
             $currentModel = [];
@@ -48,14 +35,11 @@ class CabinetHandler
 
     public function checkEntityExist(int $id, int $buildingId)
     {
-        $model = $this->cabinetRepository->findBy([
+        $model = $this->em->getRepository(Cabinet::class)->findBy([
                 'id' => $id,
                 'building' => $buildingId]
         );
-        if ($model) {
-            return true;
-        }
-        return false;
+        return $model ? true : false;
     }
 
 }

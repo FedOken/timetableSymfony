@@ -2,21 +2,22 @@
 
 namespace App\Handler;
 
+use App\Entity\Faculty;
+use App\Entity\University;
 use App\Entity\User;
 use App\Repository\FacultyRepository;
-use App\Service\AccessService;
+use App\Service\Access\AccessService;
+use Doctrine\ORM\EntityManagerInterface;
 
 class FacultyHandler
 {
     protected $accessService;
-    protected $facultyRepo;
+    protected $em;
 
-    public function __construct(AccessService $accessService, FacultyRepository $facultyRepo)
+    public function __construct(AccessService $accessService, EntityManagerInterface $entityManager)
     {
-        //Access service
         $this->accessService = $accessService;
-        //Repository
-        $this->facultyRepo = $facultyRepo;
+        $this->em = $entityManager;
     }
 
     /**
@@ -27,8 +28,8 @@ class FacultyHandler
      */
     public function setSelect2EasyAdmin($currentId, $user)
     {
-        $universityPermission = $this->accessService->getUniversityPermission($user);
-        $entityModels = $this->facultyRepo->getFacultiesByUniversity($universityPermission);
+        $universityPermission = $this->accessService->getAccessObject($user)->getAccessibleUniversityIds();
+        $entityModels = $this->em->getRepository(Faculty::class)->getByUniversity($universityPermission);
 
         if ($currentId) {
             $currentModel = [];

@@ -8,9 +8,16 @@ use App\Entity\Role;
 use App\Entity\Teacher;
 use App\Entity\University;
 use App\Entity\User;
+use App\Handler\UniversityHandler;
 use App\Helper\ArrayHelper;
 use App\Repository\RoleRepository;
-use App\Service\AccessService;
+use App\Repository\UserRepository;
+use App\Service\Access\AccessService;
+use App\Service\Access\AdminAccessService;
+use App\Service\Access\FacultyAccessService;
+use App\Service\Access\PartyAccessService;
+use App\Service\Access\TeacherAccessService;
+use App\Service\Access\UniversityAccessService;
 use Doctrine\DBAL\Types\TextType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use EasyCorp\Bundle\EasyAdminBundle\Form\Type\EasyAdminAutocompleteType;
@@ -19,21 +26,44 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Core\Encoder\NativePasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
-class UserController extends EasyAdminController
+class UserController extends AdminController
 {
+    protected $userRepo;
     protected $roleRepo;
+    private $validIds = [];
 
-    public function __construct(RoleRepository $roleRepository)
+    public function __construct(RoleRepository $roleRepository, UserRepository $userRepository, TranslatorInterface $translator, UniversityHandler $universityHandler, AccessService $accessService)
     {
+        parent::__construct($translator, $universityHandler, $accessService);
+
+        $this->userRepo = $userRepository;
         $this->roleRepo = $roleRepository;
     }
 
+
+    private function init()
+    {
+        $this->validIds = ArrayHelper::getColumn($this->userRepo->findAll(),'id');
+    }
+
+    protected function listAction()
+    {
+        $this->init();
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'User', AdminAccessService::getAccessRole());
+    }
+
+    protected function editAction()
+    {
+        $this->init();
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'User', AdminAccessService::getAccessRole());
+    }
+
     /**
-     * Action Edit, on update
-     *
      * @param User $entity
+     *
      * @return bool|void
      */
     protected function updateEntity($entity)
@@ -51,12 +81,6 @@ class UserController extends EasyAdminController
         $entityManager->flush();
     }
 
-    /**
-     * Action New, on save
-     *
-     * @param User $entity
-     * @return bool|void
-     */
     protected function persistEntity($entity)
     {
         $encoder = new NativePasswordEncoder();
@@ -81,12 +105,7 @@ class UserController extends EasyAdminController
         $entityManager->flush();
     }
 
-    /**
-     * Load params from request to model, by some rules
-     * @param User $entity
-     * @return bool
-     */
-    private function setRoleByRoleLabel(User $entity) {
+    private function setRoleByRoleLabel($entity) {
         $request = $this->request->request->get('user');
 
         //Set role
@@ -97,25 +116,25 @@ class UserController extends EasyAdminController
         //Search access element
         $accessId = 0;
         switch ($roleModel->name) {
-            case AccessService::ROLE_UNIVERSITY_MANAGER:
+            case UniversityAccessService::getAccessRole():
                 $accessId = ArrayHelper::getValue($entity, 'university.id');
                 $entity->faculty = null;
                 $entity->party = null;
                 $entity->teacher = null;
                 break;
-            case AccessService::ROLE_FACULTY_MANAGER:
+            case FacultyAccessService::getAccessRole():
                 $accessId = ArrayHelper::getValue($entity, 'faculty.id');
                 $entity->university = null;
                 $entity->party = null;
                 $entity->teacher = null;
                 break;
-            case AccessService::ROLE_PARTY_MANAGER:
+            case PartyAccessService::getAccessRole():
                 $accessId = ArrayHelper::getValue($entity, 'party.id');
                 $entity->university = null;
                 $entity->faculty = null;
                 $entity->teacher = null;
                 break;
-            case AccessService::ROLE_TEACHER:
+            case TeacherAccessService::getAccessRole():
                 $accessId = ArrayHelper::getValue($entity, 'teacher.id');
                 $entity->university = null;
                 $entity->faculty = null;
@@ -134,7 +153,7 @@ class UserController extends EasyAdminController
         }
 
         //Set access code
-        $entity->access_code = AccessService::creatAccessCode($roleModel->name, $accessId);
+        $entity->access_code = $this->accessService->createAccessCode($roleModel->name, $accessId);
         return true;
     }
 

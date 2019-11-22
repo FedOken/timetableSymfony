@@ -2,32 +2,21 @@
 
 namespace App\Handler;
 
+use App\Entity\Building;
 use App\Entity\User;
-use App\Repository\BuildingRepository;
-use App\Service\AccessService;
 
-class BuildingHandler
+class BuildingHandler extends BaseHandler
 {
-    protected $accessService;
-    protected $buildingRepo;
-
-    public function __construct(AccessService $accessService, BuildingRepository $buildingRepo)
-    {
-        //Access service
-        $this->accessService = $accessService;
-        //Repository
-        $this->buildingRepo = $buildingRepo;
-    }
-
     /**
      * Set select2 data by permission and selected entity
      * @param int|null $currentId
-     * @param int|null $universityId
+     * @param User|object $user
      * @return array
      */
-    public function setSelect2EasyAdmin($currentId, $universityId)
+    public function setSelect2EasyAdmin($currentId, $user)
     {
-        $entityModels = $this->buildingRepo->getBuildingsByUniversity([$universityId]);
+        $validIds = $this->accessService->getAccessObject($user)->getAccessibleBuildingIds();
+        $entityModels = $this->em->getRepository(Building::class)->findBy(['id' => $validIds]);
 
         if ($currentId) {
             $currentModel = [];
@@ -46,14 +35,11 @@ class BuildingHandler
 
     public function checkEntityExist(int $id, int $universityId)
     {
-        $model = $this->buildingRepo->findBy([
+        $model = $this->em->getRepository(Building::class)->findBy([
             'id' => $id,
             'university' => $universityId]
         );
-        if ($model) {
-            return true;
-        }
-        return false;
+        return $model ? true : false;
     }
 
 }

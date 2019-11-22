@@ -21,7 +21,8 @@ use App\Repository\ScheduleRepository;
 use App\Repository\TeacherRepository;
 use App\Repository\UniversityRepository;
 use App\Repository\WeekRepository;
-use App\Service\AccessService;
+use App\Service\Access\AccessService;
+use App\Service\Access\AdminAccessService;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -36,6 +37,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class LessonTypeController extends AdminController
 {
     private $lessonTypeRepo;
+    private $validIds = [];
 
     public function __construct(LessonTypeRepository $lessonTypeRepository, TranslatorInterface $translator, UniversityHandler $universityHandler, AccessService $accessService)
     {
@@ -44,23 +46,20 @@ class LessonTypeController extends AdminController
         $this->lessonTypeRepo = $lessonTypeRepository;
     }
 
-    /**
-     * List action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    protected function listAction()
+    private function init()
     {
-        $validIds = ArrayHelper::getColumn($this->lessonTypeRepo->findAll(),'id');
-        return $this->listCheckPermissionAndRedirect($validIds, 'LessonType', AccessService::ROLE_ADMIN);
+        $this->validIds = ArrayHelper::getColumn($this->lessonTypeRepo->findAll(),'id');
     }
 
-    /**
-     * Edit action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
+    protected function listAction()
+    {
+        $this->init();
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'LessonType', AdminAccessService::getAccessRole());
+    }
+
     protected function editAction()
     {
-        $validIds = ArrayHelper::getColumn($this->lessonTypeRepo->findAll(),'id');
-        return $this->editCheckPermissionAndRedirect($validIds, 'LessonType', AccessService::ROLE_ADMIN);
+        $this->init();
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'LessonType', AdminAccessService::getAccessRole());
     }
 }

@@ -2,33 +2,21 @@
 
 namespace App\Handler;
 
-use App\Entity\University;
+use App\Entity\Teacher;
 use App\Entity\User;
-use App\Repository\TeacherRepository;
-use App\Service\AccessService;
 
-class TeacherHandler
+class TeacherHandler extends BaseHandler
 {
-    protected $accessService;
-    protected $teacherRepo;
-
-    public function __construct(AccessService $accessService, TeacherRepository $teacherRepo)
-    {
-        //Access service
-        $this->accessService = $accessService;
-        //Repository
-        $this->teacherRepo = $teacherRepo;
-    }
-
     /**
      * Set select2 data by permission and selected entity
      * @param int|null $currentId
-     * @param int|null $universityId
+     * @param User|object $user
      * @return array
      */
-    public function setSelect2EasyAdmin($currentId, $universityId)
+    public function setSelect2EasyAdmin($currentId, $user)
     {
-        $entityModels = $this->teacherRepo->getTeachersByUniversity([$universityId]);
+        $validIds = $this->accessService->getAccessObject($user)->getAccessibleTeacherIds();
+        $entityModels = $this->em->getRepository(Teacher::class)->findBy(['id' => $validIds]);
 
         if ($currentId) {
             $currentModel = [];
@@ -47,14 +35,11 @@ class TeacherHandler
 
     public function checkEntityExist(int $id, int $universityId)
     {
-        $model = $this->teacherRepo->findBy([
+        $model = $this->em->getRepository(Teacher::class)->findBy([
                 'id' => $id,
                 'university' => $universityId]
         );
-        if ($model) {
-            return true;
-        }
-        return false;
+        return $model ? true : false;
     }
 
 }

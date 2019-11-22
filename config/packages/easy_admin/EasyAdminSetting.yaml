@@ -43,7 +43,7 @@ easy_admin:
         assets:
             #favicon: '/assets/backend/favicon.png'
             css:
-                #- 'admin/css/bootstrap4.css'
+                - 'admin/css/bootstrapGrid.css'
                 - 'admin/css/layout.css'
                 - 'admin/css/show.css'
             js:

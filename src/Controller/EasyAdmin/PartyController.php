@@ -20,63 +20,62 @@ use App\Repository\FacultyRepository;
 use App\Repository\PartyRepository;
 use App\Repository\TeacherRepository;
 use App\Repository\UniversityRepository;
-use App\Service\AccessService;
+use App\Service\Access\AccessService;
+use App\Service\Access\FacultyAccessService;
 use Doctrine\DBAL\Types\TextType;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Core\Encoder\NativePasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class PartyController extends AdminController
 {
-    protected $facultyHandler;
-    protected $courseHandler;
+    private $facultyHandler;
+    private $courseHandler;
+    private $validIds = [];
 
 
-    public function __construct(CourseHandler $courseHandler, FacultyHandler $facultyHandler, TranslatorInterface $translator, UniversityHandler $universityHandler, AccessService $accessService)
+    public function __construct(TokenStorageInterface  $tokenStorage, CourseHandler $courseHandler, FacultyHandler $facultyHandler, TranslatorInterface $translator, UniversityHandler $universityHandler, AccessService $accessService)
     {
         parent::__construct($translator, $universityHandler, $accessService);
+
         //Handler
         $this->facultyHandler = $facultyHandler;
         $this->courseHandler = $courseHandler;
     }
 
-    /**
-     * @return QueryBuilder query
-     */
+    private function init()
+    {
+        $this->validIds = $this->accessService->getAccessObject($this->getUser())->getAccessiblePartyIds();
+    }
+
     protected function createListQueryBuilder($entityClass, $sortDirection, $sortField = null, $dqlFilter = null)
     {
         $response = parent::createListQueryBuilder($entityClass, $sortDirection, $sortField, $dqlFilter);
 
-        $facultyIds = $this->accessService->getFacultyPermission($this->getUser());
-        $response->andWhere('entity.faculty IN (:facultyIds)')->setParameter('facultyIds', $facultyIds);
-
+        $this->init();
+        $response->andWhere('entity.id IN (:ids)')->setParameter('ids', $this->validIds);
         return $response;
     }
 
-    /**
-     * List action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
     protected function listAction()
     {
-        $validIds = $this->accessService->getPartyPermission($this->getUser());
-        return $this->listCheckPermissionAndRedirect($validIds, 'Party', AccessService::ROLE_FACULTY_MANAGER);
+        $this->init();
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Party', FacultyAccessService::getAccessRole());
     }
 
-    /**
-     * Edit action override
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
     protected function editAction()
     {
-        $validIds = $this->accessService->getPartyPermission($this->getUser());
-        return $this->editCheckPermissionAndRedirect($validIds, 'Party', AccessService::ROLE_FACULTY_MANAGER);
+        $this->init();
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Party',  FacultyAccessService::getAccessRole());
     }
 
     /**

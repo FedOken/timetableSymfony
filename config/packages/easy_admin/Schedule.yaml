@@ -35,12 +35,12 @@ easy_admin:
                     - { property: 'university', help: 'Choose university before choosing other data', 'css_class': 'group-1', 'format': 'gr-1', 'type_options':{'block_name': 'group-1'} }
                     - { property: 'party', help: 'Choose party', 'type_options':{'block_name': 'group-1'}}
                     - { property: 'teacher', help: 'Choose teacher', 'type_options':{'block_name': 'group-1'}}
-                    - { property: 'lesson_type', help: 'Choose lesson type', 'type_options':{'block_name': 'group-1'}}
+                    - { property: 'lesson_type', help: 'Choose lesson type', 'type_options':{required: 'true', 'block_name': 'group-1'}}
 
                     - { type: 'group', columns: '12', label: 'Class time', 'icon':'clock', 'type_options':{'block_name': 'group-2'}, 'css_class':'col-md-4' }
                     - { property: 'week', 'type_options':{'block_name': 'group-2'}}
                     - { property: 'week_enable', help: 'Disable to select week', 'type_options':{'block_name': 'group-2'}}
-                    - { property: 'day', help: 'Choose day', 'type_options':{'block_name': 'group-2'}}
+                    - { property: 'day', help: 'Choose day', 'type_options':{ required: 'true', 'block_name': 'group-2'}}
                     - { property: 'universityTime', label: 'Class time', help: 'Choose time', 'type_options':{'block_name': 'group-2'}}
 
                     - { type: 'group', columns: '12', label: 'Class location', 'icon':'map-marked-alt', 'type_options':{'block_name': 'group-3'}, 'css_class':'col-md-4' }
