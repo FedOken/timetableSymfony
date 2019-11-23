@@ -3,7 +3,7 @@ easy_admin:
         Faculty:
             class: App\Entity\Faculty
             controller: App\Controller\EasyAdmin\FacultyController
-            label: 'Faculties'
+            label: 'Faculty'
             list:
                 title: 'Faculty list'
                 sort: ['university', 'ASC']

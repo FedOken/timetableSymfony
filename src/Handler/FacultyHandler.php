@@ -28,8 +28,8 @@ class FacultyHandler
      */
     public function setSelect2EasyAdmin($currentId, $user)
     {
-        $universityPermission = $this->accessService->getAccessObject($user)->getAccessibleUniversityIds();
-        $entityModels = $this->em->getRepository(Faculty::class)->getByUniversity($universityPermission);
+        $validIds = $this->accessService->getAccessObject($user)->getAccessibleFacultyIds();
+        $entityModels = $this->em->getRepository(Faculty::class)->findBy(['id' => $validIds]);
 
         if ($currentId) {
             $currentModel = [];

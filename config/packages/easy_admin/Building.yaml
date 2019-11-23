@@ -3,7 +3,7 @@ easy_admin:
         Building:
             class: 'App\Entity\Building'
             controller: 'App\Controller\EasyAdmin\BuildingController'
-            label: 'Buildings'
+            label: 'Building'
             list:
                 title: 'Building list'
                 sort: ['university', 'ASC']

@@ -3,7 +3,7 @@ easy_admin:
         Day:
             class: 'App\Entity\Day'
             controller: 'App\Controller\EasyAdmin\DayController'
-            label: 'Days'
+            label: 'Day'
             list:
                 title: 'Days list'
                 sort: ['id', 'ASC']

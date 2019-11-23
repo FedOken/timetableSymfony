@@ -3,10 +3,10 @@ easy_admin:
         Teacher:
             class: 'App\Entity\Teacher'
             controller: 'App\Controller\EasyAdmin\TeacherController'
-            label: 'Teachers'
+            label: 'Teacher'
             list:
                 title: 'Teacher list'
-                sort: ['university', 'ASC']
+                sort: ['name', 'ASC']
                 filters: ['university', 'position']
                 fields: ['name', { property: 'name_full', label: 'Full name' }, 'position', 'university', 'schedules']
                 actions:

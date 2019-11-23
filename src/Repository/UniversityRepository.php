@@ -19,20 +19,4 @@ class UniversityRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, University::class);
     }
-
-    /**
-     * @param array $universityIds
-     * @return array
-     */
-    public function getByUniversity(array $universityIds)
-    {
-        $models = $this->createQueryBuilder('tb')
-            ->andWhere('tb.id IN (:universityIds)')
-            ->setParameter('universityIds', $universityIds)
-            ->orderBy('tb.name', 'ASC')
-            ->getQuery()
-            ->getResult();
-
-        return $models;
-    }
 }

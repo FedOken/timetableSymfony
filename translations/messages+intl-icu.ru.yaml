@@ -28,6 +28,7 @@ Add week: Добавить неделю
 Lesson type: Тип занятия
 Edit lesson: Редактировать занятие
 Create lesson: Создать занятие
+Create group: Создать группу
 Enter lesson name ("Chemistry"): Введите название занятия ("Химия")
 Choose university before choosing other data: Выберите университет перед тем как выбирать другие параметры
 Choose university: Выберите университет
@@ -43,6 +44,7 @@ Basic information: Базовая информация
 Class time: Время занятия
 Class location: Место проведения занятия
 Groups: Группы
+Group: Группа
 Buildings: Корпуса
 Cabinets: Кабинеты
 Setting: Настройки
@@ -72,6 +74,7 @@ Lesson types list: Список типов занятий
 Add type: Добавить тип
 Create lesson type: Создать тип занятия
 Edit lesson type: Редактировать тип занятия
+Lessons: Занятия
 Set short name (lec, pr): Введите короткое имя (лек. пр.)
 Set full name (Lecture, Practice): Введите полное имя (Лекция, Практика)
 Roles list: Список ролей

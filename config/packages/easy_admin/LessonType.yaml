@@ -3,7 +3,7 @@ easy_admin:
         LessonType:
             class: 'App\Entity\LessonType'
             controller: 'App\Controller\EasyAdmin\LessonTypeController'
-            label: 'Lesson types'
+            label: 'Lesson type'
             list:
                 title: 'Lesson types list'
                 sort: ['id', 'ASC']

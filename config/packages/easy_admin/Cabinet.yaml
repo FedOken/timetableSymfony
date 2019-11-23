@@ -3,12 +3,15 @@ easy_admin:
         Cabinet:
             class: 'App\Entity\Cabinet'
             controller: 'App\Controller\EasyAdmin\CabinetController'
-            label: 'Cabinets'
+            label: 'Cabinet'
             list:
                 title: 'Cabinet list'
-                sort: ['building', 'ASC']
+                #sort: ['building', 'ASC']
                 filters: ['building']
-                fields: ['name', 'building', 'schedules']
+                fields:
+                    - { property: 'name' }
+                    - { property: 'building' }
+                    - { property: 'schedules', label: 'Lessons' }
                 actions:
                     - { name: 'new', label: 'Add cabinet' }
                     - { name: 'show', icon: 'eye', label: false }

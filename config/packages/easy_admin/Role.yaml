@@ -3,7 +3,7 @@ easy_admin:
         Role:
             class: 'App\Entity\Role'
             controller: 'App\Controller\EasyAdmin\RoleController'
-            label: 'Roles'
+            label: 'Role'
             list:
                 title: 'Roles list'
                 fields: ['name', 'label']

@@ -22,44 +22,4 @@ class CabinetRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Cabinet::class);
     }
-
-    /**
-     * @param $building_id
-     * @param $cabinet_id
-     * @return mixed
-     */
-    public function checkCabinetInBuilding($building_id, $cabinet_id)
-    {
-        return $this->createQueryBuilder('table')
-            ->andWhere('table.building = :building')
-            ->andWhere('table.id = :id')
-            ->setParameter('building', $building_id)
-            ->setParameter('id', $cabinet_id)
-            ->orderBy('table.id', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * @param array $universityIds
-     * @return mixed
-     */
-    public function getByUniversity(array $universityIds)
-    {
-        $universityModel = $this->getEntityManager()->getRepository(University::class)->findBy(['id' => $universityIds]);
-
-        $buildingModels = [];
-        /** @var University $university */
-        foreach ($universityModel as $university) {
-            $buildingModels = array_merge($buildingModels, $university->buildings);
-        }
-
-        $cabinetModels = [];
-        /** @var Building $building */
-        foreach ($buildingModels as $building) {
-            $cabinetModels = array_merge($cabinetModels, $building->cabinets);
-        }
-
-        return $cabinetModels;
-    }
 }

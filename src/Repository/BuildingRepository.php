@@ -21,28 +21,11 @@ class BuildingRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $university_id
-     * @param $building_id
-     * @return mixed
-     */
-    public function checkBuildingInUniversity($university_id, $building_id)
-    {
-        return $this->createQueryBuilder('table')
-            ->andWhere('table.university = :university')
-            ->andWhere('table.id = :id')
-            ->setParameter('university', $university_id)
-            ->setParameter('id', $building_id)
-            ->orderBy('table.id', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
      * @param array $universityIds
      * @param bool $forChoice
      * @return array
      */
-    public function getByUniversity(array $universityIds, bool $forChoice = false)
+    public function getByUniversity(array $universityIds)
     {
         $models = $this->createQueryBuilder('tb')
             ->andWhere('tb.university IN (:universityIds)')
@@ -50,16 +33,6 @@ class BuildingRepository extends ServiceEntityRepository
             ->orderBy('tb.name', 'ASC')
             ->getQuery()
             ->getResult();
-
-        if ($forChoice) {
-            $data = [];
-            /** @var $model Building */
-            foreach ($models as $model) {
-                $model->complexName = $model->getComplexName();
-                $data[$model->complexName] = $model->id;
-            }
-            return $data;
-        }
 
         return $models;
     }

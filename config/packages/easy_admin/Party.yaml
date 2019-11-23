@@ -3,10 +3,10 @@ easy_admin:
         Party:
             class: App\Entity\Party
             controller: App\Controller\EasyAdmin\PartyController
-            label: 'Groups'
+            label: 'Group'
             list:
                 title: 'Party list'
-                sort: ['faculty', 'ASC']
+                sort: ['course', 'ASC']
                 filters: ['faculty', 'course']
                 fields:
                     - 'name'

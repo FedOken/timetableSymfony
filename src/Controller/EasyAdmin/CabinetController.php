@@ -27,7 +27,7 @@ class CabinetController extends AdminController
 
     private function init()
     {
-        $this->validIds = $this->accessService->getAccessObject($this->getUser())->getAccessibleBuildingIds();
+        $this->validIds = $this->accessService->getAccessObject($this->getUser())->getAccessibleCabinetIds();
     }
 
     protected function createListQueryBuilder($entityClass, $sortDirection, $sortField = null, $dqlFilter = null)
@@ -36,6 +36,8 @@ class CabinetController extends AdminController
 
         $this->init();
         $response->andWhere('entity.id IN (:ids)')->setParameter('ids', $this->validIds);
+        $response->addOrderBy('entity.building', 'ASC');
+        $response->addOrderBy('entity.name', 'ASC');
         return $response;
     }
 

@@ -3,7 +3,7 @@ easy_admin:
         Week:
             class: 'App\Entity\Week'
             controller: 'App\Controller\EasyAdmin\WeekController'
-            label: 'Weeks'
+            label: 'Week'
             list:
                 title: 'Weeks list'
                 sort: ['university', 'ASC']

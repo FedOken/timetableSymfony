@@ -3,7 +3,7 @@ easy_admin:
         User:
             class: 'App\Entity\User'
             controller: 'App\Controller\EasyAdmin\UserController'
-            label: 'Users'
+            label: 'User'
             list:
                 title: 'Users list'
                 fields:
