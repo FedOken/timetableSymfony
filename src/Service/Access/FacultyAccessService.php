@@ -48,7 +48,6 @@ class FacultyAccessService extends AccessService implements AccessInterface
 
     public function getAccessibleUniversityIds(): array
     {
-        /** @var Faculty $accessModel */
         $response = $this->accessModel->university;
         return $response ? [ArrayHelper::getValue($response, 'id')] : [];
     }
@@ -76,12 +75,16 @@ class FacultyAccessService extends AccessService implements AccessInterface
         return $response ? ArrayHelper::getColumn($response, 'id') : [];
     }
 
-    public function getAccessibleCabinetIds(): array
+    public function getAccessibleCabinetIds(int $buildingId = null): array
     {
-        $buildingModels = $this->parentModel->buildings;
-        $response = [];
-        foreach ($buildingModels as $building) {
-            $response = array_merge($response, $building->cabinets);
+        if ($buildingId) {
+            $response = $this->em->getRepository(Cabinet::class)->findBy(['building' => $buildingId]);
+        } else {
+            $buildingModels = ArrayHelper::getValue($this->parentModel, 'buildings');
+            $response = [];
+            foreach ($buildingModels as $building) {
+                $response = array_merge($response, $building->cabinets);
+            }
         }
         return $response ? ArrayHelper::getColumn($response, 'id') : [];
     }

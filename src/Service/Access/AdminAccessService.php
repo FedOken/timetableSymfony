@@ -64,7 +64,7 @@ class AdminAccessService extends AccessService implements AccessInterface
         return $response ? ArrayHelper::getColumn($response, 'id') : [];
     }
 
-    public function getAccessibleCabinetIds(): array
+    public function getAccessibleCabinetIds(int $buildingId = null): array
     {
         $response = $this->em->getRepository(Cabinet::class)->findAll();
         return $response ? ArrayHelper::getColumn($response, 'id') : [];

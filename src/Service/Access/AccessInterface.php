@@ -24,7 +24,8 @@ interface AccessInterface
     public function getAccessibleBuildingIds(): array;
 
     /** Return allowed party id */
-    public function getAccessibleCabinetIds(): array;
+    /** @param int $buildingId */
+    public function getAccessibleCabinetIds(int $buildingId = null): array;
 
     /** Return allowed party id */
     public function getAccessibleCourseIds(): array;

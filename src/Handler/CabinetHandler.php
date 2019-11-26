@@ -11,11 +11,12 @@ class CabinetHandler extends BaseHandler
      * Set select2 data by permission and selected entity
      * @param int|null $currentId
      * @param User|object $user
+     * @param int|null $buildingId
      * @return array
      */
-    public function setSelect2EasyAdmin($currentId, $user)
+    public function setSelect2EasyAdmin($currentId, $user, int $buildingId = null)
     {
-        $validIds = $this->accessService->getAccessObject($user)->getAccessibleCabinetIds();
+        $validIds = $this->accessService->getAccessObject($user)->getAccessibleCabinetIds($buildingId);
         $entityModels = $this->em->getRepository(Cabinet::class)->findBy(['id' => $validIds]);
 
         if ($currentId) {

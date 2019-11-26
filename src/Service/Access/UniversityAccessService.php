@@ -76,12 +76,16 @@ class UniversityAccessService extends AccessService implements AccessInterface
         return $response ? ArrayHelper::getColumn($response, 'id') : [];
     }
 
-    public function getAccessibleCabinetIds(): array
+    public function getAccessibleCabinetIds(int $buildingId = null): array
     {
-        $buildingModels = $this->accessModel->buildings;
-        $response = [];
-        foreach ($buildingModels as $building) {
-            $response = array_merge($response, $building->cabinets);
+        if ($buildingId) {
+            $response = $this->em->getRepository(Cabinet::class)->findBy(['building' => $buildingId]);
+        } else {
+            $buildingModels = ArrayHelper::getValue($this->accessModel, 'buildings');
+            $response = [];
+            foreach ($buildingModels as $building) {
+                $response = array_merge($response, $building->cabinets);
+            }
         }
         return $response ? ArrayHelper::getColumn($response, 'id') : [];
     }

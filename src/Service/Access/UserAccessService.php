@@ -72,7 +72,7 @@ class UserAccessService extends AccessService implements AccessInterface
 //        return $response ? ArrayHelper::getColumn($response, 'id') : [];
     }
 
-    public function getAccessibleCabinetIds(): array
+    public function getAccessibleCabinetIds(int $buildingId = null): array
     {
         return [];
 //        $response = $this->em->getRepository(Cabinet::class)->getByUniversity([$this->code]);

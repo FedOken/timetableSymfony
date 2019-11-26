@@ -186,7 +186,10 @@ class ScheduleController extends AdminController
         $weekToChoice = $this->weekHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'week.id'), $this->user);
         $partyToChoice = $this->partyHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'party.id'), $this->user);
         $timeToChoice = $this->universityTimeHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'universityTime.id'), $this->user);
-        $cabinetToChoice = $this->cabinetHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'cabinet.id'), $this->user);
+
+        //Get buildingId and cabinet to choice
+        $buildingId = ArrayHelper::getValue($entity, 'cabinet.building.id') ? : ArrayHelper::getValue(current($buildingsToChoice), 'id');
+        $cabinetToChoice = $this->cabinetHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'cabinet.id'), $this->user, $buildingId);
 
         $formBuilder->add('university', EntityType::class, [
             'choices' => $universityToChoice,
