@@ -6,7 +6,6 @@ easy_admin:
             label: 'Schedules'
             list:
                 title: 'Lessons list'
-                sort: ['party', 'ASC']
                 filters:
                     - 'party'
                     - { property: 'universityTime', label: 'Class time' }
@@ -38,8 +37,7 @@ easy_admin:
                     - { property: 'lesson_type', help: 'Choose lesson type', 'type_options':{required: 'true', 'block_name': 'group-1'}}
 
                     - { type: 'group', columns: '12', label: 'Class time', 'icon':'clock', 'type_options':{'block_name': 'group-2'}, 'css_class':'col-md-4' }
-                    - { property: 'week', 'type_options':{'block_name': 'group-2'}}
-                    - { property: 'week_enable', help: 'Disable to select week', 'type_options':{'block_name': 'group-2'}}
+                    - { property: 'week', 'type_options':{required: 'true', 'block_name': 'group-2'}}
                     - { property: 'day', help: 'Choose day', 'type_options':{ required: 'true', 'block_name': 'group-2'}}
                     - { property: 'universityTime', label: 'Class time', help: 'Choose time', 'type_options':{'block_name': 'group-2'}}
 

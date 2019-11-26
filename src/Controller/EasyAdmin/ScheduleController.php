@@ -93,6 +93,8 @@ class ScheduleController extends AdminController
 
         $partyIds = $this->accessService->getAccessObject($this->getUser())->getAccessiblePartyIds();
         $response->andWhere('entity.party IN (:partyIds)')->setParameter('partyIds', $partyIds);
+        $response->addOrderBy('entity.party', 'ASC');
+        $response->addOrderBy('entity.day', 'ASC');
 
         return $response;
     }
@@ -220,14 +222,7 @@ class ScheduleController extends AdminController
         ])->add('week', EntityType::class, [
             'choices' => $weekToChoice,
             'class' => 'App\Entity\Week',
-            'required' => false,
             'attr' => ['data-widget' => 'select2'],
-            'disabled' => (ArrayHelper::getValue($entity, 'week.id') == false),
-        ])->add('week_enable', CheckboxType::class, [
-            'label' => 'Lesson every week',
-            'required' => false,
-            'mapped' => false,
-            'data' => (ArrayHelper::getValue($entity, 'week.id') == false)
         ]);
 
         //Listener change data in form on actual before submit. Need for form validation.

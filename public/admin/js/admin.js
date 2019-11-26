@@ -37,18 +37,6 @@ $().ready(function () {
             }
         });
     });
-
-    //Event when change week check box
-    $('#schedule_week_enable').on('change', function () {
-        if (schWeek.prop("disabled") === true) {
-            schWeek.prop("disabled", false);
-            ajaxGetWeekByUniversity(schUniversity.val(), schWeek);
-        } else {
-            schWeek.prop("disabled", true);
-            schWeek.find('option').remove();
-        }
-    });
-
 });
 
 function replaceSelectOption(select_object, data) {

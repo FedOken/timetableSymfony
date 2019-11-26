@@ -29,17 +29,6 @@ class ScheduleRepository extends ServiceEntityRepository
      */
     public function checkUniqueEntity(Schedule $entity)
     {
-        $scheduleWithoutWeek = $this->findOneBy([
-            'party' => ArrayHelper::getValue($entity,'party.id'),
-            'day' => ArrayHelper::getValue($entity,'day.id'),
-            'week' => null,
-            'universityTime' => ArrayHelper::getValue($entity,'universityTime.id'),
-        ]);
-
-        if ($scheduleWithoutWeek) {
-            return $scheduleWithoutWeek;
-        }
-
         $scheduleWithWeek = $this->findOneBy([
             'party' => ArrayHelper::getValue($entity,'party.id'),
             'day' => ArrayHelper::getValue($entity,'day.id'),
