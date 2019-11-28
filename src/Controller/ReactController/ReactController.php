@@ -22,17 +22,18 @@ class ReactController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): JsonResponse
     {
-        $serializer = $this->container->get('serializer');
-
-        // Serialize your object in Json
-        $jsonObject = $serializer->serialize($this->getUser(), 'json', [
-            'circular_reference_handler' => function ($object) {
-                return $object->id;
-            }
-        ]);
+//        $serializer = $this->container->get('serializer');
+//
+//        // Serialize your object in Json
+//        $jsonObject = $serializer->serialize($this->getUser(), 'json', [
+//            'circular_reference_handler' => function ($object) {
+//                return $object->id;
+//            }
+//        ]);
 
         $response = [
-            'user' => json_decode($jsonObject),
+            //'user' => json_decode($jsonObject),
+            'user' => 'seffe',
             'token' => $this->container->get('security.csrf.token_manager')->getToken('authenticate')->getValue(),
             'error' => $authenticationUtils->getLastAuthenticationError(),
             'lastUsername' => $authenticationUtils->getLastUsername()

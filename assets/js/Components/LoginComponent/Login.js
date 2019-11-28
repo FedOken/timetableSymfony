@@ -3,11 +3,6 @@ import axios from 'axios';
 
 import MessageWarning from "../CommonComponents/MessageWarning";
 
-// export default axios.create({
-//     baseURL: "http://timetable/",
-//     responseType: "json"
-// });
-
 export default class Login extends Component {
 
     constructor(props) {
@@ -18,7 +13,7 @@ export default class Login extends Component {
     }
 
     componentDidMount() {
-        axios.get(`/react/login`)
+        axios.post(`/react/login`)
             .then(res => {
                 console.log(res.data);
                 this.setState( {response: res.data} );
