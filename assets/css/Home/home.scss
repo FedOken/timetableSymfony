@@ -1,7 +1,7 @@
 .block-center-container {
-  border: 1px solid $font-color-1;
+  //border: 1px solid $font-color-1;
   position: absolute;
-  height: 100%;
+  min-height: 100%;
   margin: 0 auto;
   left: 0;
   right: 0;
@@ -12,5 +12,11 @@
   .block-center {
     border: 1px solid $font-color-1;
     border-radius: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .row-delimiter {
+    margin: 10px 0;
   }
 }

@@ -9,11 +9,17 @@ html, body {
 
 body {
   font-family: 'Neucha', sans-serif;
+  font-size: 16px;
+
   a {
     color: #000000;
     &:hover {
       color: #000000;
     }
+  }
+
+  p {
+    margin: 0;
   }
 
   #main-block {
@@ -28,4 +34,5 @@ body {
   footer {
     flex: 0 0 auto;
   }
+
 }
