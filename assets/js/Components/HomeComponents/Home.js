@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import {Typeahead} from 'react-bootstrap-typeahead';
 import Select from 'react-select';
+import {Link} from "react-router-dom";
 
 export default class Home extends Component {
 
@@ -66,6 +67,7 @@ export default class Home extends Component {
                         />
                         <button type="button" className="btn btn-outline-info w-100">Info</button>
                     </form>
+                    <Link to={"/group/show"}>group</Link>
                 </div>
             </div>
 
