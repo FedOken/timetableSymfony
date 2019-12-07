@@ -1,0 +1,39 @@
+$top-block-height: 67px;
+
+.group-show {
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  .border-box {
+    border: 1px solid $font-color-1;
+    font-size: 25px;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .times {
+    .time {
+      margin-top: 15px;
+      white-space: nowrap;
+
+      &:first-child {
+        margin-top: $top-block-height + 15px;
+      }
+    }
+  }
+
+  .day {
+    height: $top-block-height;
+  }
+
+  .content {
+    width: 100%;
+    padding: 0 15px;
+  }
+
+  .schedule {
+    margin-top: 15px;
+  }
+}

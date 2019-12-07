@@ -4,6 +4,7 @@ import {AsyncTypeahead} from 'react-bootstrap-typeahead';
 import Select from 'react-select';
 import ButtonOutlineType1 from "../LayoutComponents/Button/ButtonOutlineType1";
 import Button from "react-bootstrap/Button";
+import {Link} from "react-router-dom";
 
 export default class Home extends Component {
 
@@ -82,6 +83,7 @@ export default class Home extends Component {
                         />
                         <Button type="button" className={"w-100"} variant="outline-info">Search</Button>
                     </form>
+                    <Link to={"/group/show"}>group</Link>
                 </div>
             </div>
 
