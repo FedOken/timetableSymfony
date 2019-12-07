@@ -1,21 +1,31 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import {Typeahead} from 'react-bootstrap-typeahead';
+import {AsyncTypeahead} from 'react-bootstrap-typeahead';
 import Select from 'react-select';
+import ButtonOutlineType1 from "../LayoutComponents/Button/ButtonOutlineType1";
+import Button from "react-bootstrap/Button";
 
 export default class Home extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            parties: [],
+            isLoading: false,
             universities: [],
             selectPartyOptions: [],
             selectPartyDisable: true,
-            test: ''
+            selectPartyValue: '',
+            searchBtnDisabled: 'disabled'
         };
         this.universityChange = this.universityChange.bind(this);
+        this.partiesSearch = this.partiesSearch.bind(this);
     }
     componentDidMount() {
+        axios.post(`/react/home/get-parties-all`)
+            .then(res => {
+                this.setState( {parties: res.data} );
+            });
         axios.post(`/react/home/get-university`)
             .then(res => {
                 this.setState( {universities: res.data} );
@@ -23,13 +33,19 @@ export default class Home extends Component {
     }
 
     universityChange(val) {
-        this.setState( {test: val.label} );
-
-        let self = this;
         axios.post('/react/home/get-parties/' + val.value)
             .then(res => {
                 this.setState( {selectPartyOptions: res.data} );
                 this.setState( {selectPartyDisable: res.data.length === 0 ? true : false } )
+            });
+    }
+
+    partiesSearch(searchText) {
+        this.setState( {isLoading: true} );
+        axios.post(`/react/home/get-parties/`+searchText)
+            .then(res => {
+                this.setState( {isLoading: false} );
+                this.setState( {parties: res.data} );
             });
     }
 
@@ -39,32 +55,32 @@ export default class Home extends Component {
                 <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3 block-center">
                     <form action="">
                         <p>Enter group</p>
-                        <Typeahead
-                            id="my-typeahead-id"
-                            onChange={(selected) => {
-                                // Handle selections...
+                        <AsyncTypeahead
+                            id="asdasd"
+                            isLoading={this.state.isLoading}
+                            onSearch={query => {
+                                this.partiesSearch(query)
                             }}
-                            options={[
-                                {id: 1, label: 'John'},
-                                {id: 2, label: 'Miles'},
-                                {id: 3, label: 'Charles'},
-                                {id: 4, label: 'Herbie'},]}
+                            options={this.state.parties}
+                            useCache={false}
+                            promptText="Type to search..."
+                            maxResults={10}
+                            minLength={1}
                         />
                         <p className="row-delimiter">or</p>
-
                         <Select
                             name="group-select"
-                            //value="one"
                             options={this.state.universities}
                             onChange={this.universityChange}
                         />
-                        <br/>
                         <Select
                             name="group-select"
+                            className={'select-party'}
+                            value={this.state.selectPartyValue}
                             options={this.state.selectPartyOptions}
                             isDisabled={this.state.selectPartyDisable}
                         />
-                        <button type="button" className="btn btn-outline-info w-100">Info</button>
+                        <Button type="button" className={"w-100"} variant="outline-info">Search</Button>
                     </form>
                 </div>
             </div>

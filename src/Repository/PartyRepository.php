@@ -25,4 +25,17 @@ class PartyRepository extends ServiceEntityRepository
 
         $this->facultyRepo = $facultyRepository;
     }
+
+    /**
+     * @param string $name
+     * @return Party|null
+     */
+    public function findByName(string $name)
+    {
+        return $this->createQueryBuilder('tb')
+            ->andWhere('tb.name LIKE :name')
+            ->setParameter('name', '%'.$name.'%')
+            ->getQuery()
+            ->getResult();
+    }
 }
