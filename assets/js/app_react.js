@@ -12,37 +12,26 @@ ReactDom.render((
         <Particles className={'div-particles'} params={{
             particles: {
                 number: {
-                    value: 80,
+                    value: 75,
                     density: {
                         enable: true,
-                        value_area: 800
+                        value_area: 1000
                     }
                 },
                 color: {
-                    value: '#000000'
+                    value: '#4a707a'
                 },
-                shape: {
-                    type: "circle",
-                    stroke: {
-                        width: 0,
-                        color: "#000000"
-                    },
-                    polygon: {
-                        nb_sides: 5
-                    },
-                    image: {
-                        src: 'img/github.svg',
-                        width: 100,
-                        height: 100
-                    }
+                move: {
+                    speed: 2,
                 },
                 line_linked: {
                     enable: true,
-                    distance: 300,
-                    color: "#000000",
+                    distance: 100,
+                    color: "#4a707a",
                     opacity: 0.4,
-                    width: 2
+                    width: 1
                 },
+
             }
         }} />
         <Header />

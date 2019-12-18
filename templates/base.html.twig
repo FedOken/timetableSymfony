@@ -6,13 +6,11 @@
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
     </head>
-    <body>
-        <div id="main-block">
+    <body id="main-block">
             {% block body %}{% endblock %}
             {% block javascripts %}
                 {{ encore_entry_script_tags('app') }}
                 {{ encore_entry_script_tags('app_react') }}
             {% endblock %}
-        </div>
     </body>
 </html>

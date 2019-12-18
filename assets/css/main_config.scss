@@ -15,9 +15,10 @@ body {
   font-size: 18px;
 
   .div-particles {
-    position: absolute;
+    position: fixed;
     left: 0;
     right: 0;
+    z-index: -999;
   }
 
   * {
@@ -39,16 +40,19 @@ body {
   #main-block {
     height: 100%;
   }
+
   header {
     height: $header-height;
   }
+
+
   main {
     display: flex;
     min-height: calc(100% - #{$footer-height} - #{$header-height});
     position: relative;
   }
+
   footer {
     height: $footer-height;
   }
-
 }
