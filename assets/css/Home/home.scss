@@ -8,9 +8,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 100%;
 
   .block-center {
-    border: 1px solid $font-color-1;
+    border: 1px solid;
     border-radius: 10px;
     padding-top: 15px;
     padding-bottom: 15px;

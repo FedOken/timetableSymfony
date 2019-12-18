@@ -81,7 +81,7 @@ export default class Home extends Component {
                             options={this.state.selectPartyOptions}
                             isDisabled={this.state.selectPartyDisable}
                         />
-                        <Button type="button" className={"w-100"} variant="outline-info">Search</Button>
+                        <Button type="button" className={"w-100"} variant="type-2">Search</Button>
                     </form>
                     <Link to={"/group/show"}>group</Link>
                 </div>

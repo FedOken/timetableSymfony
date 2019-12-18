@@ -1,3 +1,6 @@
+$footer-height: 80px;
+$header-height: 80px;
+
 * {
   margin: 0;
   padding: 0;
@@ -9,7 +12,18 @@ html, body {
 
 body {
   font-family: 'Neucha', sans-serif;
-  font-size: 16px;
+  font-size: 18px;
+
+  .div-particles {
+    position: absolute;
+    left: 0;
+    right: 0;
+  }
+
+  * {
+    color: $main-color;
+    border-color: $main-color;
+  }
 
   a {
     color: #000000;
@@ -23,16 +37,18 @@ body {
   }
 
   #main-block {
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
+    height: 100%;
+  }
+  header {
+    height: $header-height;
   }
   main {
-    flex: 1 0 auto;
+    display: flex;
+    min-height: calc(100% - #{$footer-height} - #{$header-height});
     position: relative;
   }
   footer {
-    flex: 0 0 auto;
+    height: $footer-height;
   }
 
 }
