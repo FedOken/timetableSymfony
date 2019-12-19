@@ -5,6 +5,8 @@ import Select from 'react-select';
 import ButtonOutlineType1 from "../LayoutComponents/Button/ButtonOutlineType1";
 import Button from "react-bootstrap/Button";
 import {Link} from "react-router-dom";
+import Tabs from "react-bootstrap/Tabs";
+import {Tab} from "react-bootstrap";
 
 export default class Home extends Component {
 
@@ -55,33 +57,44 @@ export default class Home extends Component {
             <div className="container block-center-container">
                 <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3 block-center">
                     <form action="">
-                        <p>Enter group</p>
-                        <AsyncTypeahead
-                            id="asdasd"
-                            isLoading={this.state.isLoading}
-                            onSearch={query => {
-                                this.partiesSearch(query)
-                            }}
-                            options={this.state.parties}
-                            useCache={false}
-                            promptText="Type to search..."
-                            maxResults={10}
-                            minLength={1}
-                        />
-                        <p className="row-delimiter">or</p>
-                        <Select
-                            name="group-select"
-                            options={this.state.universities}
-                            onChange={this.universityChange}
-                        />
-                        <Select
-                            name="group-select"
-                            className={'select-party'}
-                            value={this.state.selectPartyValue}
-                            options={this.state.selectPartyOptions}
-                            isDisabled={this.state.selectPartyDisable}
-                        />
-                        <Button type="button" className={"w-100"} variant="type-2">Search</Button>
+                        <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
+                            <Tab eventKey="home" title="Home">
+                                <p>Enter group</p>
+                                <AsyncTypeahead
+                                    id="asdasd"
+                                    isLoading={this.state.isLoading}
+                                    onSearch={query => {
+                                        this.partiesSearch(query)
+                                    }}
+                                    options={this.state.parties}
+                                    useCache={false}
+                                    promptText="Type to search..."
+                                    maxResults={10}
+                                    minLength={1}
+                                />
+                                <p className="row-delimiter">or</p>
+                                <Select
+                                    name="group-select"
+                                    options={this.state.universities}
+                                    onChange={this.universityChange}
+                                />
+                                <Select
+                                    name="group-select"
+                                    className={'select-party'}
+                                    value={this.state.selectPartyValue}
+                                    options={this.state.selectPartyOptions}
+                                    isDisabled={this.state.selectPartyDisable}
+                                />
+                                <Button type="button" className={"w-100"} variant="type-2">Search</Button>
+                            </Tab>
+                            <Tab eventKey="profile" title="Profile">
+
+                            </Tab>
+                            <Tab eventKey="contact" title="Contact" disabled>
+
+                            </Tab>
+                        </Tabs>
+
                     </form>
                     <Link to={"/group/show"}>group</Link>
                 </div>

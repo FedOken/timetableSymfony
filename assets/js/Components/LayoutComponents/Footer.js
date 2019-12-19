@@ -4,7 +4,10 @@ export default class Footer extends Component {
     render() {
         return (
             <footer>
-                <h1>Footer</h1>
+                <div className={'container footer'}>
+                    <span>&#169; 2019 SCHEDULE. All rights reserved.</span>
+                    <span>Created by Oleksandr Fedorenko</span>
+                </div>
             </footer>
         );
     }

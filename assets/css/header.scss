@@ -5,17 +5,37 @@ $transitionDuration: 0.2s;
 header {
   display: flex;
   justify-content: center;
-  padding: 10px 15px;
+  padding: 15px;
 
-  * {
+  .nav-tab * {
     transition: $transitionDuration all ease;
   }
+
+  .logo-container {
+    background: $background;
+    height: 85px;
+    margin: 0 30px;
+    display: flex;
+    transition-duration: 0.2s;
+
+    .logo-svg {
+      fill: $btn-type-2-color;
+      height: 100%;
+      width: auto;
+    }
+
+    &:hover .logo-svg{
+      fill: $btn-type-2-hover-color;
+    }
+  }
+
 
   .nav-tab {
     border-right: 1px solid;
     text-align: center;
     padding: 0 30px;
-    background: #ffffff;
+    background: $background;
+    min-width: 109px;
 
     display: flex;
     justify-content: center;
@@ -30,9 +50,10 @@ header {
         display: block;
         height: $iconHeight;
         width: auto !important;
+        fill: $main-color;
 
         &:last-child, &:last-child path {
-          color: $main-hover-color;
+          fill: $main-hover-color;
         }
       }
     }
