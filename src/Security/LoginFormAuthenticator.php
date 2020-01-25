@@ -32,6 +32,15 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     private $csrfTokenManager;
     private $passwordEncoder;
 
+    private $userIsValid = false;
+    private $passwordIsValid = false;
+    private $tokenIsValid = false;
+
+    const LOGIN_STATUS = 'login_status';
+    const LOGIN_STATUS_OK = 'ok';
+    const LOGIN_STATUS_FAIL = 'fail';
+    const REASON = '';
+
     public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->entityManager = $entityManager;
@@ -42,7 +51,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function supports(Request $request)
     {
-        return 'login' === $request->attributes->get('_route') && $request->isMethod('POST');
+        return 'react-login-login' === $request->attributes->get('_route') && $request->isMethod('POST');
     }
 
     public function getCredentials(Request $request)
@@ -65,6 +74,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
         if (!$this->csrfTokenManager->isTokenValid($token)) {
             throw new InvalidCsrfTokenException();
+        } else {
+            $this->tokenIsValid = true;
         }
 
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
@@ -72,6 +83,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         if (!$user) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
+        } else {
+            $this->userIsValid = true;
         }
 
         return $user;
@@ -79,30 +92,36 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        $this->passwordIsValid = $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        return $this->passwordIsValid;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
-            return new RedirectResponse($targetPath);
-        }
+        $request->getSession()->set(self::LOGIN_STATUS, self::LOGIN_STATUS_OK);
+        $request->getSession()->set(self::REASON, 'You have successfully logged in!');
 
-        return new RedirectResponse($this->urlGenerator->generate('login'));
+        return new RedirectResponse($this->urlGenerator->generate('react-login-response'));
     }
 
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        $data = ['messageKey' => $exception->getMessageKey()];
+        $request->getSession()->set(self::LOGIN_STATUS, self::LOGIN_STATUS_FAIL);
 
-        $request->getSession()->set(Security::AUTHENTICATION_ERROR, $data);
+        if (!$this->userIsValid) {
+            $request->getSession()->set(self::REASON, 'Email could not be found');
+        } elseif (!$this->passwordIsValid) {
+            $request->getSession()->set(self::REASON, 'Incorrect password');
+        } elseif (!$this->tokenIsValid) {
+            $request->getSession()->set(self::REASON, 'Incorrect token');
+        }
 
-        return new RedirectResponse($this->urlGenerator->generate('login'));
+        return new RedirectResponse($this->urlGenerator->generate('react-login-response'));
     }
 
     protected function getLoginUrl()
     {
-        return $this->urlGenerator->generate('login');
+        return $this->urlGenerator->generate('react-login-login');
     }
 }

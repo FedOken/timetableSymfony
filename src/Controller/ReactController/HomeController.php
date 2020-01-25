@@ -52,11 +52,11 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/react/home/get-parties/{query}", name="react-home-getParties-query")
+     * @Route("/react/home/get-parties-autocomplete/{query}", name="react-home-getPartiesAutocomplete-query")
      * @param string $query
      * @return JsonResponse
      */
-    public function getPartiesQuery($query)
+    public function getPartiesAutocomplete($query)
     {
         if ($query === 'undefined') {
             return new JsonResponse([]);
@@ -74,19 +74,13 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/react/home/get-parties/{universityId}", name="react-home-getParties")
+     * @Route("/react/home/get-parties-select/{universityId}", name="react-home-getParties")
      * @param int $universityId
      * @return JsonResponse
      */
-    public function getParties(int $universityId)
+    public function getPartiesSelect(int $universityId)
     {
-        /**@var University $university*/
-        $university= $this->getDoctrine()->getRepository(University::class)->findOneBy(['id' => $universityId]);
-
-        $parties = [];
-        foreach ($university->faculties as $faculty) {
-            $parties = array_merge($parties, $faculty->parties);
-        }
+        $parties = $this->getDoctrine()->getRepository(Party::class)->findByUniversity($universityId);
 
         $response = [];
         /**@var Party $party*/

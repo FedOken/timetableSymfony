@@ -2,43 +2,25 @@
 
 namespace App\Controller\ReactController;
 
-use phpDocumentor\Reflection\DocBlock\Serializer;
+use App\Security\LoginFormAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class ReactController extends AbstractController
 {
     /**
-     * @Route("/react/login", name="react-login")
+     * @Route("/react/login/get-user-data", name="react-login-getUserData")
      *
-     * @param AuthenticationUtils $authenticationUtils
      * @return JsonResponse
      */
-    public function login(AuthenticationUtils $authenticationUtils): JsonResponse
+    public function reactLoginGetUserData()
     {
-//        $serializer = $this->container->get('serializer');
-//
-//        // Serialize your object in Json
-//        $jsonObject = $serializer->serialize($this->getUser(), 'json', [
-//            'circular_reference_handler' => function ($object) {
-//                return $object->id;
-//            }
-//        ]);
+        $token = $this->container->get('security.csrf.token_manager')->getToken('authenticate')->getValue();
 
-        $response = [
-            //'user' => json_decode($jsonObject),
-            'user' => 'seffe',
-            'token' => $this->container->get('security.csrf.token_manager')->getToken('authenticate')->getValue(),
-            'error' => $authenticationUtils->getLastAuthenticationError(),
-            'lastUsername' => $authenticationUtils->getLastUsername()
-        ];
-        return new JsonResponse($response);
+        return new JsonResponse($token);
     }
 
     /**
@@ -47,43 +29,34 @@ class ReactController extends AbstractController
      * @param AuthenticationUtils $authenticationUtils
      * @return JsonResponse
      */
-    public function logins(AuthenticationUtils $authenticationUtils): Response
+    public function reactLoginLogin(AuthenticationUtils $authenticationUtils)
     {
-
-        $serializer = $this->container->get('serializer');
-
-        // Serialize your object in Json
-        $jsonObject = $serializer->serialize($this->getUser(), 'json', [
-            'circular_reference_handler' => function ($object) {
-                return $object->id;
-            }
-        ]);
-
-        $response = [
-            'user' => $jsonObject,
-            'token' => $this->container->get('security.csrf.token_manager')->getToken('authenticate')->getValue(),
-            'error' => $authenticationUtils->getLastAuthenticationError(),
-            'lastUsername' => $authenticationUtils->getLastUsername()
-        ];
-
-        // Get the login error if there is one
+        $token = $this->container->get('security.csrf.token_manager')->getToken('authenticate')->getValue();
         $error = $authenticationUtils->getLastAuthenticationError();
-
-        // Last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        $response = [
+            'user' => 'seffe',
+            'token' => $token,
+            'error' => $error,
+            'lastUsername' => $lastUsername
+        ];
+
+        return new JsonResponse($response);
     }
 
 
     /**
-     * @Route("/react/test", name="react-test")
+     * @Route("/react/login/response", name="react-login-response")
      * @param Request $request
      * @return JsonResponse
      */
     public function setLanguage(Request $request)
     {
-        $response = [1, 2, 'test', 'TT' => 'ww'];
+        $response = [
+            'status' => $request->getSession()->get(LoginFormAuthenticator::LOGIN_STATUS),
+            'reason' => $request->getSession()->get(LoginFormAuthenticator::REASON),
+        ];
         return new JsonResponse($response);
     }
 }

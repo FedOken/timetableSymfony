@@ -1,49 +1,106 @@
-import React, {Component} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import {Redirect} from "react-router-dom";
+import {useAlert} from 'react-alert'
+import {connect} from 'react-redux';
+import {bindActionCreators} from "redux";
+import {change} from "../../actions/login";
 
-import MessageWarning from "../CommonComponents/MessageWarning";
+function Login(props) {
+    // const [email, setEmail] = useState('');
+    // const [password, setPassword] = useState('');
+    // const [token, setToken] = useState('');
+    // const [successfulLogin, setSuccessfulLogin] = useState(false);
 
-export default class Login extends Component {
+    // useEffect(() => {
+    //     axios.post(`/react/login/get-user-data`)
+    //         .then(res => {
+    //             setToken(res.data);
+    //         });
+    //
+    // }, []);
+    //
+    // const alert = useAlert();
+    //
+    // const formOnSubmit = (event) => {
+    //     event.preventDefault();
+    //
+    //     let data = new FormData();
+    //     data.set('email', email);
+    //     data.set('password', password);
+    //     data.set('_csrf_token', token);
+    //
+    //     axios.post(`/react/login/login`, data).then(res => {
+    //         if (res.data.status === 'ok') {
+    //             //setSuccessfulLogin(true);
+    //             alert.success(res.data.reason);
+    //         } else {
+    //             alert.error(res.data.reason);
+    //         }
+    //
+    //     });
+    // };
+    //
+    // const inputEmailOnChange = (event) => {
+    //     setEmail( event.target.value )
+    // };
+    //
+    // const inputPasswordOnChange = (event) => {
+    //     setPassword( event.target.value )
+    // };
+    //
+    // const changeState = () => {
+    //   console.log(props.loginStatus);
+    //   props.changeStatus( props.loginStatus + 1 );
+    // };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            response: [],
-        };
-    }
+    //console.log
+    return (
 
-    componentDidMount() {
-        axios.post(`/react/login`)
-            .then(res => {
-                console.log(res.data);
-                this.setState( {response: res.data} );
-            });
-    }
+      <p onClick={() => {props.change(false)}}>
+         awdawdawd
+      </p>
+    );
+    // if (successfulLogin) {
+    //     return (
+    //         <Redirect to="/" />
+    //     )
+    // } else {
+    //     return (
+    //         <div className="container block-center-container login-container">
+    //             <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3 block-center">
+    //                 <Form onSubmit={formOnSubmit}>
+    //                     <Form.Group controlId="login-email" >
+    //                         <Form.Label>Enter email address</Form.Label>
+    //                         <Form.Control type="email" name="email" required value={email} onChange={inputEmailOnChange} />
+    //                     </Form.Group>
+    //
+    //                     <Form.Group controlId="login-password">
+    //                         <Form.Label>Enter password</Form.Label>
+    //                         <Form.Control type="password" autoComplete="on" name="password" required value={password} onChange={inputPasswordOnChange} />
+    //                     </Form.Group>
+    //                     <input type="hidden" name="_csrf_token" value={token || ''}/>
+    //                     <Button type="submit" className={"w-100"} variant="type-2" >Search</Button>
+    //                     <Button type="button" className={"w-100"} variant="type-2" onClick={changeState}>Change state</Button>
+    //                 </Form>
+    //             </div>
+    //         </div>
+    //     )
+    // }
+}
 
-    render() {
-        return (
-            <div className="container">
-                {this.state.response.error ? <MessageWarning message={this.state.response.error}/> : ''}
-
-                <div className="col-md-4">
-                    <form method="post" action="">
-
-
-
-                        <div className="checkbox mb-3">You are logged in as {this.state.response.user ? this.state.response.user.email : ''}, <a href="/logout">Logout</a></div>
-
-                        <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
-                        <label htmlFor="inputEmail" className="sr-only">Email</label>
-                        <input type="email" name="email" id="inputEmail" className="form-control" placeholder="Email" required autoFocus/>
-                        <label htmlFor="inputPassword" className="sr-only">Password</label>
-                        <input type="password" name="password" id="inputPassword" className="form-control" placeholder="Password" required/>
-
-                        <input type="hidden" name="_csrf_token" value={this.state.response.token || ''}/>
-                        <button className="btn btn-lg btn-primary" type="submit">Sign in</button>
-                    </form>
-                </div>
-            </div>
-        );
+function mapStateToProps(state) {
+    return {
+        login: state.login
     }
 }
+
+function matchDispatchToProps(dispatch) {
+    return bindActionCreators({change: change}, dispatch)
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(Login);
+
 

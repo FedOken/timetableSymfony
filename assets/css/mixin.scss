@@ -1,0 +1,19 @@
+@mixin main-color {
+  color: $main-color;
+  border-color: $main-color;
+}
+
+@mixin font-style {
+  font-family: 'Neucha', sans-serif;
+  font-size: 18px;
+}
+
+@mixin link-style {
+  a {
+    color: $main-color;
+    &:hover {
+      color: $main-color;
+      text-decoration: none;
+    }
+  }
+}

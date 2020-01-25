@@ -19,13 +19,9 @@ header {
     transition-duration: 0.2s;
 
     .logo-svg {
-      fill: $btn-type-2-color;
+      fill: $main-color;
       height: 100%;
       width: auto;
-    }
-
-    &:hover .logo-svg{
-      fill: $btn-type-2-hover-color;
     }
   }
 

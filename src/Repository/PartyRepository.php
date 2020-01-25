@@ -17,12 +17,14 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class PartyRepository extends ServiceEntityRepository
 {
+    protected $universityRepo;
     protected $facultyRepo;
 
-    public function __construct(RegistryInterface $registry, FacultyRepository $facultyRepository)
+    public function __construct(RegistryInterface $registry, UniversityRepository $universityRepository, FacultyRepository $facultyRepository)
     {
         parent::__construct($registry, Party::class);
 
+        $this->universityRepo = $universityRepository;
         $this->facultyRepo = $facultyRepository;
     }
 
@@ -37,5 +39,23 @@ class PartyRepository extends ServiceEntityRepository
             ->setParameter('name', '%'.$name.'%')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param int $universityId
+     * @return University[]
+     */
+    public function findByUniversity(int $universityId)
+    {
+        $university = $this->universityRepo->findOneBy(['id' => $universityId]);
+        $faculties = $university->faculties;
+
+        $parties = [];
+        /**@var Faculty $faculty */
+        foreach ($faculties as $faculty) {
+            $parties = array_merge($parties, $faculty->parties);
+        }
+
+        return $parties;
     }
 }

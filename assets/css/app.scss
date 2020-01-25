@@ -8,9 +8,11 @@
 @import "Variables/font.css";
 @import "Variables/color.scss";
 @import "Variables/button.scss";
+@import "mixin.scss";
 
 @import "main_config.scss";
 @import "header.scss";
 @import "Home/home.scss";
 @import "Group/group.scss";
+@import "Login/login.scss";
 @import "footer.scss";

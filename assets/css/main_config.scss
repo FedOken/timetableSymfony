@@ -11,8 +11,9 @@ html, body {
 }
 
 body {
-  font-family: 'Neucha', sans-serif;
-  font-size: 18px;
+  @include main-color;
+  @include link-style;
+  @include font-style;
 
   .div-particles {
     position: fixed;
@@ -21,20 +22,7 @@ body {
     z-index: -999;
   }
 
-  * {
-    color: $main-color;
-    border-color: $main-color;
-  }
-
-  a {
-    color: #000000;
-    &:hover {
-      color: #000000;
-      text-decoration: none;
-    }
-  }
-
-  p {
+  p, label {
     margin: 0;
   }
 
@@ -45,7 +33,6 @@ body {
   header {
     height: $header-height;
   }
-
 
   main {
     display: flex;
