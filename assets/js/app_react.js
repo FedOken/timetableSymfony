@@ -3,6 +3,7 @@ import ReactDom from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Particles from "react-particles-js";
 import { transitions, positions, Provider as AlertProvider } from 'react-alert'
+
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import { syncHistoryWithStore } from 'react-router-redux'
@@ -49,9 +50,9 @@ const particlesOption = {
     }
 };
 
-import reducer from './reducers';
+import reducers from './reducers';
 
-const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = createStore(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 //const history = syncHistoryWithStore(browserHistory, store)
 
 ReactDom.render((

@@ -1,4 +1,4 @@
-export const change = (loginStatus) => {
+export const changeLoginStatus = (loginStatus) => {
     return {
         type: 'LOGIN',
         payload: loginStatus
