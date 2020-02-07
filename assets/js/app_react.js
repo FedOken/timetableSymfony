@@ -15,9 +15,9 @@ import Footer from "./Components/LayoutComponents/Footer";
 
 
 const alertOption = {
-    position: positions.TOP_CENTER,
+    position: positions.TOP_LEFT,
     timeout: 5000,
-    offset: '125px',
+    offset: '10px',
     transition: transitions.SCALE,
     containerStyle: {
         zIndex: 100
@@ -50,7 +50,7 @@ const particlesOption = {
     }
 };
 
-import reducers from './reducers';
+import reducers from './redux/reducers';
 
 const store = createStore(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 //const history = syncHistoryWithStore(browserHistory, store)

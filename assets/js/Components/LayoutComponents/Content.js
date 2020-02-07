@@ -1,24 +1,58 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect} from 'react';
 import { Switch, Route } from 'react-router-dom'
 
 import Home from "../HomeComponents/Home";
 import Login from "../LoginComponent/Login";
 import GroupShow from "../GroupComponents/GroupShow";
+import {bindActionCreators} from "redux";
+import {changeActiveElement} from "../../redux/actions/header";
+import {changeUserData} from "../../redux/actions/user";
+import {connect} from "react-redux";
+import axios from "axios";
 
-export default function Content() {
-    const [loginStatus, setLoginStatus] = useState(1);
+function Content(props) {
 
-    const changeStatus = (value) => {
-      setLoginStatus(value);
+    const clickRoute = () => {
+
+        console.log('asdasd');
     };
+
+    //Ajax on load
+    useEffect(() => {
+        axios.post(`/react/content/get-login-status`)
+            .then(res => {
+                if (res.data) {
+                    let userData = {
+                        status: true,
+                        data: res.data
+                    };
+                    console.log('ajax');
+                    props.changeUserData(userData);
+                }
+            });
+
+    }, []);
 
     return (
         <main>
             <Switch>
-                <Route exact path='/' component={Home}/>
-                <Route path='/login'><Login loginStatus={loginStatus} changeStatus={changeStatus}/></Route>
+                <Route exact path='/' component={Home} onClick={clickRoute}/>
+                <Route path='/login' component={Login}/>
                 <Route path='/group/show' component={GroupShow}/>
             </Switch>
         </main>
     );
 }
+
+
+function mapStateToProps(state) {
+    return {
+        //userData: state.userData
+    }
+}
+
+function matchDispatchToProps(dispatch) {
+    return bindActionCreators({changeUserData: changeUserData}, dispatch)
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(Content);

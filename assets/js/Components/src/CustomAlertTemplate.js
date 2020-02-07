@@ -38,7 +38,7 @@ let InfoIcon = function InfoIcon() {
 let SuccessIcon = function SuccessIcon() {
     return React.createElement(
         BaseIcon,
-        { color: 'green' },
+        { color: '#306B20' },
         React.createElement('path', { d: 'M22 11.08V12a10 10 0 1 1-5.93-9.14' }),
         React.createElement('polyline', { points: '22 4 12 14.01 9 11.01' })
     );
@@ -47,7 +47,7 @@ let SuccessIcon = function SuccessIcon() {
 let ErrorIcon = function ErrorIcon() {
     return React.createElement(
         BaseIcon,
-        { color: 'red' },
+        { color: '#C47474' },
         React.createElement('circle', { cx: '12', cy: '12', r: '10' }),
         React.createElement('line', { x1: '12', y1: '8', x2: '12', y2: '12' }),
         React.createElement('line', { x1: '12', y1: '16', x2: '12', y2: '16' })
@@ -65,7 +65,7 @@ let CloseIcon = function CloseIcon() {
             height: '10px',
             viewBox: '0 0 274.000000 275.000000',
             preserveAspectRatio: "xMidYMid meet",
-            fill: 'red'
+            fill: '#C47474'
         },
         React.createElement('g',
             { transform: "translate(0.000000,275.000000) scale(0.100000,-0.100000)", stroke: "none" },
@@ -90,7 +90,7 @@ let _extends = Object.assign || function (target) {
 
 let alertStyle = {
     backgroundColor: '#ffffff',
-    padding: '10px',
+    padding: '5px',
     borderRadius: '10px',
     display: 'flex',
     justifyContent: 'space-between',
@@ -99,17 +99,18 @@ let alertStyle = {
     fontWeight: 'bold',
     width: 'auto',
     maxWidth: '360px',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    overflow: 'hidden',
 };
 
 let styleError = {
-    color: 'red',
-    border: '2px solid red',
+    color: '#C47474',
+    border: '2px solid #C47474',
 };
 
 let styleSuccess = {
-    color: 'green',
-    border: '2px solid green',
+    color: '#306B20',
+    border: '2px solid #306B20',
 };
 
 let styleInfo = {
@@ -118,7 +119,7 @@ let styleInfo = {
 };
 
 let buttonStyle = {
-    marginLeft: '30px',
+    marginLeft: '15px',
     border: 'none',
     backgroundColor: 'transparent',
     cursor: 'pointer',
@@ -129,6 +130,10 @@ let CustomAlertTemplate = function AlertTemplate(_ref) {
         options = _ref.options,
         style = _ref.style,
         close = _ref.close;
+
+    if (message.length > 40) {
+        message = message.substr(0, 40) + '...';
+    }
 
     let alertStyleByType;
     switch (options.type) {

@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\Json;
 
@@ -265,5 +266,16 @@ class User implements UserInterface
         $this->teacher = $teacher;
 
         return $this;
+    }
+
+    public function serialize(): JsonResponse
+    {
+        $data = [
+            'id' => $this->id,
+            'email' => $this->email,
+            'role' => $this->roles[0],
+
+        ];
+        return new JsonResponse($data);
     }
 }
