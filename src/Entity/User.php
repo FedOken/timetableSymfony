@@ -268,7 +268,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function serialize(): JsonResponse
+    public function serialize()
     {
         $data = [
             'id' => $this->id,
@@ -276,6 +276,6 @@ class User implements UserInterface
             'role' => $this->roles[0],
 
         ];
-        return new JsonResponse($data);
+        return json_encode($data);
     }
 }

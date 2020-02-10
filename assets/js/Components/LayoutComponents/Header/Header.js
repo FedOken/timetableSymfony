@@ -26,7 +26,8 @@ function Header(props) {
 
 function mapStateToProps(state) {
     return {
-        headerItems: state.header
+        headerItems: state.header,
+        user: state.user,
     }
 }
 

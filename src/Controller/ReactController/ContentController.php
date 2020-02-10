@@ -4,10 +4,6 @@ namespace App\Controller\ReactController;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ContentController extends AbstractController
@@ -22,9 +18,11 @@ class ContentController extends AbstractController
         $data = $this->getUser();
 
         if ($data) {
-            return $data->serialize();
+            $data = $data->serialize();
+        } else {
+            $data = null;
         }
 
-        return new JsonResponse(null);
+        return new JsonResponse($data);
     }
 }

@@ -42,21 +42,18 @@ let header = [
 export default function index(state = header, action) {
     switch (action.type) {
         case 'LOGIN':
-            if (action.payload) {
-                return header.map((item) => {
-                    if (item.id === 5) {
-                        return {
-                            id: 5,
-                            text: 'Profile',
-                            icon: <i className="far fa-id-badge"></i>,
-                            url: '/profile',
-                        }
-                    } else {
-                        return item;
+            return header.map((item) => {
+                if (item.id === 5) {
+                    return {
+                        id: 5,
+                        text: 'Profile',
+                        icon: <i className="far fa-id-badge"></i>,
+                        url: '/profile',
                     }
-                });
-            }
-            return state;
+                } else {
+                    return item;
+                }
+            });
         case 'CHANGE_ACTIVE':
             return state;
         default:

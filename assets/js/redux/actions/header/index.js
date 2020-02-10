@@ -1,7 +1,6 @@
-export const changeLoginStatus = (loginStatus) => {
+export const changeLoginStatus = () => {
     return {
         type: 'LOGIN',
-        payload: loginStatus
     }
 };
 

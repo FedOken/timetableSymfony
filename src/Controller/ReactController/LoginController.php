@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class ReactController extends AbstractController
+class LoginController extends AbstractController
 {
     /**
      * @Route("/react/login/get-user-data", name="react-login-getUserData")
@@ -31,18 +31,24 @@ class ReactController extends AbstractController
      */
     public function reactLoginLogin(AuthenticationUtils $authenticationUtils)
     {
-        $token = $this->container->get('security.csrf.token_manager')->getToken('authenticate')->getValue();
-        $error = $authenticationUtils->getLastAuthenticationError();
-        $lastUsername = $authenticationUtils->getLastUsername();
-
-        $response = [
-            'user' => 'seffe',
-            'token' => $token,
-            'error' => $error,
-            'lastUsername' => $lastUsername
-        ];
-
-        return new JsonResponse($response);
+//        $token = $this->container->get('security.csrf.token_manager')->getToken('authenticate')->getValue();
+//        $error = $authenticationUtils->getLastAuthenticationError();
+//        $lastUsername = $authenticationUtils->getLastUsername();
+//
+//        $data = $this->getUser();
+//
+//        if ($data) {
+//            $data = $data->serialize();
+//        } else {
+//            $data = null;
+//        }
+//
+//        $response = [
+//            'user' => $data,
+//            'error' => $error,
+//        ];
+//
+//        return new JsonResponse($response);
     }
 
 
@@ -56,6 +62,7 @@ class ReactController extends AbstractController
         $response = [
             'status' => $request->getSession()->get(LoginFormAuthenticator::LOGIN_STATUS),
             'reason' => $request->getSession()->get(LoginFormAuthenticator::REASON),
+            'user' => $this->getUser()->serialize(),
         ];
         return new JsonResponse($response);
     }

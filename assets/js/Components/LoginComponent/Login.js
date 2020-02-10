@@ -7,6 +7,7 @@ import {useAlert} from 'react-alert'
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
 import { changeLoginStatus } from "../../redux/actions/header";
+import {changeUserData} from "../../redux/actions/user";
 
 function Login(props) {
     const alert = useAlert();
@@ -35,7 +36,13 @@ function Login(props) {
 
         axios.post(`/react/login/login`, data).then(res => {
             if (res.data.status === 'ok') {
-                props.changeLoginStatus(true);
+                let userData = {
+                    status: true,
+                    data: JSON.parse(res.data.user)
+                };
+                props.changeUserData(userData);
+                props.changeLoginStatus();
+
                 alert.success(res.data.reason);
             } else {
                 alert.error(res.data.reason);
@@ -80,7 +87,7 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch) {
-    return bindActionCreators({changeLoginStatus: changeLoginStatus}, dispatch)
+    return bindActionCreators({changeUserData: changeUserData, changeLoginStatus: changeLoginStatus}, dispatch)
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(Login);

@@ -53,7 +53,6 @@ const particlesOption = {
 import reducers from './redux/reducers';
 
 const store = createStore(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
-//const history = syncHistoryWithStore(browserHistory, store)
 
 ReactDom.render((
     <Provider store={store}>

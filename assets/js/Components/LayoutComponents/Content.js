@@ -5,38 +5,35 @@ import Home from "../HomeComponents/Home";
 import Login from "../LoginComponent/Login";
 import GroupShow from "../GroupComponents/GroupShow";
 import {bindActionCreators} from "redux";
-import {changeActiveElement} from "../../redux/actions/header";
+import {changeLoginStatus} from "../../redux/actions/header";
 import {changeUserData} from "../../redux/actions/user";
 import {connect} from "react-redux";
 import axios from "axios";
 
 function Content(props) {
 
-    const clickRoute = () => {
-
-        console.log('asdasd');
-    };
-
     //Ajax on load
     useEffect(() => {
-        axios.post(`/react/content/get-login-status`)
-            .then(res => {
-                if (res.data) {
-                    let userData = {
-                        status: true,
-                        data: res.data
-                    };
-                    console.log('ajax');
-                    props.changeUserData(userData);
-                }
-            });
+        if (!props.user.isLogin) {
+            axios.post(`/react/content/get-login-status`)
+                .then(res => {
+                    if (res.data.length) {
+                        let userData = {
+                            status: true,
+                            data: JSON.parse(res.data)
+                        };
+                        props.changeLoginStatus();
+                        props.changeUserData(userData);
+                    }
+                });
+        }
 
     }, []);
 
     return (
         <main>
             <Switch>
-                <Route exact path='/' component={Home} onClick={clickRoute}/>
+                <Route exact path='/' component={Home}/>
                 <Route path='/login' component={Login}/>
                 <Route path='/group/show' component={GroupShow}/>
             </Switch>
@@ -47,12 +44,12 @@ function Content(props) {
 
 function mapStateToProps(state) {
     return {
-        //userData: state.userData
+        user: state.user
     }
 }
 
 function matchDispatchToProps(dispatch) {
-    return bindActionCreators({changeUserData: changeUserData}, dispatch)
+    return bindActionCreators({changeUserData: changeUserData, changeLoginStatus: changeLoginStatus}, dispatch)
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(Content);
