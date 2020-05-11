@@ -1,0 +1,31 @@
+.login {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  .block-login {
+    border: 2px solid $primary_100;
+    padding: 15px;
+    border-radius: 10px;
+    background: $background;
+
+    input {
+      margin-bottom: 10px;
+    }
+  }
+
+  .block-additional {
+    margin-top: 20px;
+    font-size: 14px;
+
+    span {
+      cursor: pointer;
+      color: $selection_100;
+
+      &:hover {
+        font-weight: bold;
+      }
+    }
+  }
+}

@@ -15,13 +15,13 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-class HomeController extends AbstractController
+class SearchController extends AbstractController
 {
     /**
-     * @Route("/react/home/get-university", name="react-home-getUniversity")
+     * @Route("/react/search/get-universities", name="react-search-getUniversities")
      * @return JsonResponse
      */
-    public function getUniversity()
+    public function reactSearchGetUniversities()
     {
         $universitiesModel = $this->getDoctrine()->getRepository(University::class)->findAll();
 
@@ -35,12 +35,13 @@ class HomeController extends AbstractController
     }
 
     /**
- * @Route("/react/home/get-parties-all", name="react-home-getPartiesAll")
- * @return JsonResponse
- */
-    public function getPartiesAll()
+     * @Route("/react/search/get-parties/{universityId}", name="react-search-getParties")
+     * @param int $universityId
+     * @return JsonResponse
+     */
+    public function reactSearchGetParties(int $universityId)
     {
-        $parties = $this->getDoctrine()->getRepository(Party::class)->findAll();
+        $parties = $this->getDoctrine()->getRepository(Party::class)->findByUniversity($universityId);
 
         $response = [];
         /**@var Party $party*/
@@ -51,13 +52,16 @@ class HomeController extends AbstractController
         return new JsonResponse($response);
     }
 
+
     /**
-     * @Route("/react/home/get-parties-autocomplete/{query}", name="react-home-getPartiesAutocomplete-query")
+     * @Route("/react/search/get-parties-autocomplete/{query}", name="react-search-getPartiesAutocomplete")
      * @param string $query
      * @return JsonResponse
      */
-    public function getPartiesAutocomplete($query)
+    public function reactSearchGetPartiesAutocomplete($query)
     {
+        $query = trim($query);
+
         if ($query === 'undefined') {
             return new JsonResponse([]);
         }
@@ -68,24 +72,6 @@ class HomeController extends AbstractController
         /**@var Party $party*/
         foreach ($parties as $party) {
             $response[] = ['id' => $party->id, 'label' => $party->name];
-        }
-
-        return new JsonResponse($response);
-    }
-
-    /**
-     * @Route("/react/home/get-parties-select/{universityId}", name="react-home-getParties")
-     * @param int $universityId
-     * @return JsonResponse
-     */
-    public function getPartiesSelect(int $universityId)
-    {
-        $parties = $this->getDoctrine()->getRepository(Party::class)->findByUniversity($universityId);
-
-        $response = [];
-        /**@var Party $party*/
-        foreach ($parties as $party) {
-            $response[] = ['value' => $party->id, 'label' => $party->name];
         }
 
         return new JsonResponse($response);

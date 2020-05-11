@@ -132,4 +132,15 @@ class UniversityTime
     {
         return $this->schedules->getValues();
     }
+
+    public function serialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'timeFrom' => date('H:i', $this->timeFrom->getTimestamp()),
+            'timeTo' => date('H:i', $this->timeTo->getTimestamp()),
+            'university' => $this->university,
+        ];
+    }
 }

@@ -1,18 +1,30 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
-//@import "~@fortawesome/fontawesome-free/scss/fontawesome";
 @import "~react-bootstrap-typeahead/css/Typeahead.min.css";
 @import "~react-bootstrap-typeahead/css/Typeahead-bs4.min.css";
 @import "~react-select-2/dist/css/react-select-2.css";
-//@import "~react-bootstrap/dist/";
 
-@import "Variables/font.css";
-@import "Variables/color.scss";
-@import "Variables/button.scss";
-@import "mixin.scss";
+@import "variable/font";
+@import "variable/color";
+@import "variable/form_control";
 
-@import "main_config.scss";
-@import "header.scss";
-@import "Home/home.scss";
-@import "Group/group.scss";
-@import "Login/login.scss";
-@import "footer.scss";
+@import "mixin/font";
+@import "mixin/flex";
+
+@import "layout/index";
+@import "layout/header";
+@import "layout/footer";
+
+@import "src/alert";
+@import "src/preloader";
+
+@import "page/welcome/welcome";
+@import "page/search/search";
+@import "page/schedule/schedule";
+@import "page/contact/contact";
+@import "page/contact/business";
+@import "page/authenticate/login";
+@import "page/authenticate/register";
+@import "page/authenticate/confirm-email-send";
+@import "page/authenticate/reset-password";
+@import "page/authenticate/reset-password-email-send";
+@import "page/profile/profile";

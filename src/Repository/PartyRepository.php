@@ -37,6 +37,7 @@ class PartyRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('tb')
             ->andWhere('tb.name LIKE :name')
             ->setParameter('name', '%'.$name.'%')
+            ->addOrderBy('tb.course', 'ASC')
             ->getQuery()
             ->getResult();
     }

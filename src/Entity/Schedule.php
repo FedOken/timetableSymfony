@@ -186,4 +186,19 @@ class Schedule
     {
         return ArrayHelper::getValue($this, 'cabinet.building.university');
     }
+
+    public function serialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'lesson_name' => $this->lesson_name,
+            'party' => $this->party,
+            'lesson_type' => $this->lesson_type,
+            'teacher' => $this->teacher,
+            'cabinet' => $this->cabinet,
+            'week' => $this->week,
+            'day' => $this->day,
+            'time' => $this->universityTime
+        ];
+    }
 }

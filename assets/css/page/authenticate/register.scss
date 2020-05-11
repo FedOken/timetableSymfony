@@ -1,0 +1,31 @@
+.register {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  .block-register {
+    border: 2px solid $primary_100;
+    padding: 15px;
+    border-radius: 10px;
+    background: $background;
+
+    nav {
+      margin-bottom: 15px;
+
+      .nav-item {
+        padding: 8px 12px;
+        font-weight: bold;
+        border-color: #CED4DA, #CED4DA, $background;
+
+        &.active {
+          color: $selection_100;
+        }
+      }
+    }
+
+    input, .select {
+      margin-bottom: 10px;
+    }
+  }
+}

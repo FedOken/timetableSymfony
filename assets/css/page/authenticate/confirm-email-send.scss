@@ -1,0 +1,28 @@
+.confirm-email-send {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  p {
+    text-align: center;
+    font-size: 25px;
+    line-height: 28px;
+  }
+
+  .title {
+    font-size: 45px;
+    line-height: 50px;
+    font-weight: bold;
+  }
+
+  div {
+    display: flex;
+    margin-top: 30px;
+    justify-content: center;
+
+    button.btn {
+      width: 160px;
+      margin: 0 15px;
+    }
+  }
+}

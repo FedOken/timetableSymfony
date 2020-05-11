@@ -1,0 +1,44 @@
+.business, .technical {
+  @include flex-center-column;
+
+  p {
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .title {
+    @include font-45
+  }
+
+  .block {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+
+    input {
+      flex: 1 0 auto;
+    }
+    span {
+      width: 100px;
+      text-align: center;
+      font-size: 25px;
+      //font-weight: bold;
+    }
+  }
+
+  .description {
+    @include font-25;
+    font-weight: normal;
+    margin: 10px 0 40px 0;
+  }
+
+  .block_button {
+    display: flex;
+    justify-content: flex-end;
+
+    .btn {
+      width: 160px;
+      margin: 10px 0 0 0;
+    }
+  }
+}

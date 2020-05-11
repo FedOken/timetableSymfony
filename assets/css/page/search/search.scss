@@ -1,0 +1,36 @@
+.search {
+  @include flex-center-column;
+  align-items: center;
+
+  .block-search {
+    border: 2px solid $primary_100;
+    padding: 15px;
+    border-radius: 10px;
+    background: $background;
+
+    nav {
+      .nav-item {
+        font-weight: bold;
+        border-color: #CED4DA, #CED4DA, $background;
+
+        &.active {
+          color: $selection_100;
+        }
+      }
+    }
+
+    .enter-group {
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+
+    .row-delimiter {
+      margin: 20px 0;
+    }
+
+    .select {
+      margin-bottom: 10px;
+    }
+  }
+
+}

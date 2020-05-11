@@ -10,3 +10,10 @@ export const changeActiveElement = (element) => {
         payload: element
     }
 };
+
+export const changeHeaderType = (newType) => {
+    return {
+        type: 'CHANGE_HEADER_TYPE',
+        payload: newType
+    }
+};

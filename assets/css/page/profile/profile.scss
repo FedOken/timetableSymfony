@@ -1,0 +1,41 @@
+.profile {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  .block-center {
+    margin-top: 50px;
+
+    div {
+      margin-bottom: 50px;
+
+      p {
+        @include font-16;
+        margin-bottom: 10px;
+      }
+      .title {
+        font-size: 22px;
+        line-height: 24px;
+        font-weight: bold;
+      }
+
+      input {
+        margin-bottom: 10px;
+      }
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+
+      .btn {
+        margin: 0;
+      }
+    }
+
+  }
+
+
+
+}

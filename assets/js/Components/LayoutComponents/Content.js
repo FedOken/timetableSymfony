@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom'
 
 import Home from "../HomeComponents/Home";
 import Login from "../LoginComponent/Login";
+import Welcome from "../../component/page/welcome/Welcome";
 import GroupShow from "../GroupComponents/GroupShow";
 import {bindActionCreators} from "redux";
 import {changeLoginStatus} from "../../redux/actions/header";
@@ -34,6 +35,7 @@ function Content(props) {
         <main>
             <Switch>
                 <Route exact path='/' component={Home}/>
+                <Route path='/welcome' component={Welcome}/>
                 <Route path='/login' component={Login}/>
                 <Route path='/group/show' component={GroupShow}/>
             </Switch>

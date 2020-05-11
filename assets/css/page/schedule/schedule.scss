@@ -1,0 +1,133 @@
+.schedule {
+  @include flex-center-column;
+
+  .block-title {
+    height: 40px;
+    border: 2px solid $primary_100;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+
+    span:first-child {
+      display: block;
+      min-width: max-content;
+      font-weight: bold;
+      color: $selection_100;
+      padding: 0 10px;
+      border-right: 2px solid $primary_100;
+    }
+    span:last-child {
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+    }
+
+  }
+
+  .block-day {
+    height: 30px;
+    font-size: 18px;
+    border: 2px solid $primary_100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 10px;
+    background: $background;
+  }
+
+  .block-time {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid $primary_100;
+    border-radius: 5px;
+    margin-top: 10px;
+    align-items: center;
+    justify-content: center;
+    height: 88px;
+    padding: 0 5px;
+    background: $background;
+
+    .time {
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .delimiter {
+      border-bottom: 1px solid $primary_100;
+      width: 100%;
+    }
+  }
+
+  .block-schedule {
+    border: 1px solid $primary_100;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    margin-top: 10px;
+    text-align: center;
+    background: $background;
+
+    &.empty {
+      height: 88px;
+      font-size: 35px;
+      justify-content: center;
+    }
+
+    .delimiter {
+      border-bottom: 1px solid #4A707A;
+      margin: 5px 0;
+    }
+
+    .block-lesson {
+      height: 35px;
+      font-size: 16px;
+      line-height: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .block-info {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      height: 20px;
+
+      .teacher {
+        flex: 1 0 auto;
+        margin-right: 5px;
+        line-height: 20px;
+      }
+
+      .block {
+        width: 30px;
+        height: 20px;
+        display: flex;
+        border-radius: 5px;
+        color: $background;
+        font-size: 14px;
+        justify-content: center;
+        align-items: center;
+
+        &.cabinet {
+          background: $primary_100;
+          margin-right: 5px;
+        }
+
+        &.building {
+          background: $primary_75;
+        }
+      }
+
+
+    }
+  }
+
+
+}

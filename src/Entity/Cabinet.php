@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Helper\ArrayHelper;
 use App\Helper\MagicTrait;
 use App\Repository\BuildingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -118,5 +119,14 @@ class Cabinet
         }
 
         return $this;
+    }
+
+    public function serialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'building' => $this->building->serialize()
+        ];
     }
 }
