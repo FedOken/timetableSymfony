@@ -1,0 +1,152 @@
+$duration: 0.25s;
+
+%info-block {
+  position: absolute;
+  top: 102px;
+  border: 1px solid $selection_75;
+  color: $selection_100;
+  z-index: 20;
+  border-radius: 5px;
+  background: $background;
+  padding: 5px;
+  box-shadow: 4px 4px 8px rgba(74, 112, 122, 0.25);
+  transition-duration: $duration;
+  opacity: 0;
+  visibility: hidden;
+  white-space: nowrap;
+}
+
+%lesson-type-colors {
+  background: $primary_50;
+  &.type-1 { background: $primary_50; }
+  &.type-2 { background: $additional_type2_60; }
+  &.type-3 { background: $additional_type3_60; }
+  &.type-4 { background: $additional_type1_60; }
+}
+
+%building-type-colors {
+  background: $primary_75;
+  &.type-1 { background: $primary_75; }
+  &.type-2 { background: $additional_type3_60; }
+  &.type-3 { background: $additional_type1_60; }
+  &.type-4 { background: $additional_type2_60; }
+}
+
+.block-schedule-container {
+
+  .block-schedule-main {
+    border: 1px solid $primary_100;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    margin-top: 10px;
+    text-align: center;
+    background: $background;
+    position: relative;
+    transition-duration: $duration;
+
+    &.empty {
+      height: 88px;
+      font-size: 35px;
+      justify-content: center;
+    }
+
+    .delimiter {
+      border-bottom: 1px solid #4A707A;
+      margin: 5px 0;
+    }
+
+    .block-lesson {
+      height: 35px;
+      font-size: 16px;
+      line-height: 18px;
+      word-break: break-all;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .block-additional {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      height: 20px;
+      font-size: 14px;
+
+      .teacher {
+        flex: 1 0 auto;
+        margin-right: 5px;
+        line-height: 20px;
+        text-align: left;
+        cursor: pointer;
+        transition-duration: $duration;
+
+        &:hover {
+          color: $selection_100;
+        }
+      }
+
+      .block {
+        min-width: 30px;
+        height: 20px;
+        display: flex;
+        border-radius: 5px;
+        color: $background;
+        font-size: 14px;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        padding: 0 5px;
+
+        &.cabinet {
+          @extend %building-type-colors;
+          margin-right: 5px;
+
+          &:hover {
+            background: $selection_75;
+          }
+        }
+
+        &.lesson_type {
+          @extend %lesson-type-colors;
+
+          &:hover {
+            background: $selection_75;
+          }
+        }
+      }
+    }
+
+    &:hover {
+      box-shadow: -4px -4px 8px rgba(74, 112, 122, 0.25), 4px 4px 8px rgba(74, 112, 122, 0.25);
+    }
+  }
+
+  .info {
+    &.active {
+      visibility: unset;
+      opacity: 1;
+    }
+
+    &.teacher_info {
+      @extend  %info-block;
+      left: 15px;
+      text-align: left;
+    }
+
+    &.cabinet_info {
+      @extend  %info-block;
+      left: 15px;
+      text-align: left;
+    }
+
+    &.lesson_type_info {
+      @extend  %info-block;
+      right: 15px;
+      text-align: right;
+    }
+  }
+
+}

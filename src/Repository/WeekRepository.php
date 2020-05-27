@@ -19,4 +19,18 @@ class WeekRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Week::class);
     }
+
+    public function getWeeksByUniversity(array $unId)
+    {
+        $models = $this->createQueryBuilder('tb')
+            ->andWhere('tb.university IN (:universityIds)')
+            ->andWhere('tb.name != :name')
+            ->setParameter('universityIds', $unId)
+            ->setParameter('name', '-')
+            ->orderBy('tb.order', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $models;
+    }
 }

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Tabs from "react-bootstrap/Tabs";
 import {Tab} from "react-bootstrap";
 import Group from "./src/Group";
+import Teacher from "./src/Teacher";
+import Cabinet from "./src/Cabinet";
 
 function index(props) {
     return (
@@ -14,10 +16,10 @@ function index(props) {
                                 <Group />
                             </Tab>
                             <Tab eventKey="teacher" title="Преподаватель">
-
+                                <Teacher />
                             </Tab>
-                            <Tab eventKey="cabinet" title="Кабинет">
-
+                            <Tab eventKey="cabinet" title="Аудитория">
+                                <Cabinet />
                             </Tab>
                         </Tabs>
 

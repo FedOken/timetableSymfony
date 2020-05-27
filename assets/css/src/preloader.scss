@@ -7,29 +7,85 @@
   justify-content: center;
   align-items: center;
   z-index: -1;
-  transition: 0.4s all ease;
   opacity: 0;
+  transition-duration: 0.3s;
 
   &.active {
     opacity: 1;
     z-index: 1000;
   }
 
-  svg{
-    width: 150px;
-    height: 150px;
-    margin: 20px;
-    fill: $primary_100;
-    display:inline-block;
+  .loader {
+    position: absolute;
+    border-radius: 50%;
+    font-size: 10px;
+    text-indent: -9999em;
+    border: 0.5em solid rgba($selection_100, .20);;
+    border-left: 0.5em solid $selection_100;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
 
-    .path-1 {
-      fill: $selection_40;
+
+    $width_1: 10em;
+    $width_2: 6em;
+    $width_3: 10em;
+    $width_4: 14em;
+
+    $duration_1: 0.75s;
+    $duration_2: 1.5s;
+    $duration_3: 1s;
+    $duration_4: 0.5s;
+
+    &.first {
+      top: calc(50% - #{$width_1} / 2);
+      width: $width_1;
+      height: $width_1;
+      -webkit-animation: load8 $duration_1 infinite linear;
+      animation: load8 $duration_1 infinite linear;
     }
-    .path-2 {
-      fill: $selection_100;
+    &.second {
+      top: calc(50% - #{$width_2} / 2);
+      width: $width_2;
+      height: $width_2;
+      -webkit-animation: load8 $duration_2 infinite linear;
+      animation: load8 $duration_2 infinite linear;
     }
-    .path-3 {
-      fill: $selection_75;
+    &.third {
+      top: calc(50% - #{$width_3} / 2);
+      width: $width_3;
+      height: $width_3;
+      -webkit-animation: load8 $duration_3 infinite linear;
+      animation: load8 $duration_3 infinite linear;
+    }
+    &.fourth {
+      top: calc(50% - #{$width_4} / 2);
+      width: $width_4;
+      height: $width_4;
+      -webkit-animation: load8 $duration_4 infinite linear;
+      animation: load8 $duration_4 infinite linear;
     }
   }
+
+  @-webkit-keyframes load8 {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes load8 {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
 }

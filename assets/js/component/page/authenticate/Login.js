@@ -1,10 +1,24 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from "react-bootstrap/Button";
 import {bindActionCreators} from "redux";
 import {push} from "connected-react-router";
 import {connect} from "react-redux";
+import {preloaderEnd, preloaderStart} from "../../src/Preloader";
+import axios from "axios";
+import {alertException} from "../../src/Alert";
 
 function index(props) {
+    const [token, setToken] = useState();
+
+    useEffect(() => {
+        preloaderStart();
+        axios.post(`/react/login/get-csrf-token`)
+            .then((res) => {
+                setToken(res.data);
+            })
+            .catch((error) => {alertException(error.response.status)})
+            .then(() => { preloaderEnd() });
+    }, []);
 
     const clickRegister = () => {
         redirect('/register')
@@ -15,7 +29,21 @@ function index(props) {
     };
 
     const clickLogin = () => {
-        redirect('/profile')
+        let formData = new FormData();
+        formData.set('email', 'admin@gmail.com');
+        formData.set('password', '123456');
+        formData.set('_csrf_token', token);
+        console.log(token);
+
+        //preloaderStart();
+        axios.post(`/react/login/login`, formData)
+            .then((res) => {
+                console.log(res.data);
+            })
+            .catch((error) => {al
+                ertException(error.response.status)})
+            .then(() => { preloaderEnd() });
+        //redirect('/profile')
     };
 
     const redirect = (url) => {

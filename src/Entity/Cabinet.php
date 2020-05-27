@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Handler\for_entity\CabinetHandler;
 use App\Helper\ArrayHelper;
 use App\Helper\MagicTrait;
 use App\Repository\BuildingRepository;
@@ -23,6 +24,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @property string $name
  * @property Building $building
  * @property Schedule[] $schedules
+ *
+ * @property CabinetHandler $handler
  */
 class Cabinet
 {
@@ -50,6 +53,8 @@ class Cabinet
      * @ORM\OneToMany(targetEntity="App\Entity\Schedule", mappedBy="cabinet")
      */
     private $schedules;
+
+    public $handler;
 
     public function __construct()
     {

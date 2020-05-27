@@ -22,6 +22,11 @@
   line-height: 28px;
 }
 
+@mixin font-30 {
+  font-size: 30px;
+  line-height: 33px;
+}
+
 @mixin font-45 {
   font-size: 45px;
   line-height: 50px;

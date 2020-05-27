@@ -11,21 +11,25 @@ import { alert, alertException } from "../../../src/Alert";
 
 function index(props) {
     const [selUnOpt, setSelUnOpt] = useState([]);
+    const [selUnIsDisabled, setSelUnIsDisabled] = useState(true);
+
     const [selGrOpt, setSelGrOpt] = useState([]);
+    const [selGrValue, setSelGrValue] = useState();
     const [selGrIsDisabled, setSelGrIsDisabled] = useState(true);
+
     const [tphOptions, setTphOptions] = useState([]);
     const [tphIsLoading, setTphIsLoading] = useState(false);
+
     const [btnIsDisabled, setBtnIsDisabled] = useState(true);
     const [selectedGroup, setSelectedGroup] = useState();
 
     useEffect(() => {
-        preloaderStart();
         axios.post('/react/search/get-universities')
             .then((res) => {
                 setSelUnOpt(res.data);
+                setSelUnIsDisabled(false);
             })
-            .catch((error) => {alertException(error.response.status)})
-            .then(() => { preloaderEnd() });
+            .catch((error) => {alertException(error.response.status)});
     }, []);
 
     const tphOnSearch = (searchText) => {
@@ -40,8 +44,8 @@ function index(props) {
     };
 
     const tphOnChange = (query) => {
-        if (query.length === 0 || query[0].id === 'undefined') return;
-        setSelectedGroup(query[0].id);
+        if (typeof query[0] === 'undefined' || typeof query[0].value === 'undefined') return;
+        setSelectedGroup(query[0].value);
         setBtnIsDisabled(false);
     };
 
@@ -52,33 +56,34 @@ function index(props) {
     const selUnOnChange = (data) => {
         if (typeof data.value === 'undefined') return;
 
-        preloaderStart();
+        setSelGrValue('');
+        setSelGrIsDisabled(true);
+        setBtnIsDisabled(true);
+
         axios.post('/react/search/get-parties/' + data.value)
             .then((res) => {
                 setSelGrOpt(res.data);
                 setSelGrIsDisabled(false);
             })
-            .catch((error) => {alertException(error.response.status)})
-            .then(() => { preloaderEnd() });
+            .catch((error) => {alertException(error.response.status)});
     };
 
     const selGrOnChange = (data) => {
         if (typeof data.value === 'undefined') return;
 
+        setSelGrValue(data);
         setSelectedGroup(data.value);
         setBtnIsDisabled(false);
     };
 
-
-
-
     const redirect = () => {
         let url = "/schedule/group/" + selectedGroup;
-        props.push(url);
-        props.history.push(url);
+        preloaderStart();
+        setTimeout(() => {
+            props.push(url);
+            props.history.push(url);
+        }, 300)
     };
-
-
 
     return (
         <div>
@@ -106,12 +111,13 @@ function index(props) {
                 name="group-select"
                 options={selUnOpt}
                 placeholder={'Выберите университет'}
-                className={'select select-type-1'}
+                className={'select select-type-1 ' + (selUnIsDisabled ? 'disabled' : '')}
                 onChange={ (data) => {selUnOnChange(data)} }
             />
             <Select
                 name="group-select"
                 options={selGrOpt}
+                value={selGrValue}
                 placeholder={'Выберите группу'}
                 className={'select select-type-1 ' + (selGrIsDisabled ? 'disabled' : '')}
                 onChange={ (data) => {selGrOnChange(data)} }

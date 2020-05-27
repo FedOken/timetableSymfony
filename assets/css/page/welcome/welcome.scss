@@ -1,5 +1,5 @@
 .welcome {
-  @include flex-center-column;
+  @include flex-jk_center-fd_column;
 
   p {
     text-align: center;
@@ -13,7 +13,7 @@
 
   .description {
     @include font-25;
-    @include flex-center-column;
+    @include flex-jk_center-fd_column;
     font-weight: bold;
     margin-top: 20px;
   }

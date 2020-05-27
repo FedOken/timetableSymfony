@@ -141,4 +141,13 @@ class Course
 
         return $this;
     }
+
+    public function serialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->course,
+            'name_full' => $this->name_full,
+        ];
+    }
 }

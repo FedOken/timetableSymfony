@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Handler\for_entity\TeacherHandler;
 use App\Helper\MagicTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -24,6 +25,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @property University $university
  * @property Schedule[] $schedules
  * @property User[] $users
+ *
+ * @property TeacherHandler $handler
  */
 class Teacher
 {
@@ -68,10 +71,18 @@ class Teacher
      */
     private $users;
 
-    public function __construct()
+    public $handler;
+
+    public function __construct(TeacherHandler $teacherHandler)
     {
         $this->schedules = new ArrayCollection();
         $this->users = new ArrayCollection();
+    }
+
+    public function setTest(int $i)
+    {
+        $this->test = $i;
+        return $this;
     }
 
     public function __toString(){
@@ -199,7 +210,7 @@ class Teacher
             'id' => $this->id,
             'name' => $this->name,
             'name_full' => $this->name_full,
-            'position' => $this->position,
+            'position' => $this->position ? $this->position->serialize() : null,
         ];
     }
 }

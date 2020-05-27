@@ -20,4 +20,18 @@ class TeacherRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Teacher::class);
     }
+
+    /**
+     * @param string $name
+     * @return Teacher|null
+     */
+    public function findByName(string $name)
+    {
+        return $this->createQueryBuilder('tb')
+            ->andWhere('tb.name LIKE :name')
+            ->setParameter('name', '%'.$name.'%')
+            ->addOrderBy('tb.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

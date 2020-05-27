@@ -1,5 +1,5 @@
 .search {
-  @include flex-center-column;
+  @include flex-jk_center-fd_column;
   align-items: center;
 
   .block-search {
@@ -12,6 +12,7 @@
       .nav-item {
         font-weight: bold;
         border-color: #CED4DA, #CED4DA, $background;
+        padding: 10px 13px;
 
         &.active {
           color: $selection_100;

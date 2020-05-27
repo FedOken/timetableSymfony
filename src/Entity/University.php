@@ -369,4 +369,13 @@ class University
 
         return $this;
     }
+
+    public function serialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'name_full' => $this->name_full,
+        ];
+    }
 }

@@ -1,0 +1,11 @@
+&.not-found {
+  @include font-30;
+  font-weight: bold;
+  text-align: center;
+  align-items: center;
+
+  button {
+    width: 160px;
+    margin-top: 20px;
+  }
+}

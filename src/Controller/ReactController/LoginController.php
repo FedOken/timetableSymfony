@@ -12,11 +12,11 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class LoginController extends AbstractController
 {
     /**
-     * @Route("/react/login/get-user-data", name="react-login-getUserData")
+     * @Route("/react/login/get-csrf-token", name="react-login-getCsrfToken")
      *
      * @return JsonResponse
      */
-    public function reactLoginGetUserData()
+    public function reactLoginGetCsrfToken()
     {
         $token = $this->container->get('security.csrf.token_manager')->getToken('authenticate')->getValue();
 
@@ -31,24 +31,24 @@ class LoginController extends AbstractController
      */
     public function reactLoginLogin(AuthenticationUtils $authenticationUtils)
     {
-//        $token = $this->container->get('security.csrf.token_manager')->getToken('authenticate')->getValue();
-//        $error = $authenticationUtils->getLastAuthenticationError();
-//        $lastUsername = $authenticationUtils->getLastUsername();
-//
-//        $data = $this->getUser();
-//
-//        if ($data) {
-//            $data = $data->serialize();
-//        } else {
-//            $data = null;
-//        }
-//
-//        $response = [
-//            'user' => $data,
-//            'error' => $error,
-//        ];
-//
-//        return new JsonResponse($response);
+        $token = $this->container->get('security.csrf.token_manager')->getToken('authenticate')->getValue();
+        $error = $authenticationUtils->getLastAuthenticationError();
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        $data = $this->getUser();
+
+        if ($data) {
+            $data = $data->serialize();
+        } else {
+            $data = null;
+        }
+
+        $response = [
+            'user' => $data,
+            'error' => $error,
+        ];
+
+        return new JsonResponse($response);
     }
 
 

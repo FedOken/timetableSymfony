@@ -2,10 +2,7 @@
 
 namespace App\Controller\ReactController;
 
-use App\Entity\Party;
-use App\Entity\University;
-use App\Handler\schedule\ScheduleHandler;
-use App\Helper\ArrayHelper;
+use App\Handler\for_controller\react\ScheduleHandler;
 use phpDocumentor\Reflection\DocBlock\Serializer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,8 +27,23 @@ class ScheduleController extends AbstractController
      */
     public function reactScheduleGetData(string $type, int $week, int $id)
     {
-        $data = $this->schHandler->formData($type, $week, $id);
+        $data = $this->schHandler->formSchedule($type, $week, $id);
+        return new JsonResponse($data);
+    }
 
+    /**
+     * @Route("/react/schedule/get-weeks/{type}/{id}", name="react-schedule-getWeeks")
+     * @param string $type
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function reactScheduleGetWeeks($type, $id)
+    {
+        try {
+            $data = $this->schHandler->formWeeks($type, $id);
+        } catch (\Exception $e) {
+            $data = [];
+        }
         return new JsonResponse($data);
     }
 }

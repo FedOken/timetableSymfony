@@ -22,4 +22,18 @@ class CabinetRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Cabinet::class);
     }
+
+    /**
+     * @param string $name
+     * @return Cabinet|null
+     */
+    public function findByName(string $name)
+    {
+        return $this->createQueryBuilder('tb')
+            ->andWhere('tb.name LIKE :name')
+            ->setParameter('name', '%'.$name.'%')
+            ->addOrderBy('tb.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

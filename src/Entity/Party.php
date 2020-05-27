@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Handler\for_entity\PartyHandler;
 use App\Helper\MagicTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,6 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @property Course $course
  * @property Schedule[] $schedules
  * @property User[] $users
+ *
+ * @property PartyHandler $handler
  */
 class Party
 {
@@ -55,7 +58,9 @@ class Party
      */
     private $users;
 
-    public function __construct()
+    public $handler;
+
+    public function __construct(PartyHandler $partyHandler)
     {
         $this->schedules = new ArrayCollection();
         $this->users = new ArrayCollection();
@@ -166,5 +171,19 @@ class Party
         }
 
         return $this;
+    }
+
+    /**
+     * Serialize
+     * @return array
+     */
+    public function serialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'faculty' => $this->faculty ? $this->faculty->serialize() : null,
+            'course' => $this->course ? $this->course->serialize() : null,
+        ];
     }
 }

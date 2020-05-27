@@ -19,6 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @property integer $id
  * @property string $name
+ * @property integer $order
  * @property Schedule[] $schedules
  * @property University $university
  */
@@ -37,6 +38,11 @@ class Week
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $name;
+
+    /**
+     * @ORM\Column(type="integer", length=255, nullable=true)
+     */
+    private $order;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Schedule", mappedBy="week")
@@ -116,5 +122,14 @@ class Week
         $this->university = $university;
 
         return $this;
+    }
+
+    public function serialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'university' => $this->university ? $this->university->serialize() : null,
+        ];
     }
 }

@@ -140,7 +140,7 @@ class UniversityTime
             'name' => $this->name,
             'timeFrom' => date('H:i', $this->timeFrom->getTimestamp()),
             'timeTo' => date('H:i', $this->timeTo->getTimestamp()),
-            'university' => $this->university,
+            'university' => $this->university->serialize(),
         ];
     }
 }

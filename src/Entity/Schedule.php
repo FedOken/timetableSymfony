@@ -192,13 +192,13 @@ class Schedule
         return [
             'id' => $this->id,
             'lesson_name' => $this->lesson_name,
-            'party' => $this->party,
-            'lesson_type' => $this->lesson_type,
-            'teacher' => $this->teacher,
-            'cabinet' => $this->cabinet,
-            'week' => $this->week,
-            'day' => $this->day,
-            'time' => $this->universityTime
+            'party' => $this->party->serialize(),
+            'lesson_type' => $this->lesson_type->serialize(),
+            'teacher' => $this->teacher->serialize(),
+            'cabinet' => $this->cabinet->serialize(),
+            'week' => $this->week->serialize(),
+            'day' => $this->day->serialize(),
+            'time' => $this->universityTime->serialize()
         ];
     }
 }

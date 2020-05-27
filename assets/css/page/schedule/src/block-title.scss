@@ -1,0 +1,24 @@
+.block-title {
+  height: 40px;
+  border: 2px solid $primary_100;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  background: #ffffff;
+
+  span:first-child {
+    display: block;
+    min-width: max-content;
+    font-weight: bold;
+    color: $selection_100;
+    padding: 0 10px;
+    border-right: 2px solid $primary_100;
+  }
+  span:last-child {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+  }
+
+}

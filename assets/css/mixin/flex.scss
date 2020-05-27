@@ -3,10 +3,17 @@
   justify-content: center;
 }
 
-@mixin flex-center-column {
+@mixin flex-jk_center-fd_column {
   display: flex;
   justify-content: center;
   flex-direction: column;
+}
+
+@mixin flex-jk_center-fd_column-al_center {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 @mixin flex-between {
