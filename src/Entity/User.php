@@ -276,6 +276,6 @@ class User implements UserInterface
             'role' => $this->roles[0],
 
         ];
-        return json_encode($data);
+        return $data;
     }
 }

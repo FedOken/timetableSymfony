@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from "react-bootstrap/Button";
 import {bindActionCreators} from "redux";
 import {push} from "connected-react-router";
 import {connect} from "react-redux";
+import {preloaderEnd, preloaderStart} from "../../src/Preloader";
+import axios from "axios";
+import {alertException} from "../../src/Alert";
 
 function index(props) {
 
@@ -10,6 +13,10 @@ function index(props) {
         props.push(url);
         props.history.push(url);
     };
+
+    useEffect(() => {
+        preloaderEnd();
+    }, []);
 
     return (
         <div className="profile container">

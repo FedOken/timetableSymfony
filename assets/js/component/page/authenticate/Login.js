@@ -5,10 +5,15 @@ import {push} from "connected-react-router";
 import {connect} from "react-redux";
 import {preloaderEnd, preloaderStart} from "../../src/Preloader";
 import axios from "axios";
-import {alertException} from "../../src/Alert";
+import { alert, alertException} from "../../src/Alert";
+import { validate } from "../../src/FormValidation";
+import {changeUserData} from "../../../redux/actions/user";
 
 function index(props) {
-    const [token, setToken] = useState();
+
+    const [token, setToken] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     useEffect(() => {
         preloaderStart();
@@ -28,22 +33,48 @@ function index(props) {
         redirect('/reset-password')
     };
 
-    const clickLogin = () => {
-        let formData = new FormData();
-        formData.set('email', 'admin@gmail.com');
-        formData.set('password', '123456');
-        formData.set('_csrf_token', token);
-        console.log(token);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        let formHasError = false;
+        let inputs = document.querySelectorAll('form.login-form .form-group input');
+        inputs.forEach(function(input) {
+            let valError = validate(input);
+            if (!valError.status) {
+                formHasError = true
+                input.closest('.form-group').classList.add('has-error');
+                input.closest('.form-group').querySelector('span.error').innerHTML = valError.error;
+            } else {
+                input.closest('.form-group').classList.remove('has-error');
+                input.closest('.form-group').querySelector('span.error').innerHTML = '';
+            }
+        });
 
-        //preloaderStart();
+        if (formHasError) return;
+
+        let formData = new FormData();
+        formData.set('email', email);
+        formData.set('password', password);
+        formData.set('_csrf_token', token);
+
+        preloaderStart();
         axios.post(`/react/login/login`, formData)
             .then((res) => {
+                if (res.data.status) {
+                    alert('success', res.data.reason);
+                    props.changeUserData({
+                        status: true,
+                        id: res.data.user.id,
+                        email: res.data.user.email,
+                        role: res.data.user.role,
+                    });
+                    redirect('/profile')
+                } else {
+                    alert('error', res.data.reason);
+                    preloaderEnd();
+                }
                 console.log(res.data);
             })
-            .catch((error) => {al
-                ertException(error.response.status)})
-            .then(() => { preloaderEnd() });
-        //redirect('/profile')
+            .catch((error) => {alertException(error.response.status); preloaderEnd()});
     };
 
     const redirect = (url) => {
@@ -55,24 +86,53 @@ function index(props) {
         <div className="login container">
             <div className="col-xs-12 col-sm-6 col-md-4 block-center">
                 <div className={'block-login'}>
-                    <form>
-                        <input className={'form-control input input-type-1 w-100'} placeholder={'Email'} type="text"/>
-                        <input className={'form-control input input-type-1 w-100'} placeholder={'Пароль'} type="text"/>
-                        <Button type="button" className={"w-100"} variant="type-2" onClick={() => clickLogin()}>Войти</Button>
-                        <div className={'block-additional'}>
-                            <p>Все еще нет аккаунта? <span onClick={() => clickRegister()}>Создайте</span></p>
-                            <p>Забыли пароль? <span onClick={() => clickResetPassword()}>Восстановите!</span></p>
+                    <form className={'login-form'} onSubmit={(e) => handleSubmit(e)} autoComplete="off" noValidate>
+                        <div className={`form-group`}>
+                            <input
+                                name={'email'}
+                                className={`form-control input input-type-1 w-100`}
+                                placeholder={'Email'}
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                autoComplete={'off'}
+                                required
+                            />
+                            <span className={'error'} />
                         </div>
+
+                        <div className={`form-group`}>
+                            <input className={'form-control input input-type-1 w-100'}
+                                   placeholder={'Пароль'}
+                                   type="password"
+                                   value={password}
+                                   onChange={(e) => setPassword(e.target.value)}
+                                   autoComplete={'new-password'}
+                                   required
+                            />
+                            <span className={'error'} />
+                        </div>
+                        <Button type="submit" className={"w-100"} variant="type-2">Войти</Button>
                     </form>
+                    <div className={'block-additional'}>
+                        <p>Все еще нет аккаунта? <span onClick={() => clickRegister()}>Создайте</span></p>
+                        <p>Забыли пароль? <span onClick={() => clickResetPassword()}>Восстановите!</span></p>
+                    </div>
                 </div>
             </div>
+            <span>{props.user.id}</span>
         </div>
     );
 }
 
-
-function matchDispatchToProps(dispatch) {
-    return bindActionCreators({push: push}, dispatch)
+function mapStateToProps(state) {
+    return {
+        user: state.user,
+    }
 }
 
-export default connect(null, matchDispatchToProps)(index);
+function matchDispatchToProps(dispatch) {
+    return bindActionCreators({push: push, changeUserData: changeUserData}, dispatch)
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(index);

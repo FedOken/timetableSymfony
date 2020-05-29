@@ -24,45 +24,26 @@ class LoginController extends AbstractController
     }
 
     /**
+     * Entry poin for log-in
      * @Route("/react/login/login", name="react-login-login")
      *
      * @param AuthenticationUtils $authenticationUtils
-     * @return JsonResponse
+     * @return void
      */
-    public function reactLoginLogin(AuthenticationUtils $authenticationUtils)
-    {
-        $token = $this->container->get('security.csrf.token_manager')->getToken('authenticate')->getValue();
-        $error = $authenticationUtils->getLastAuthenticationError();
-        $lastUsername = $authenticationUtils->getLastUsername();
-
-        $data = $this->getUser();
-
-        if ($data) {
-            $data = $data->serialize();
-        } else {
-            $data = null;
-        }
-
-        $response = [
-            'user' => $data,
-            'error' => $error,
-        ];
-
-        return new JsonResponse($response);
-    }
-
+    public function reactLoginLogin(AuthenticationUtils $authenticationUtils) {}
 
     /**
+     * End point for log0in
      * @Route("/react/login/response", name="react-login-response")
      * @param Request $request
      * @return JsonResponse
      */
-    public function setLanguage(Request $request)
+    public function reactLoginResponse(Request $request)
     {
         $response = [
             'status' => $request->getSession()->get(LoginFormAuthenticator::LOGIN_STATUS),
             'reason' => $request->getSession()->get(LoginFormAuthenticator::REASON),
-            'user' => $this->getUser()->serialize(),
+            'user' => $this->getUser() ? $this->getUser()->serialize() : null,
         ];
         return new JsonResponse($response);
     }

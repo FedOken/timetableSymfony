@@ -178,3 +178,18 @@
     }
   }
 }
+
+.form-group {
+
+  span.error {
+    display: none;
+    font-size: 14px;
+    color: $danger;
+    font-weight: bold;
+  }
+
+  &.has-error span.error{
+    display: block;
+  }
+
+}

@@ -2,7 +2,6 @@ import React from 'react';
 import {bindActionCreators} from "redux";
 import {push} from "connected-react-router";
 import {connect} from "react-redux";
-import LinkRedux from "../../../container/LinkRedux";
 
 function index(props) {
 

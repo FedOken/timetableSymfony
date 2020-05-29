@@ -37,9 +37,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     private $tokenIsValid = false;
 
     const LOGIN_STATUS = 'login_status';
-    const LOGIN_STATUS_OK = 'ok';
-    const LOGIN_STATUS_FAIL = 'fail';
-    const REASON = '';
+    const REASON = 'login_reason';
 
     public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -98,8 +96,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        $request->getSession()->set(self::LOGIN_STATUS, self::LOGIN_STATUS_OK);
-        $request->getSession()->set(self::REASON, 'You have successfully logged in!');
+        $request->getSession()->set(self::LOGIN_STATUS, true);
+        $request->getSession()->set(self::REASON, 'You have successfully log-in!');
 
         return new RedirectResponse($this->urlGenerator->generate('react-login-response'));
     }
@@ -107,12 +105,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        $request->getSession()->set(self::LOGIN_STATUS, self::LOGIN_STATUS_FAIL);
+        $request->getSession()->set(self::LOGIN_STATUS, false);
 
         if (!$this->userIsValid) {
-            $request->getSession()->set(self::REASON, 'Email could not be found');
+            $request->getSession()->set(self::REASON, 'Incorrect email or password');
         } elseif (!$this->passwordIsValid) {
-            $request->getSession()->set(self::REASON, 'Incorrect password');
+            $request->getSession()->set(self::REASON, 'Incorrect email or password');
         } elseif (!$this->tokenIsValid) {
             $request->getSession()->set(self::REASON, 'Incorrect token');
         }

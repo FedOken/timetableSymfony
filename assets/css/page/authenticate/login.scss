@@ -10,8 +10,8 @@
     border-radius: 10px;
     background: $background;
 
-    input {
-      margin-bottom: 10px;
+    .form-group:last-child {
+      margin: 10px 0;
     }
   }
 
