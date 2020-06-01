@@ -15,7 +15,7 @@ class UniversityHandler extends BaseHandler
      */
     public function setSelect2EasyAdmin($currentId, $user)
     {
-        $validIds = $this->accessService->getAccessObject($user)->getAccessibleUniversityIds();
+        $validIds = $this->access->getAccessObject($user)->getAccessibleUniversityIds();
         $entityModels = $this->em->getRepository(University::class)->findBy(['id' => $validIds]);
 
         if ($currentId) {

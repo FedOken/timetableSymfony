@@ -21,7 +21,7 @@ use App\Repository\PartyRepository;
 use App\Repository\TeacherRepository;
 use App\Repository\UniversityRepository;
 use App\Service\Access\AccessService;
-use App\Service\Access\FacultyAccessService;
+use App\Service\Access\FacultyAccess;
 use Doctrine\DBAL\Types\TextType;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
@@ -69,13 +69,13 @@ class PartyController extends AdminController
     protected function listAction()
     {
         $this->init();
-        return $this->listCheckPermissionAndRedirect($this->validIds, 'Party', FacultyAccessService::getAccessRole());
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Party', FacultyAccess::getAccessRole());
     }
 
     protected function editAction()
     {
         $this->init();
-        return $this->editCheckPermissionAndRedirect($this->validIds, 'Party',  FacultyAccessService::getAccessRole());
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Party',  FacultyAccess::getAccessRole());
     }
 
     /**

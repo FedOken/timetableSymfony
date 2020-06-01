@@ -14,7 +14,7 @@ use App\Entity\UniversityTime;
 use App\Entity\Week;
 use App\Helper\ArrayHelper;
 
-class AdminAccessService extends AccessService implements AccessInterface
+class AdminAccess extends AccessService implements AccessInterface
 {
     public $code;
 

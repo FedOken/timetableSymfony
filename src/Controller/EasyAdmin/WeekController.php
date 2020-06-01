@@ -4,7 +4,7 @@ namespace App\Controller\EasyAdmin;
 
 use App\Entity\Schedule;
 use App\Helper\ArrayHelper;
-use App\Service\Access\UniversityAccessService;
+use App\Service\Access\UniversityAccess;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class WeekController extends AdminController
@@ -28,13 +28,13 @@ class WeekController extends AdminController
     protected function listAction()
     {
         $this->init();
-        return $this->listCheckPermissionAndRedirect($this->validIds, 'Week', UniversityAccessService::getAccessRole());
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Week', UniversityAccess::getAccessRole());
     }
 
     protected function editAction()
     {
         $this->init();
-        return $this->editCheckPermissionAndRedirect($this->validIds, 'Week', UniversityAccessService::getAccessRole());
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Week', UniversityAccess::getAccessRole());
     }
 
     /**

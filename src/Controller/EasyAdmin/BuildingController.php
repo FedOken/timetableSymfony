@@ -15,7 +15,7 @@ use App\Repository\CabinetRepository;
 use App\Repository\PartyRepository;
 use App\Repository\TeacherRepository;
 use App\Service\Access\AccessService;
-use App\Service\Access\UniversityAccessService;
+use App\Service\Access\UniversityAccess;
 use Doctrine\DBAL\Types\TextType;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
@@ -47,13 +47,13 @@ class BuildingController extends AdminController
     protected function listAction()
     {
         $this->init();
-        return $this->listCheckPermissionAndRedirect($this->validIds, 'Building', UniversityAccessService::getAccessRole());
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Building', UniversityAccess::getAccessRole());
     }
 
     protected function editAction()
     {
         $this->init();
-        return $this->editCheckPermissionAndRedirect($this->validIds, 'Building', UniversityAccessService::getAccessRole());
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Building', UniversityAccess::getAccessRole());
     }
 
     protected function createEntityFormBuilder($entity, $view)

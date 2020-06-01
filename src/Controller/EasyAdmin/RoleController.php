@@ -6,7 +6,7 @@ use App\Handler\UniversityHandler;
 use App\Helper\ArrayHelper;
 use App\Repository\RoleRepository;
 use App\Service\Access\AccessService;
-use App\Service\Access\AdminAccessService;
+use App\Service\Access\AdminAccess;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RoleController extends AdminController
@@ -29,12 +29,12 @@ class RoleController extends AdminController
     protected function listAction()
     {
         $this->init();
-        return $this->listCheckPermissionAndRedirect($this->validIds, 'Role', AdminAccessService::getAccessRole());
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Role', AdminAccess::getAccessRole());
     }
 
     protected function editAction()
     {
         $this->init();
-        return $this->editCheckPermissionAndRedirect($this->validIds, 'Role', AdminAccessService::getAccessRole());
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Role', AdminAccess::getAccessRole());
     }
 }

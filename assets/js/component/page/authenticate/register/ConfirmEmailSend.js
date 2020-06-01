@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
-import Button from "react-bootstrap/Button";
 import {bindActionCreators} from "redux";
 import {push} from "connected-react-router";
 import {connect} from "react-redux";
-import Tabs from "react-bootstrap/Tabs";
-import {Tab} from "react-bootstrap";
-import Select from "../../src/Select";
 
 function index(props) {
 

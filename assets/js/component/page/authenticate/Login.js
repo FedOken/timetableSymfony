@@ -40,7 +40,7 @@ function index(props) {
         inputs.forEach(function(input) {
             let valError = validate(input);
             if (!valError.status) {
-                formHasError = true
+                formHasError = true;
                 input.closest('.form-group').classList.add('has-error');
                 input.closest('.form-group').querySelector('span.error').innerHTML = valError.error;
             } else {
@@ -72,7 +72,6 @@ function index(props) {
                     alert('error', res.data.reason);
                     preloaderEnd();
                 }
-                console.log(res.data);
             })
             .catch((error) => {alertException(error.response.status); preloaderEnd()});
     };
@@ -120,7 +119,6 @@ function index(props) {
                     </div>
                 </div>
             </div>
-            <span>{props.user.id}</span>
         </div>
     );
 }

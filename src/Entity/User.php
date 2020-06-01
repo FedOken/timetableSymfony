@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
+use App\Entity\Base\UserBase;
+use App\Entity\Handler\UserHandler;
 use App\Helper\MagicTrait;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,12 +22,21 @@ use Symfony\Component\Validator\Constraints\Json;
  * @property Role $role_label
  * @property string $access_code
  * @property bool $enable
+ * @property string $reset_password_code
+ * @property string $check_email_code
+ * @property int $status
+ * @property string $phone
+ * @property string $first_name
+ * @property string $last_name
+ *
  * @property University $university
  * @property Faculty $faculty
  * @property Party $party
  * @property Teacher $teacher
+ *
+ * @property UserHandler $handler
  */
-class User implements UserInterface
+class User extends UserBase implements UserInterface
 {
     use MagicTrait;
 
@@ -66,9 +75,39 @@ class User implements UserInterface
     private $access_code;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $enable;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $reset_password_code;
+
+    /**
+     * @ORM\Column(type="string", length=255,  nullable=true)
+     */
+    private $check_email_code;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $status;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $phone;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $first_name;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $last_name;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\University", inversedBy="users")
@@ -93,6 +132,8 @@ class User implements UserInterface
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $teacher;
+
+    public $handler;
 
     /**
      * Set what user see in form by relation
@@ -268,6 +309,77 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getResetPasswordCode(): ?string
+    {
+        return $this->reset_password_code;
+    }
+
+    public function setResetPasswordCode(string $reset_password_code): self
+    {
+        $this->reset_password_code = $reset_password_code;
+
+        return $this;
+    }
+
+    public function getCheckEmailCode(): ?string
+    {
+        return $this->check_email_code;
+    }
+
+    public function setCheckEmailCode(string $check_email_code): self
+    {
+        $this->check_email_code = $check_email_code;
+
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): self
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): self
+    {
+        $this->phone = $phone;
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->first_name;
+    }
+
+    public function setFirstName(string $first_name): self
+    {
+        $this->first_name = $first_name;
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->last_name;
+    }
+
+    public function setLastName(string $last_name): self
+    {
+        $this->last_name = $last_name;
+        return $this;
+    }
+
+
+
+    /* ADDITIONAL FUNCTIONS */
     public function serialize()
     {
         $data = [

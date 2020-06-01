@@ -14,7 +14,7 @@ use App\Entity\UniversityTime;
 use App\Entity\Week;
 use App\Helper\ArrayHelper;
 
-class TeacherAccessService extends AccessService implements AccessInterface
+class UserAccess extends AccessService implements AccessInterface
 {
     public $code;
 
@@ -25,12 +25,12 @@ class TeacherAccessService extends AccessService implements AccessInterface
 
     public static function getAccessCode()
     {
-        return 'T';
+        return 'User';
     }
 
     public static function getAccessRole()
     {
-        return 'ROLE_TEACHER';
+        return 'ROLE_USER';
     }
 
     public function getAccessibleUniversityIds(): array

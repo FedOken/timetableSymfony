@@ -9,7 +9,8 @@ export function isEmpty(data) {
     if (Array.isArray(data)) {
         if (data.length > 0) return false;
     }
+    if (typeof data === 'undefined') return true;
 
-    return true
+    return false
 }
 

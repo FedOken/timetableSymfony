@@ -15,7 +15,7 @@ class CourseHandler extends BaseHandler
      */
     public function setSelect2EasyAdmin($currentId, $user)
     {
-        $validIds = $this->accessService->getAccessObject($user)->getAccessibleCourseIds();
+        $validIds = $this->access->getAccessObject($user)->getAccessibleCourseIds();
         $entityModels = $this->em->getRepository(Course::class)->findBy(['id' => $validIds]);
 
         if ($currentId) {

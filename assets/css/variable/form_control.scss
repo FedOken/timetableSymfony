@@ -84,7 +84,7 @@
     font-size: 16px;
 
     &::placeholder {
-      color: $primary_60;
+      color: $primary_50;
     }
 
     &:focus {
@@ -180,6 +180,7 @@
 }
 
 .form-group {
+  margin: 0;
 
   span.error {
     display: none;

@@ -20,7 +20,7 @@ use App\Repository\ScheduleRepository;
 use App\Repository\TeacherRepository;
 use App\Repository\UniversityRepository;
 use App\Service\Access\AccessService;
-use App\Service\Access\UniversityAccessService;
+use App\Service\Access\UniversityAccess;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -53,13 +53,13 @@ class CourseController extends AdminController
     protected function listAction()
     {
         $this->init();
-        return $this->listCheckPermissionAndRedirect($this->validIds, 'Course', UniversityAccessService::getAccessRole());
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Course', UniversityAccess::getAccessRole());
     }
 
     protected function editAction()
     {
         $this->init();
-        return $this->editCheckPermissionAndRedirect($this->validIds, 'Course', UniversityAccessService::getAccessRole());
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Course', UniversityAccess::getAccessRole());
     }
 
     /**

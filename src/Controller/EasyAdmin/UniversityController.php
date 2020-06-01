@@ -4,8 +4,8 @@ namespace App\Controller\EasyAdmin;
 
 use App\Entity\University;
 use App\Service\Access\AccessService;
-use App\Service\Access\AdminAccessService;
-use App\Service\Access\UniversityAccessService;
+use App\Service\Access\AdminAccess;
+use App\Service\Access\UniversityAccess;
 
 class UniversityController extends AdminController
 {
@@ -21,14 +21,14 @@ class UniversityController extends AdminController
     protected function listAction()
     {
         $this->init();
-        return $this->listCheckPermissionAndRedirect($this->validIds, 'University', AdminAccessService::getAccessRole());
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'University', AdminAccess::getAccessRole());
     }
 
     /** Edit action override */
     protected function editAction()
     {
         $this->init();
-        return $this->editCheckPermissionAndRedirect($this->validIds, 'University', UniversityAccessService::getAccessRole());
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'University', UniversityAccess::getAccessRole());
     }
 
     /**

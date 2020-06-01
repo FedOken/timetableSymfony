@@ -13,11 +13,11 @@ use App\Helper\ArrayHelper;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
 use App\Service\Access\AccessService;
-use App\Service\Access\AdminAccessService;
-use App\Service\Access\FacultyAccessService;
-use App\Service\Access\PartyAccessService;
-use App\Service\Access\TeacherAccessService;
-use App\Service\Access\UniversityAccessService;
+use App\Service\Access\AdminAccess;
+use App\Service\Access\FacultyAccess;
+use App\Service\Access\PartyAccess;
+use App\Service\Access\TeacherAccess;
+use App\Service\Access\UniversityAccess;
 use Doctrine\DBAL\Types\TextType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use EasyCorp\Bundle\EasyAdminBundle\Form\Type\EasyAdminAutocompleteType;
@@ -52,13 +52,13 @@ class UserController extends AdminController
     protected function listAction()
     {
         $this->init();
-        return $this->listCheckPermissionAndRedirect($this->validIds, 'User', AdminAccessService::getAccessRole());
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'User', AdminAccess::getAccessRole());
     }
 
     protected function editAction()
     {
         $this->init();
-        return $this->editCheckPermissionAndRedirect($this->validIds, 'User', AdminAccessService::getAccessRole());
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'User', AdminAccess::getAccessRole());
     }
 
     /**
@@ -116,25 +116,25 @@ class UserController extends AdminController
         //Search access element
         $accessId = 0;
         switch ($roleModel->name) {
-            case UniversityAccessService::getAccessRole():
+            case UniversityAccess::getAccessRole():
                 $accessId = ArrayHelper::getValue($entity, 'university.id');
                 $entity->faculty = null;
                 $entity->party = null;
                 $entity->teacher = null;
                 break;
-            case FacultyAccessService::getAccessRole():
+            case FacultyAccess::getAccessRole():
                 $accessId = ArrayHelper::getValue($entity, 'faculty.id');
                 $entity->university = null;
                 $entity->party = null;
                 $entity->teacher = null;
                 break;
-            case PartyAccessService::getAccessRole():
+            case PartyAccess::getAccessRole():
                 $accessId = ArrayHelper::getValue($entity, 'party.id');
                 $entity->university = null;
                 $entity->faculty = null;
                 $entity->teacher = null;
                 break;
-            case TeacherAccessService::getAccessRole():
+            case TeacherAccess::getAccessRole():
                 $accessId = ArrayHelper::getValue($entity, 'teacher.id');
                 $entity->university = null;
                 $entity->faculty = null;

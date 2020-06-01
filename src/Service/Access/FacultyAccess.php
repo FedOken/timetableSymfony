@@ -15,15 +15,15 @@ use App\Entity\Week;
 use App\Helper\ArrayHelper;
 
 /**
- * Class FacultyAccessService
+ * Class FacultyAccess
  *
- * @property Party $accessModel
- * @property Faculty $parentModel
+ * @property Faculty $accessModel
+ * @property University $parentModel
  *
  * @package App\Service\Access
  */
 
-class PartyAccessService extends AccessService implements AccessInterface
+class FacultyAccess extends AccessService implements AccessInterface
 {
     private $code;
     public $accessModel;
@@ -38,40 +38,40 @@ class PartyAccessService extends AccessService implements AccessInterface
 
     public static function getAccessCode()
     {
-        return 'P';
+        return 'F';
     }
 
     public static function getAccessRole()
     {
-        return 'ROLE_PARTY_MANAGER';
+        return 'ROLE_FACULTY_MANAGER';
     }
 
     public function getAccessibleUniversityIds(): array
     {
-        $response = $this->parentModel->university;
+        $response = $this->accessModel->university;
         return $response ? [ArrayHelper::getValue($response, 'id')] : [];
     }
 
     public function getAccessibleFacultyIds(): array
     {
-        $response = $this->parentModel;
-        return $response ? [ArrayHelper::getValue($response, 'id')] : [];
+        return [$this->code];
     }
 
     public function getAccessiblePartyIds(): array
     {
-        return [$this->code];
+        $response = $this->accessModel->parties;
+        return $response ? ArrayHelper::getColumn($response, 'id') : [];
     }
 
     public function getAccessibleTeacherIds(): array
     {
-        $response = ArrayHelper::getValue($this->parentModel, 'university.teachers');
+        $response = $this->parentModel->teachers;
         return $response ? ArrayHelper::getColumn($response, 'id') : [];
     }
 
     public function getAccessibleBuildingIds(): array
     {
-        $response = ArrayHelper::getValue($this->parentModel, 'university.buildings');
+        $response = $this->parentModel->buildings;
         return $response ? ArrayHelper::getColumn($response, 'id') : [];
     }
 
@@ -80,7 +80,7 @@ class PartyAccessService extends AccessService implements AccessInterface
         if ($buildingId) {
             $response = $this->em->getRepository(Cabinet::class)->findBy(['building' => $buildingId]);
         } else {
-            $buildingModels = ArrayHelper::getValue($this->parentModel, 'university.buildings');
+            $buildingModels = ArrayHelper::getValue($this->parentModel, 'buildings');
             $response = [];
             foreach ($buildingModels as $building) {
                 $response = array_merge($response, $building->cabinets);
@@ -91,19 +91,19 @@ class PartyAccessService extends AccessService implements AccessInterface
 
     public function getAccessibleCourseIds(): array
     {
-        $response = ArrayHelper::getValue($this->parentModel, 'university.courses');
+        $response = $this->parentModel->courses;
         return $response ? ArrayHelper::getColumn($response, 'id') : [];
     }
 
     public function getAccessibleWeekIds(): array
     {
-        $response = ArrayHelper::getValue($this->parentModel, 'university.weeks');
+        $response = $this->parentModel->weeks;
         return $response ? ArrayHelper::getColumn($response, 'id') : [];
     }
 
     public function getAccessibleTimeIds(): array
     {
-        $response = ArrayHelper::getValue($this->parentModel, 'university.universityTimes');
+        $response = $this->parentModel->universityTimes;
         return $response ? ArrayHelper::getColumn($response, 'id') : [];
     }
 
@@ -119,10 +119,10 @@ class PartyAccessService extends AccessService implements AccessInterface
     //
     private function getAccessModel(int $id)
     {
-        return $this->em->getRepository(Party::class)->findOneBy(['id' => $id]);
+        return $this->em->getRepository(Faculty::class)->findOneBy(['id' => $id]);
     }
     private function getParentModel()
     {
-        return $this->accessModel->faculty;
+        return $this->accessModel->university;
     }
 }

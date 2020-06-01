@@ -23,7 +23,7 @@ use App\Repository\TeacherRepository;
 use App\Repository\UniversityRepository;
 use App\Repository\WeekRepository;
 use App\Service\Access\AccessService;
-use App\Service\Access\TeacherAccessService;
+use App\Service\Access\TeacherAccess;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -55,12 +55,12 @@ class TeacherPositionController extends AdminController
     protected function listAction()
     {
         $this->init();
-        return $this->listCheckPermissionAndRedirect($this->validIds, 'TeacherPosition', TeacherAccessService::getAccessRole());
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'TeacherPosition', TeacherAccess::getAccessRole());
     }
 
     protected function editAction()
     {
         $this->init();
-        return $this->editCheckPermissionAndRedirect($this->validIds, 'TeacherPosition', TeacherAccessService::getAccessRole());
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'TeacherPosition', TeacherAccess::getAccessRole());
     }
 }

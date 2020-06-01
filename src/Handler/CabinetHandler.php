@@ -16,7 +16,7 @@ class CabinetHandler extends BaseHandler
      */
     public function setSelect2EasyAdmin($currentId, $user, int $buildingId = null)
     {
-        $validIds = $this->accessService->getAccessObject($user)->getAccessibleCabinetIds($buildingId);
+        $validIds = $this->access->getAccessObject($user)->getAccessibleCabinetIds($buildingId);
         $entityModels = $this->em->getRepository(Cabinet::class)->findBy(['id' => $validIds]);
 
         if ($currentId) {

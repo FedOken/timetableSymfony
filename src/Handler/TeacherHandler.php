@@ -15,7 +15,7 @@ class TeacherHandler extends BaseHandler
      */
     public function setSelect2EasyAdmin($currentId, $user)
     {
-        $validIds = $this->accessService->getAccessObject($user)->getAccessibleTeacherIds();
+        $validIds = $this->access->getAccessObject($user)->getAccessibleTeacherIds();
         $entityModels = $this->em->getRepository(Teacher::class)->findBy(['id' => $validIds]);
 
         if ($currentId) {

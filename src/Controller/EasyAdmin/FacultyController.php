@@ -8,8 +8,8 @@ use App\Entity\University;
 use App\Handler\UniversityHandler;
 use App\Helper\ArrayHelper;
 use App\Service\Access\AccessService;
-use App\Service\Access\FacultyAccessService;
-use App\Service\Access\UniversityAccessService;
+use App\Service\Access\FacultyAccess;
+use App\Service\Access\UniversityAccess;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -37,13 +37,13 @@ class FacultyController extends AdminController
     protected function listAction()
     {
         $this->init();
-        return $this->listCheckPermissionAndRedirect($this->validIds, 'Faculty', UniversityAccessService::getAccessRole());
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Faculty', UniversityAccess::getAccessRole());
     }
 
     protected function editAction()
     {
         $this->init();
-        return $this->editCheckPermissionAndRedirect($this->validIds, 'Faculty', FacultyAccessService::getAccessRole());
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Faculty', FacultyAccess::getAccessRole());
     }
 
     protected function persistEntity($entity)

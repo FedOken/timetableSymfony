@@ -15,7 +15,7 @@ class PartyHandler extends BaseHandler
      */
     public function setSelect2EasyAdmin($currentId, $user)
     {
-        $validIds = $this->accessService->getAccessObject($user)->getAccessiblePartyIds();
+        $validIds = $this->access->getAccessObject($user)->getAccessiblePartyIds();
         $entityModels = $this->em->getRepository(Party::class)->findBy(['id' => $validIds]);
 
         if ($currentId) {

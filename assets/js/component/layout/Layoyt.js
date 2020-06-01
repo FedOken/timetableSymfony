@@ -9,8 +9,8 @@ import Business from "../page/contact/Business";
 import Technical from "../page/contact/Technical";
 import Search from "../page/search/Search";
 import Login from "../page/authenticate/Login";
-import Register from "../page/authenticate/Register";
-import ConfirmEmailSend from "../page/authenticate/ConfirmEmailSend";
+import Register from "../page/authenticate/register/Register";
+import ConfirmEmailSend from "../page/authenticate/register/ConfirmEmailSend";
 import ResetPasswordEmailSend from "../page/authenticate/ResetPasswordEmailSend";
 import ResetPassword from "../page/authenticate/ResetPassword";
 import Profile from "../page/profile/Profile";
@@ -19,7 +19,6 @@ import {preloaderEnd, preloaderStart} from "../src/Preloader";
 import axios from "axios";
 import {alertException} from "../src/Alert";
 import {bindActionCreators} from "redux";
-import {push} from "connected-react-router";
 import {changeUserData} from "../../redux/actions/user";
 import {isEmpty} from '../src/Helper'
 

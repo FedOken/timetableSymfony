@@ -9,17 +9,8 @@ use App\Repository\FacultyRepository;
 use App\Service\Access\AccessService;
 use Doctrine\ORM\EntityManagerInterface;
 
-class FacultyHandler
+class FacultyHandler extends BaseHandler
 {
-    protected $accessService;
-    protected $em;
-
-    public function __construct(AccessService $accessService, EntityManagerInterface $entityManager)
-    {
-        $this->accessService = $accessService;
-        $this->em = $entityManager;
-    }
-
     /**
      * Set select2 data by permission and selected entity
      * @param int|null $currentId
@@ -28,7 +19,7 @@ class FacultyHandler
      */
     public function setSelect2EasyAdmin($currentId, $user)
     {
-        $validIds = $this->accessService->getAccessObject($user)->getAccessibleFacultyIds();
+        $validIds = $this->access->getAccessObject($user)->getAccessibleFacultyIds();
         $entityModels = $this->em->getRepository(Faculty::class)->findBy(['id' => $validIds]);
 
         if ($currentId) {

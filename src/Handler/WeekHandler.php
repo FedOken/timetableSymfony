@@ -20,7 +20,7 @@ class WeekHandler extends BaseHandler
      */
     public function setSelect2EasyAdmin($currentId, $user)
     {
-        $validIds = $this->accessService->getAccessObject($user)->getAccessibleWeekIds();
+        $validIds = $this->access->getAccessObject($user)->getAccessibleWeekIds();
         $entityModels = $this->em->getRepository(Week::class)->findBy(['id' => $validIds]);
 
         if ($currentId) {

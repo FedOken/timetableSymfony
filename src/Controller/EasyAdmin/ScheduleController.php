@@ -28,7 +28,7 @@ use App\Repository\UniversityRepository;
 use App\Repository\UniversityTimeRepository;
 use App\Repository\WeekRepository;
 use App\Service\Access\AccessService;
-use App\Service\Access\PartyAccessService;
+use App\Service\Access\PartyAccess;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -108,13 +108,13 @@ class ScheduleController extends AdminController
     protected function listAction()
     {
         $this->init();
-        return $this->listCheckPermissionAndRedirect($this->validIds, 'Schedule', PartyAccessService::getAccessRole());
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Schedule', PartyAccess::getAccessRole());
     }
 
     protected function editAction()
     {
         $this->init();
-        return $this->editCheckPermissionAndRedirect($this->validIds, 'Schedule', PartyAccessService::getAccessRole());
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Schedule', PartyAccess::getAccessRole());
     }
 
     /**

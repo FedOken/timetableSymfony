@@ -19,7 +19,7 @@ class UniversityTimeHandler extends BaseHandler
      */
     public function setSelect2EasyAdmin($currentId, $user)
     {
-        $validIds = $this->accessService->getAccessObject($user)->getAccessibleTimeIds();
+        $validIds = $this->access->getAccessObject($user)->getAccessibleTimeIds();
         $entityModels = $this->em->getRepository(UniversityTime::class)->findBy(['id' => $validIds]);
 
         if ($currentId) {

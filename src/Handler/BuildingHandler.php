@@ -15,7 +15,7 @@ class BuildingHandler extends BaseHandler
      */
     public function setSelect2EasyAdmin($currentId, $user)
     {
-        $validIds = $this->accessService->getAccessObject($user)->getAccessibleBuildingIds();
+        $validIds = $this->access->getAccessObject($user)->getAccessibleBuildingIds();
         $entityModels = $this->em->getRepository(Building::class)->findBy(['id' => $validIds]);
 
         if ($currentId) {

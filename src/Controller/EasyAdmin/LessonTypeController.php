@@ -22,7 +22,7 @@ use App\Repository\TeacherRepository;
 use App\Repository\UniversityRepository;
 use App\Repository\WeekRepository;
 use App\Service\Access\AccessService;
-use App\Service\Access\AdminAccessService;
+use App\Service\Access\AdminAccess;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -54,12 +54,12 @@ class LessonTypeController extends AdminController
     protected function listAction()
     {
         $this->init();
-        return $this->listCheckPermissionAndRedirect($this->validIds, 'LessonType', AdminAccessService::getAccessRole());
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'LessonType', AdminAccess::getAccessRole());
     }
 
     protected function editAction()
     {
         $this->init();
-        return $this->editCheckPermissionAndRedirect($this->validIds, 'LessonType', AdminAccessService::getAccessRole());
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'LessonType', AdminAccess::getAccessRole());
     }
 }

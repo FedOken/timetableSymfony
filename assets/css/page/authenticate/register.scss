@@ -1,31 +1,43 @@
 .register {
   display: flex;
   justify-content: center;
-  flex-direction: column;
   align-items: center;
+  height: 100%;
 
   .block-register {
-    border: 2px solid $primary_100;
+    border: 2px solid $primary_75;
     padding: 15px;
     border-radius: 10px;
     background: $background;
+    position: relative;
 
-    nav {
-      margin-bottom: 15px;
-
-      .nav-item {
-        padding: 8px 12px;
-        font-weight: bold;
-        border-color: #CED4DA, #CED4DA, $background;
-
-        &.active {
-          color: $selection_100;
-        }
-      }
+    .block-name {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      font-size: 24px;
+      font-weight: bold;
+      color: $primary_100;
+      background: $background;
+      padding: 7px;
+      transform: translate(-50%, -50%);
     }
 
-    input, .select {
-      margin-bottom: 10px;
+    .form-group>input, .select {
+      margin-top: 10px;
+
+    }
+
+    .form-group>input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .form-group>input[type=number] {
+      -moz-appearance: textfield;
+    }
+
+    .btn {
+      margin-top: 15px;
     }
   }
 }

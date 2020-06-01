@@ -8,7 +8,7 @@ use App\Handler\BuildingHandler;
 use App\Handler\UniversityHandler;
 use App\Helper\ArrayHelper;
 use App\Service\Access\AccessService;
-use App\Service\Access\FacultyAccessService;
+use App\Service\Access\FacultyAccess;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -44,13 +44,13 @@ class CabinetController extends AdminController
     protected function listAction()
     {
         $this->init();
-        return $this->listCheckPermissionAndRedirect($this->validIds, 'Cabinet', FacultyAccessService::getAccessRole());
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Cabinet', FacultyAccess::getAccessRole());
     }
 
     protected function editAction()
     {
         $this->init();
-        return $this->editCheckPermissionAndRedirect($this->validIds, 'Cabinet', FacultyAccessService::getAccessRole());
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Cabinet', FacultyAccess::getAccessRole());
     }
 
     /**
