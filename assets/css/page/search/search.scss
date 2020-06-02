@@ -3,10 +3,11 @@
   align-items: center;
 
   .block-search {
-    border: 2px solid $primary_100;
-    padding: 15px;
-    border-radius: 10px;
-    background: $background;
+    @include border-block;
+
+    .block-name {
+      @include block-name;
+    }
 
     nav {
       .nav-item {

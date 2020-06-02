@@ -27,6 +27,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @property string $name_full
  * @property Faculty[] $faculties
  * @property bool $enable
+ * @property string $access_code
+ *
  * @property Building[] $buildings
  * @property Week[] $weeks
  * @property Course[] $courses
@@ -66,6 +68,11 @@ class University
      * @ORM\Column(type="boolean")
      */
     private $enable;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $access_code;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Building", mappedBy="university")
@@ -367,6 +374,17 @@ class University
             }
         }
 
+        return $this;
+    }
+
+    public function getAccessCode(): ?string
+    {
+        return $this->access_code;
+    }
+
+    public function setAccessCode(?string $access_code): self
+    {
+        $this->access_code = $access_code;
         return $this;
     }
 

@@ -31,6 +31,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @property string $name
  * @property string $name_full
  * @property bool $enable
+ * @property string $access_code
+ *
  * @property University $university
  * @property Party[] $parties
  * @property User[] $users
@@ -61,6 +63,11 @@ class Faculty
      * @ORM\Column(type="boolean")
      */
     private $enable;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $access_code;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\University", inversedBy="faculties")
@@ -200,6 +207,17 @@ class Faculty
             }
         }
 
+        return $this;
+    }
+
+    public function getAccessCode(): ?string
+    {
+        return $this->access_code;
+    }
+
+    public function setAccessCode(?string $access_code): self
+    {
+        $this->access_code = $access_code;
         return $this;
     }
 

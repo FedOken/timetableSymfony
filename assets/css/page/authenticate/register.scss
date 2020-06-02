@@ -5,22 +5,10 @@
   height: 100%;
 
   .block-register {
-    border: 2px solid $primary_75;
-    padding: 15px;
-    border-radius: 10px;
-    background: $background;
-    position: relative;
+    @include border-block;
 
     .block-name {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      font-size: 24px;
-      font-weight: bold;
-      color: $primary_100;
-      background: $background;
-      padding: 7px;
-      transform: translate(-50%, -50%);
+      @include block-name;
     }
 
     .form-group>input, .select {

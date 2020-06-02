@@ -15,14 +15,15 @@ function index(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const [btnIsDisabled, setBtnIsDisabled] = useState(true);
+
     useEffect(() => {
-        preloaderStart();
         axios.post(`/react/login/get-csrf-token`)
             .then((res) => {
                 setToken(res.data);
+                setBtnIsDisabled(false);
             })
-            .catch((error) => {alertException(error.response.status)})
-            .then(() => { preloaderEnd() });
+            .catch((error) => {alertException(error.response.status)});
     }, []);
 
     const clickRegister = () => {
@@ -85,6 +86,8 @@ function index(props) {
         <div className="login container">
             <div className="col-xs-12 col-sm-6 col-md-4 block-center">
                 <div className={'block-login'}>
+                    <span className={'block-name'}>Вход</span>
+
                     <form className={'login-form'} onSubmit={(e) => handleSubmit(e)} autoComplete="off" noValidate>
                         <div className={`form-group`}>
                             <input
@@ -111,7 +114,7 @@ function index(props) {
                             />
                             <span className={'error'} />
                         </div>
-                        <Button type="submit" className={"w-100"} variant="type-2">Войти</Button>
+                        <button type="submit" className={"w-100 btn btn-type-2"} disabled={btnIsDisabled} >Войти</button>
                     </form>
                     <div className={'block-additional'}>
                         <p>Все еще нет аккаунта? <span onClick={() => clickRegister()}>Создайте</span></p>

@@ -5,13 +5,14 @@
   align-items: center;
 
   .block-login {
-    border: 2px solid $primary_100;
-    padding: 15px;
-    border-radius: 10px;
-    background: $background;
+    @include border-block;
 
-    .form-group:last-child {
-      margin: 10px 0;
+    .block-name {
+      @include block-name;
+    }
+
+    .form-group {
+      margin-bottom: 10px;
     }
   }
 

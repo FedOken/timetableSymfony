@@ -100,6 +100,6 @@ function checkNumber(value) {
     console.log(Number.isInteger(value));
     if (!Number.isInteger(value)) return 'Only numbers';
     if (value < 0) return 'Сan\'t be less than 0';
-    if (value > 999999999999) return 'Number is too big';
+    if (value > 2000000000) return 'Number is too big';
     return '';
 }

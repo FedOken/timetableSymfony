@@ -46,17 +46,6 @@ class FacultyController extends AdminController
         return $this->editCheckPermissionAndRedirect($this->validIds, 'Faculty', FacultyAccess::getAccessRole());
     }
 
-    protected function persistEntity($entity)
-    {
-        $entity->enable = true;
-
-        //Save entity
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($entity);
-        $entityManager->flush();
-        return true;
-    }
-
     protected function createEntityFormBuilder($entity, $view)
     {
         $formBuilder = parent::createEntityFormBuilder($entity, $view);

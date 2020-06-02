@@ -53,7 +53,7 @@ class RegisterController extends AbstractController
      */
     public function reactRegisterCreateUniversityUser(Request $request)
     {
-        $data = $this->handler->saveUser($request, UniversityAccess::getAccessRole());
+        $data = $this->handler->saveUniversityUser($request);
         return new JsonResponse($data);
     }
 }

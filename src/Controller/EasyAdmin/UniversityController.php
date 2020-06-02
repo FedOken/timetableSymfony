@@ -30,21 +30,4 @@ class UniversityController extends AdminController
         $this->init();
         return $this->editCheckPermissionAndRedirect($this->validIds, 'University', UniversityAccess::getAccessRole());
     }
-
-    /**
-     * Action New, on save
-     *
-     * @param University $entity
-     * @return bool|void
-     */
-    protected function persistEntity($entity)
-    {
-        $entity->enable = true;
-
-        //Save entity
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($entity);
-        $entityManager->flush();
-        return true;
-    }
 }

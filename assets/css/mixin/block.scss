@@ -1,0 +1,22 @@
+@mixin border-block {
+  border: 2px solid $primary_100;
+  padding: 25px 15px 15px 15px;
+  border-radius: 10px;
+  background: $background;
+}
+
+@mixin block-name {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  font-size: 24px;
+  font-weight: bold;
+  color: $primary_100;
+  background: $background;
+  padding: 7px;
+  transform: translate(-50%, -50%);
+}
+
+
+
+

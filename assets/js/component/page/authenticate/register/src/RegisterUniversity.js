@@ -2,12 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {bindActionCreators} from "redux";
 import {push} from "connected-react-router";
 import {connect} from "react-redux";
-import Select from "../../../src/Select";
 import axios from "axios";
-import {alert, alertException} from "../../../src/Alert";
-import {validateForm} from "../../../src/FormValidation";
-import {isEmpty} from "../../../src/Helper";
-import {preloaderEnd, preloaderStart} from "../../../src/Preloader";
+import {alert, alertException} from "../../../../src/Alert";
+import {validateForm} from "../../../../src/FormValidation";
+import {preloaderEnd, preloaderStart} from "../../../../src/Preloader";
 import { withRouter } from 'react-router-dom';
 
 function index(props) {
@@ -52,7 +50,7 @@ function index(props) {
                     name={'email'}
                     className={`form-control input input-type-1 w-100`}
                     placeholder={'Код доступа'}
-                    type="number"
+                    type="text"
                     value={code}
                     onChange={(e) => setCode(e.target.value)}
                     autoComplete={'off'}

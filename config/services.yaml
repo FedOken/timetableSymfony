@@ -59,3 +59,19 @@ services:
             -   name: 'doctrine.orm.entity_listener'
                 event: 'postLoad'
                 entity: 'App\Entity\User'
+    App\Entity\EventListener\UniversityListener:
+        tags:
+            -   name: 'doctrine.orm.entity_listener'
+                event: 'prePersist'
+                entity: 'App\Entity\University'
+            -   name: 'doctrine.orm.entity_listener'
+                event: 'preUpdate'
+                entity: 'App\Entity\University'
+    App\Entity\EventListener\FacultyListener:
+        tags:
+            -   name: 'doctrine.orm.entity_listener'
+                event: 'prePersist'
+                entity: 'App\Entity\Faculty'
+            -   name: 'doctrine.orm.entity_listener'
+                event: 'preUpdate'
+                entity: 'App\Entity\Faculty'

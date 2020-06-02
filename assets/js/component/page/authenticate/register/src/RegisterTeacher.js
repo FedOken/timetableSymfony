@@ -2,12 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {bindActionCreators} from "redux";
 import {push} from "connected-react-router";
 import {connect} from "react-redux";
-import Select from "../../../src/Select";
+import Select from "../../../../src/Select";
 import axios from "axios";
-import {alert, alertException} from "../../../src/Alert";
-import {validateForm} from "../../../src/FormValidation";
-import {isEmpty} from "../../../src/Helper";
-import {preloaderEnd, preloaderStart} from "../../../src/Preloader";
+import {alert, alertException} from "../../../../src/Alert";
+import {validateForm} from "../../../../src/FormValidation";
+import {isEmpty} from "../../../../src/Helper";
+import {preloaderEnd, preloaderStart} from "../../../../src/Preloader";
 import { withRouter } from 'react-router-dom';
 
 function index(props) {
