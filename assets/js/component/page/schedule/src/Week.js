@@ -27,6 +27,10 @@ export default function Week(props) {
 
 
     const renderDays = () => {
+        if (isEmpty(data)) {
+            console.log('asdads');
+            return;
+        }
         return Object.keys(data.days).map((key) => {
             return <DayBlock key={key} day={data.days[key]}  opacities={data.dayOpacityPercent}/>
         });

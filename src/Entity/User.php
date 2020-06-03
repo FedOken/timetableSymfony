@@ -386,7 +386,6 @@ class User extends UserBase implements UserInterface
             'id' => $this->id,
             'email' => $this->email,
             'role' => $this->roles[0],
-
         ];
         return $data;
     }

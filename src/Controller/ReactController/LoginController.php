@@ -24,19 +24,17 @@ class LoginController extends AbstractController
     }
 
     /**
-     * Entry poin for log-in
+     * Entry point for log-in
      * @Route("/react/login/login", name="react-login-login")
-     *
-     * @param AuthenticationUtils $authenticationUtils
-     * @return void
      */
-    public function reactLoginLogin(AuthenticationUtils $authenticationUtils) {}
+    public function reactLoginLogin()
+    {
+        return;
+    }
 
     /**
-     * End point for log0in
+     * End point for log-in
      * @Route("/react/login/response", name="react-login-response")
-     * @param Request $request
-     * @return JsonResponse
      */
     public function reactLoginResponse(Request $request)
     {

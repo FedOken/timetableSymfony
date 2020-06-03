@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Day;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -115,5 +114,4 @@ class MainController extends AbstractController
     {
         return $this->render('welcome/index.html.twig');
     }
-
 }
