@@ -71,6 +71,10 @@ function index(props) {
                     redirect('/profile')
                 } else {
                     alert('error', res.data.reason);
+                    //If email not confirm, send again
+                    if (res.data.reasonCode === 101) {
+                        redirect(`/register/confirm-email-send/${res.data.code}`)
+                    }
                     preloaderEnd();
                 }
             })

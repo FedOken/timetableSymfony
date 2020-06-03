@@ -66,7 +66,7 @@ function index(props) {
                     alert('error', data.error);
                     return;
                 }
-                redirect('/register/confirm-email-send')
+                redirect(`/register/confirm-email-send/${data.code}`)
             })
             .catch((error) => {alertException(error.response.status)})
             .then(() => { preloaderEnd() });

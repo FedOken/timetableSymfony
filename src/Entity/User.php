@@ -28,6 +28,7 @@ use Symfony\Component\Validator\Constraints\Json;
  * @property string $phone
  * @property string $first_name
  * @property string $last_name
+ * @property string $code
  *
  * @property University $university
  * @property Faculty $faculty
@@ -78,6 +79,11 @@ class User extends UserBase implements UserInterface
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $enable;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $code;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -377,6 +383,17 @@ class User extends UserBase implements UserInterface
         return $this;
     }
 
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): self
+    {
+        $this->code = $code;
+        return $this;
+    }
+
 
 
     /* ADDITIONAL FUNCTIONS */
@@ -386,6 +403,7 @@ class User extends UserBase implements UserInterface
             'id' => $this->id,
             'email' => $this->email,
             'role' => $this->roles[0],
+            'code' => $this->code,
         ];
         return $data;
     }

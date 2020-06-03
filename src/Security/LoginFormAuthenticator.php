@@ -32,12 +32,18 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     private $csrfTokenManager;
     private $passwordEncoder;
 
-    private $userIsValid = false;
-    private $passwordIsValid = false;
-    private $tokenIsValid = false;
+    private $reasonCode = null;
+    private $userCode = null;
 
     const LOGIN_STATUS = 'login_status';
+    const USER_CODE = 'user_code';
+    const REASON_CODE = 'login_reason_code';
     const REASON = 'login_reason';
+
+    const CODE_INCORRECT_DATA= 100;
+    const CODE_NEED_EMAIL_AUTH = 101;
+    const CODE_ACCOUNT_DISABLED= 102;
+    const CODE_BAD_TOKEN = 103;
 
     public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -71,16 +77,24 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     {
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
         if (!$this->csrfTokenManager->isTokenValid($token)) {
-            throw new InvalidCsrfTokenException();
-        } else {
-            $this->tokenIsValid = true;
+            //throw new InvalidCsrfTokenException();
+            $this->reasonCode = self::CODE_BAD_TOKEN;
+            throw new CustomUserMessageAuthenticationException('Incorrect token.');
         }
 
+        /**@var User $user*/
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
 
         if (!$user) {
-            // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Email could not be found.');
+            $this->reasonCode = self::CODE_INCORRECT_DATA;
+            throw new CustomUserMessageAuthenticationException('Incorrect email or password.');
+        } else if($user->status === User::STATUS_WAIT_EMAIL_CONFIRM) {
+            $this->reasonCode = self::CODE_NEED_EMAIL_AUTH;
+            $this->userCode = $user->code;
+            throw new CustomUserMessageAuthenticationException('Email not confirm. Please confirm your email address.');
+        } else if($user->status === User::STATUS_UNACTIVE) {
+            $this->reasonCode = self::CODE_ACCOUNT_DISABLED;
+            throw new CustomUserMessageAuthenticationException('Your account is disabled. Contact us for details.');
         } else {
             $this->userIsValid = true;
         }
@@ -90,13 +104,16 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        $this->passwordIsValid = $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
-        return $this->passwordIsValid;
+        $passwordIsValid = $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        if (!$passwordIsValid) throw new CustomUserMessageAuthenticationException('Incorrect email or password.');
+        return true;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
         $request->getSession()->set(self::LOGIN_STATUS, true);
+        $request->getSession()->set(self::REASON_CODE, $this->reasonCode);
+        $request->getSession()->set(self::USER_CODE, $this->userCode);
         $request->getSession()->set(self::REASON, 'You have successfully log-in!');
 
         return new RedirectResponse($this->urlGenerator->generate('react-login-response'));
@@ -106,14 +123,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         $request->getSession()->set(self::LOGIN_STATUS, false);
-
-        if (!$this->userIsValid) {
-            $request->getSession()->set(self::REASON, 'Incorrect email or password');
-        } elseif (!$this->passwordIsValid) {
-            $request->getSession()->set(self::REASON, 'Incorrect email or password');
-        } elseif (!$this->tokenIsValid) {
-            $request->getSession()->set(self::REASON, 'Incorrect token');
-        }
+        $request->getSession()->set(self::REASON_CODE, $this->reasonCode);
+        $request->getSession()->set(self::USER_CODE, $this->userCode);
+        $request->getSession()->set(self::REASON, $exception->getMessage());
 
         return new RedirectResponse($this->urlGenerator->generate('react-login-response'));
     }

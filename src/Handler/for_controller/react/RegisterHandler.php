@@ -64,6 +64,7 @@ class RegisterHandler extends BaseHandler
             $this->sendConfirmEmail($model);
             return [
                 'status' => true,
+                'code' => $model->code,
             ];
         } catch (\Exception $e) {
             return [
