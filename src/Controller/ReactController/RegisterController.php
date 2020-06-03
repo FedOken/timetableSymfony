@@ -56,4 +56,12 @@ class RegisterController extends AbstractController
         $data = $this->handler->saveUniversityUser($request);
         return new JsonResponse($data);
     }
+
+    /**
+     * @Route("/react/register/confirm-email-send/{code}", name="react-register-confirmEmailSend")
+     */
+    public function reactRegisterConfirmEmailSend(string $code)
+    {
+        return new JsonResponse([$code]);
+    }
 }

@@ -1,9 +1,21 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {bindActionCreators} from "redux";
 import {push} from "connected-react-router";
 import {connect} from "react-redux";
+import {useParams} from "react-router";
+import axios from "axios";
+import {alertException} from "../../../src/Alert";
 
 function index(props) {
+    let params = useParams();
+
+    useEffect(() => {
+        axios.post(`/react/register/confirm-email-send/${params.code}`)
+            .then((res) => {
+                console.log(res.data);
+            })
+            .catch((error) => {alertException(error.response.status)});
+    }, []);
 
     const redirect = (url) => {
         props.push(url);

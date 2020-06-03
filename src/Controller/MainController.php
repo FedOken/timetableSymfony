@@ -77,14 +77,6 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("/register/confirm-email-send", name="register/confirm-email-send")
-     */
-    public function registerConfirmEmailSend()
-    {
-        return $this->render('welcome/index.html.twig');
-    }
-
-    /**
      * @Route("/reset-password", name="reset-password")
      */
     public function resetPassword()
@@ -112,6 +104,14 @@ class MainController extends AbstractController
      * @Route("/schedule/{type}/{party_id}", name="schedule-type-partyId")
      */
     public function scheduleTypePartyId()
+    {
+        return $this->render('welcome/index.html.twig');
+    }
+
+    /**
+     * @Route("/register/confirm-email-send/{code}", name="register-confirmEmailSend")
+     */
+    public function registerConfirmEmailSend(string $code)
     {
         return $this->render('welcome/index.html.twig');
     }

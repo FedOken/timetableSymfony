@@ -42,7 +42,9 @@ class LoginController extends AbstractController
     {
         $response = [
             'status' => $request->getSession()->get(LoginFormAuthenticator::LOGIN_STATUS),
+            'reasonCode' => $request->getSession()->get(LoginFormAuthenticator::REASON_CODE),
             'reason' => $request->getSession()->get(LoginFormAuthenticator::REASON),
+            'code' => $request->getSession()->get(LoginFormAuthenticator::USER_CODE),
             'user' => $this->getUser() ? $this->getUser()->serialize() : null,
         ];
         return new JsonResponse($response);

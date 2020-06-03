@@ -54,7 +54,7 @@ services:
     App\Entity\EventListener\UserListener:
         tags:
             -   name: 'doctrine.orm.entity_listener'
-                event: 'postPersist'
+                event: 'prePersist'
                 entity: 'App\Entity\User'
             -   name: 'doctrine.orm.entity_listener'
                 event: 'postLoad'

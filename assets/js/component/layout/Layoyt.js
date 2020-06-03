@@ -55,7 +55,7 @@ function index(props) {
                         <Route path='/schedule/:type/:id' render={() => (<Schedule key={props.loc.key}/>) } />
                         <Route path='/contact' component={Contact}/>
                         <Route path='/login' component={Login}/>
-                        <Route path='/register/confirm-email-send' component={ConfirmEmailSend}/>
+                        <Route path='/register/confirm-email-send/:code' component={ConfirmEmailSend}/>
                         <Route path='/register' component={Register}/>
                         <Route path='/reset-password/email-send' component={ResetPasswordEmailSend}/>
                         <Route path='/reset-password' component={ResetPassword}/>
