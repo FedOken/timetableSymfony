@@ -3,7 +3,7 @@
   align-items: center;
 
   .block-search {
-    @include border-block;
+    @include block-border;
 
     .block-name {
       @include block-name;

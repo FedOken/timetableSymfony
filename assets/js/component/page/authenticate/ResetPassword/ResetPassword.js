@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import Button from "react-bootstrap/Button";
 import {bindActionCreators} from "redux";
 import {push} from "connected-react-router";
 import {connect} from "react-redux";
-import {validateForm} from "../../src/FormValidation";
-import {preloaderEnd, preloaderStart} from "../../src/Preloader";
+import {validateForm} from "../../../src/FormValidation";
+import {preloaderEnd, preloaderStart} from "../../../src/Preloader";
 import axios from "axios";
-import {alert, alertException} from "../../src/Alert";
+import {alert, alertException} from "../../../src/Alert";
+import './style.scss'
 
 function index(props) {
     const [email, setEmail] = useState('');
@@ -18,7 +18,7 @@ function index(props) {
         }
 
         let formData = new FormData();
-        formData.set('User[email]', email);
+        formData.set('email', email);
 
         preloaderStart();
         axios.post('/react/reset-password', formData)
@@ -43,7 +43,7 @@ function index(props) {
         <div className="reset-password container">
             <div className="col-xs-12 col-sm-6 col-md-4 block-center">
                 <div className={'block-reset'}>
-                    <span className={'block-name'}>Вход</span>
+                    <span className={'block-name'}>Восстановление</span>
                     <form className={'reset-password-form'} onSubmit={(e) => handleSubmit(e)} noValidate>
 
                         <div className={`form-group`}>
@@ -56,7 +56,7 @@ function index(props) {
                             />
                             <span className={'error'} />
                         </div>
-                        <button type={"submit"} className={"w-100 btn btn-type-2"}>Восстановить</button>
+                        <button type={"submit"} className={"w-100 btn btn-type-2"}>Подтвердить</button>
                     </form>
                 </div>
             </div>

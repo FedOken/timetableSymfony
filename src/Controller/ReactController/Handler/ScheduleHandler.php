@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Handler\for_controller\react;
+namespace App\Controller\ReactController\Handler;
 
 use App\Entity\Cabinet;
 use App\Entity\Day;
 use App\Entity\Party;
-use App\Entity\Schedule;
 use App\Entity\Teacher;
 use App\Entity\UniversityTime;
 use App\Entity\Week;

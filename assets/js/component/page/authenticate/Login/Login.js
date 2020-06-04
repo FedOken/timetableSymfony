@@ -3,11 +3,11 @@ import Button from "react-bootstrap/Button";
 import {bindActionCreators} from "redux";
 import {push} from "connected-react-router";
 import {connect} from "react-redux";
-import {preloaderEnd, preloaderStart} from "../../src/Preloader";
+import {preloaderEnd, preloaderStart} from "../../../src/Preloader";
 import axios from "axios";
-import { alert, alertException} from "../../src/Alert";
-import { validate } from "../../src/FormValidation";
-import {changeUserData} from "../../../redux/actions/user";
+import { alert, alertException} from "../../../src/Alert";
+import {validate, validateForm} from "../../../src/FormValidation";
+import {changeUserData} from "../../../../redux/actions/user";
 
 function index(props) {
 
@@ -36,21 +36,9 @@ function index(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        let formHasError = false;
-        let inputs = document.querySelectorAll('form.login-form .form-group input');
-        inputs.forEach(function(input) {
-            let valError = validate(input);
-            if (!valError.status) {
-                formHasError = true;
-                input.closest('.form-group').classList.add('has-error');
-                input.closest('.form-group').querySelector('span.error').innerHTML = valError.error;
-            } else {
-                input.closest('.form-group').classList.remove('has-error');
-                input.closest('.form-group').querySelector('span.error').innerHTML = '';
-            }
-        });
-
-        if (formHasError) return;
+        if (!validateForm('login-form')) {
+            return;
+        }
 
         let formData = new FormData();
         formData.set('email', email);

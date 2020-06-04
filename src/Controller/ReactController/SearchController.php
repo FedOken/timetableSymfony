@@ -2,27 +2,20 @@
 
 namespace App\Controller\ReactController;
 
-use App\Entity\Party;
-use App\Entity\University;
-use App\Handler\for_controller\react\SearchHandler;
-use App\Helper\ArrayHelper;
-use phpDocumentor\Reflection\DocBlock\Serializer;
+
+use App\Controller\ReactController\Handler\SearchHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
 
 class SearchController extends AbstractController
 {
-    private $srchHandler;
+    private $handler;
 
-    public function __construct(SearchHandler $searchHandler)
+    public function __construct(SearchHandler $handler)
     {
-        $this->srchHandler = $searchHandler;
+        $this->handler = $handler;
     }
 
     /**
@@ -31,7 +24,7 @@ class SearchController extends AbstractController
      */
     public function reactSearchGetUniversities()
     {
-        $data = $this->srchHandler->getUniversities();
+        $data = $this->handler->getUniversities();
         return new JsonResponse($data);
     }
 
@@ -42,7 +35,7 @@ class SearchController extends AbstractController
      */
     public function reactSearchGetTeachers(int $unId)
     {
-        $data = $this->srchHandler->getTeachers($unId);
+        $data = $this->handler->getTeachers($unId);
         return new JsonResponse($data);
     }
 
@@ -53,7 +46,7 @@ class SearchController extends AbstractController
      */
     public function reactSearchGetBuildings(int $unId)
     {
-        $data = $this->srchHandler->getBuildings($unId);
+        $data = $this->handler->getBuildings($unId);
         return new JsonResponse($data);
     }
 
@@ -64,7 +57,7 @@ class SearchController extends AbstractController
      */
     public function reactSearchGetCabinets(int $buildingId)
     {
-        $data = $this->srchHandler->getCabinets($buildingId);
+        $data = $this->handler->getCabinets($buildingId);
         return new JsonResponse($data);
     }
 
@@ -75,7 +68,7 @@ class SearchController extends AbstractController
      */
     public function reactSearchGetParties(int $unId)
     {
-        $data = $this->srchHandler->getParties($unId);
+        $data = $this->handler->getParties($unId);
         return new JsonResponse($data);
     }
 
@@ -87,7 +80,7 @@ class SearchController extends AbstractController
      */
     public function reactSearchGetPartiesAutocomplete($query)
     {
-        $data = $this->srchHandler->getPartiesAutocomplete($query);
+        $data = $this->handler->getPartiesAutocomplete($query);
         return new JsonResponse($data);
     }
 
@@ -98,7 +91,7 @@ class SearchController extends AbstractController
      */
     public function reactSearchGetTeachersAutocomplete($query)
     {
-        $data = $this->srchHandler->getTeachersAutocomplete($query);
+        $data = $this->handler->getTeachersAutocomplete($query);
         return new JsonResponse($data);
     }
 
@@ -109,7 +102,7 @@ class SearchController extends AbstractController
      */
     public function reactSearchGetCabinetsAutocomplete($query)
     {
-        $data = $this->srchHandler->getCabinetsAutocomplete($query);
+        $data = $this->handler->getCabinetsAutocomplete($query);
         return new JsonResponse($data);
     }
 }

@@ -5,7 +5,7 @@
   height: 100%;
 
   .block-register {
-    @include border-block;
+    @include block-border;
 
     .block-name {
       @include block-name;

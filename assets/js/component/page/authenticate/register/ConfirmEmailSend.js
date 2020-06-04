@@ -12,7 +12,7 @@ function index(props) {
     useEffect(() => {
         axios.post(`/react/register/confirm-email-send/${params.code}`)
             .then((res) => {
-                console.log(res.data);
+                //console.log(res.data);
             })
             .catch((error) => {alertException(error.response.status)});
     }, []);

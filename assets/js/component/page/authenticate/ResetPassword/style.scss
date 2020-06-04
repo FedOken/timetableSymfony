@@ -1,3 +1,5 @@
+@import "../../../../../css/all";
+
 .reset-password {
   display: flex;
   justify-content: center;
@@ -5,7 +7,7 @@
   align-items: center;
 
   .block-reset {
-    @include border-block;
+    @include block-border;
 
     .block-name {
       @include block-name;

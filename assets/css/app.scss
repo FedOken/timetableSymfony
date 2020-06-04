@@ -24,9 +24,9 @@
 @import "page/schedule/schedule";
 @import "page/contact/contact";
 @import "page/contact/business";
-@import "page/authenticate/login";
+//@import "page/authenticate/login";
 @import "page/authenticate/register";
 @import "page/authenticate/confirm-email-send";
-@import "page/authenticate/reset-password";
+//@import "../js/component/page/authenticate/ResetPassword/style";
 @import "page/authenticate/reset-password-email-send";
 @import "page/profile/profile";

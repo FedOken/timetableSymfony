@@ -1,27 +1,23 @@
 <?php
 
-namespace App\Handler\for_controller\react;
+namespace App\Controller\ReactController\Handler;
 
 use App\Entity\Faculty;
 use App\Entity\University;
 use App\Entity\User;
-use App\Handler\BaseHandler;
 use App\Helper\StringHelper;
 use App\Service\Access\FacultyAccess;
 use App\Service\Access\PartyAccess;
 use App\Service\Access\TeacherAccess;
 use App\Service\Access\UniversityAccess;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\NativePasswordEncoder;
 
 class RegisterHandler extends BaseHandler
 {
-    protected $user;
-
-    public function saveUniversityUser(Request $request): array
+    public function saveUniversityUser(): array
     {
-        $code = StringHelper::clearStr($request->request->get('code'));
+        $code = $this->strService->clearStr($this->request->request->get('code'));
         $role = $id = null;
 
         $un = $this->em->getRepository(University::class)->findOneBy(['access_code' => $code]);
@@ -41,30 +37,36 @@ class RegisterHandler extends BaseHandler
                 'error' => 'Invalid access code.'
             ];
         }
-        return $this->saveUser($request, $role, $id);
+        return $this->saveUser($role, $id);
     }
 
-    public function saveUser(Request $request, string $role, $modelId = null): array
+    public function saveUser(string $role, $modelId = null): array
     {
         try {
             $model = new User();
-            $model->load($request->request->get('User'));
+            $model->load($this->request->request->get('User'));
 
-            $modelId = $modelId ?: $request->request->get('id');
+            $modelId = $modelId ?: $this->request->request->get('id');
             $model->access_code = $this->access->createAccessCode($role, $modelId);
             $this->validateUser($model, $role);
 
             $model->status = User::STATUS_WAIT_EMAIL_CONFIRM;
             $model->roles = [$role];
             $model->password = (new NativePasswordEncoder())->encodePassword($model->password, null);
+            $model->check_email_code = $this->strService->genRanStrEntity(10, User::class, 'check_email_code');
 
             $this->em->persist($model);
             $this->em->flush();
 
-            $this->sendConfirmEmail($model);
+            if ($this->sendConfirmEmail($model)) {
+                return [
+                    'status' => true,
+                    'code' => $model->code,
+                ];
+            }
             return [
-                'status' => true,
-                'code' => $model->code,
+                'status' => false,
+                'error' => 'Something failed. Email not sent.'
             ];
         } catch (\Exception $e) {
             return [
@@ -74,14 +76,9 @@ class RegisterHandler extends BaseHandler
         }
     }
 
-    public function sendConfirmEmail(User $user): void
+    public function sendConfirmEmail(User $user): bool
     {
-        try {
-            $test = 1;
-            return;
-        } catch (\Exception $e) {
-            throw new \Exception('Something failed. Email not sent.');
-        }
+        return true;
     }
 
     /**

@@ -14,7 +14,6 @@ function index(props) {
         axios.post('/react/search/get-universities')
             .then((res) => {
                 setSelUnOpt(res.data);
-                //console.log(res.data);
             })
             .catch((error) => {alertException(error.response.status)});
     }, []);

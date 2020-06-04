@@ -1,26 +1,17 @@
 <?php
 
-namespace App\Handler\for_controller\react;
+namespace App\Controller\ReactController\Handler;
 
 use App\Entity\Building;
 use App\Entity\Cabinet;
-use App\Entity\Day;
 use App\Entity\Party;
-use App\Entity\Schedule;
 use App\Entity\Teacher;
 use App\Entity\University;
-use App\Entity\UniversityTime;
-use App\Entity\User;
-use App\Entity\Week;
 use App\Handler\BaseHandler;
-use App\Handler\WeekHandler;
-use App\Helper\ArrayHelper;
-use App\Repository\BuildingRepository;
 use App\Repository\CabinetRepository;
 use App\Repository\PartyRepository;
 use App\Repository\TeacherRepository;
 use App\Repository\UniversityRepository;
-use App\Repository\WeekRepository;
 
 class SearchHandler extends BaseHandler
 {

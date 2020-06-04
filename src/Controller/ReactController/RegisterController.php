@@ -2,24 +2,14 @@
 
 namespace App\Controller\ReactController;
 
-use App\Entity\Party;
-use App\Entity\University;
-use App\Entity\User;
-use App\Handler\for_controller\react\RegisterHandler;
-use App\Handler\for_controller\react\SearchHandler;
-use App\Helper\ArrayHelper;
+use App\Controller\ReactController\Handler\RegisterHandler;
+
 use App\Service\Access\PartyAccess;
 use App\Service\Access\TeacherAccess;
-use App\Service\Access\UniversityAccess;
-use phpDocumentor\Reflection\DocBlock\Serializer;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class RegisterController extends AbstractController
 {
@@ -33,27 +23,27 @@ class RegisterController extends AbstractController
     /**
      * @Route("/react/register/create-party-user", name="react-register-createPartyUser")
      */
-    public function reactRegisterCreatePartyUser(Request $request)
+    public function reactRegisterCreatePartyUser()
     {
-        $data = $this->handler->saveUser($request, PartyAccess::getAccessRole());
+        $data = $this->handler->saveUser(PartyAccess::getAccessRole());
         return new JsonResponse($data);
     }
 
     /**
      * @Route("/react/register/create-teacher-user", name="react-register-createTeacherUser")
      */
-    public function reactRegisterCreateTeacherUser(Request $request)
+    public function reactRegisterCreateTeacherUser()
     {
-        $data = $this->handler->saveUser($request, TeacherAccess::getAccessRole());
+        $data = $this->handler->saveUser(TeacherAccess::getAccessRole());
         return new JsonResponse($data);
     }
 
     /**
      * @Route("/react/register/create-university-user", name="react-register-createUniversityUser")
      */
-    public function reactRegisterCreateUniversityUser(Request $request)
+    public function reactRegisterCreateUniversityUser()
     {
-        $data = $this->handler->saveUniversityUser($request);
+        $data = $this->handler->saveUniversityUser();
         return new JsonResponse($data);
     }
 
