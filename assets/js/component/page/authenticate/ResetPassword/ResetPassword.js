@@ -3,9 +3,9 @@ import {bindActionCreators} from "redux";
 import {push} from "connected-react-router";
 import {connect} from "react-redux";
 import {validateForm} from "../../../src/FormValidation";
-import {preloaderEnd, preloaderStart} from "../../../src/Preloader";
+import {preloaderEnd, preloaderStart} from "../../../src/Preloader/Preloader";
 import axios from "axios";
-import {alert, alertException} from "../../../src/Alert";
+import {alert, alertException} from "../../../src/Alert/Alert";
 import './style.scss'
 
 function index(props) {

@@ -6,8 +6,8 @@ import {push} from "connected-react-router";
 import {connect} from "react-redux";
 import axios from "axios";
 import { withRouter } from 'react-router-dom';
-import { preloaderStart, preloaderEnd } from "../../../src/Preloader";
-import { alert, alertException } from "../../../src/Alert";
+import { preloaderStart, preloaderEnd } from "../../../src/Preloader/Preloader";
+import { alert, alertException } from "../../../src/Alert/Alert";
 
 function index(props) {
     const [selUnOpt, setSelUnOpt] = useState([]);

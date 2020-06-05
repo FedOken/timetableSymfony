@@ -3,9 +3,9 @@ import Button from "react-bootstrap/Button";
 import {bindActionCreators} from "redux";
 import {push} from "connected-react-router";
 import {connect} from "react-redux";
-import {preloaderEnd, preloaderStart} from "../../src/Preloader";
+import {preloaderEnd, preloaderStart} from "../../src/Preloader/Preloader";
 import axios from "axios";
-import {alertException} from "../../src/Alert";
+import {alertException} from "../../src/Alert/Alert";
 
 function index(props) {
 

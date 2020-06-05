@@ -1,0 +1,117 @@
+@import '../../../../../css/sass_components';
+
+$transitionDuration: 0.2s;
+
+.contact {
+  @include flex-jk_center-fd_column;
+
+  p {
+    text-align: center;
+    font-size: 25px;
+    line-height: 28px;
+    font-weight: bold;
+  }
+
+  .title {
+    font-size: 45px;
+    line-height: 50px;
+    margin-bottom: 30px;
+  }
+
+  .block_container {
+    position: relative;
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      svg {
+        height: 150px;
+        width: auto;
+        fill: $primary_100;
+      }
+
+      p {
+        margin-top: 15px;
+      };
+
+      .text {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        height: 45px;
+        overflow: hidden;
+
+        p {
+          position: absolute;
+          transition-duration: $transitionDuration;
+          width: 100%;
+
+          &.visible {
+            top: 0;
+          }
+
+          &.hidden {
+            position: absolute;
+            color: $selection_100;
+            top: -50px;
+          }
+        }
+      }
+
+      .image {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 150px;
+        overflow: hidden;
+
+        svg {
+          position: absolute;
+          transition-duration: $transitionDuration;
+
+          &:first-child {
+            top: 0;
+          }
+
+          &:last-child {
+            position: absolute;
+            fill: $selection_100;
+            top: 160px;
+          }
+        }
+      }
+
+      &:hover {
+        .text {
+          .visible {
+            top: 50px;
+          }
+
+          .hidden {
+            top: 0;
+          }
+        }
+
+        .image {
+          svg:first-child {
+            top: -160px;
+          }
+
+          svg:last-child {
+            top: 0;
+          }
+        }
+      }
+    }
+
+    .between {
+      position: absolute;
+      top: 60px;
+      width: 100%;
+      z-index: -1;
+    }
+  }
+}

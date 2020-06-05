@@ -1,7 +1,4 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
-@import "~react-bootstrap-typeahead/css/Typeahead.min.css";
-@import "~react-bootstrap-typeahead/css/Typeahead-bs4.min.css";
-@import "~react-select-2/dist/css/react-select-2.css";
 
 @import "variable/font";
 @import "variable/color";
@@ -15,18 +12,5 @@
 @import "layout/header";
 @import "layout/footer";
 
-@import "src/alert";
-@import "src/preloader";
-@import "src/tabs";
-
-@import "page/welcome/welcome";
 @import "page/search/search";
-@import "page/schedule/schedule";
-@import "page/contact/contact";
-@import "page/contact/business";
-//@import "page/authenticate/login";
-@import "page/authenticate/register";
-@import "page/authenticate/confirm-email-send";
-//@import "../js/component/page/authenticate/ResetPassword/style";
-@import "page/authenticate/reset-password-email-send";
 @import "page/profile/profile";

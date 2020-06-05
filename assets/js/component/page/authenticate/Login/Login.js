@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import Button from "react-bootstrap/Button";
 import {bindActionCreators} from "redux";
 import {push} from "connected-react-router";
 import {connect} from "react-redux";
-import {preloaderEnd, preloaderStart} from "../../../src/Preloader";
+import {preloaderEnd, preloaderStart} from "../../../src/Preloader/Preloader";
 import axios from "axios";
-import { alert, alertException} from "../../../src/Alert";
-import {validate, validateForm} from "../../../src/FormValidation";
+import { alert, alertException} from "../../../src/Alert/Alert";
+import {validateForm} from "../../../src/FormValidation";
 import {changeUserData} from "../../../../redux/actions/user";
+import './style.scss'
 
 function index(props) {
 

@@ -1,0 +1,8 @@
+@import "../../../../../css/sass_components";
+
+.schedule {
+  @include flex-jk_center-fd_column;
+
+  @import "src/css/block-title";
+  @import "src/css/not-found";
+}

@@ -1,0 +1,15 @@
+@import "../../../../../../../css/sass_components";
+
+.block-day {
+  height: 30px;
+  font-size: 18px;
+  border: 2px solid $primary_100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  font-weight: bold;
+  margin-top: 10px;
+  background: $primary_100;
+  color: $background;
+}
