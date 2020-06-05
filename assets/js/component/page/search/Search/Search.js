@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Group from "./src/Group";
 import Teacher from "./src/Teacher";
 import Cabinet from "./src/Cabinet";
-import Tabs from "../../src/Tabs/Tabs";
-import TabsItem from "../../src/Tabs/TabsItem";
+import Tabs from "../../../src/Tabs/Tabs";
+import TabsItem from "../../../src/Tabs/TabsItem";
+import './style.scss';
 
 function index(props) {
     return (

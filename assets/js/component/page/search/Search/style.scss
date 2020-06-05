@@ -1,3 +1,5 @@
+@import '../../../../../css/sass_components';
+
 .search {
   @include flex-jk_center-fd_column;
   align-items: center;

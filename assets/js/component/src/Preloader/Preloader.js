@@ -1,4 +1,5 @@
 import React from 'react';
+import './style.scss';
 
 const duration = '2.5s';
 

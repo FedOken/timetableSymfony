@@ -1,11 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import Button from "react-bootstrap/Button";
+import React, {useEffect} from 'react';
 import {bindActionCreators} from "redux";
 import {push} from "connected-react-router";
 import {connect} from "react-redux";
-import {preloaderEnd, preloaderStart} from "../../src/Preloader/Preloader";
-import axios from "axios";
-import {alertException} from "../../src/Alert/Alert";
+import {preloaderEnd} from "../../../src/Preloader/Preloader";
+import './style.scss';
 
 function index(props) {
 

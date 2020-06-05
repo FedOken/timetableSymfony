@@ -1,31 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import {AsyncTypeahead} from "react-bootstrap-typeahead";
-import Select from "../../../src/Select";
+import Select from "../../../../src/Select";
 import {bindActionCreators} from "redux";
 import {push} from "connected-react-router";
 import {connect} from "react-redux";
 import axios from "axios";
 import { withRouter } from 'react-router-dom';
-import { preloaderStart, preloaderEnd } from "../../../src/Preloader/Preloader";
-import { alert, alertException } from "../../../src/Alert/Alert";
+import { preloaderStart, preloaderEnd } from "../../../../src/Preloader/Preloader";
+import { alertException } from "../../../../src/Alert/Alert";
 
 function index(props) {
     const [selUnOpt, setSelUnOpt] = useState([]);
     const [selUnIsDisabled, setSelUnIsDisabled] = useState(true);
 
-    const [selBldngOpt, setSelBldngOpt] = useState([]);
-    const [selBldngValue, setSelBldngValue] = useState();
-    const [selBldngIsDisabled, setSelBldngIsDisabled] = useState(true);
-
-    const [selCabinetOpt, setSelCabinetOpt] = useState([]);
-    const [selCabinetValue, setSelCabinetValue] = useState();
-    const [selCabinetIsDisabled, setSelCabinetIsDisabled] = useState(true);
+    const [selGrOpt, setSelGrOpt] = useState([]);
+    const [selGrValue, setSelGrValue] = useState();
+    const [selGrIsDisabled, setSelGrIsDisabled] = useState(true);
 
     const [tphOptions, setTphOptions] = useState([]);
     const [tphIsLoading, setTphIsLoading] = useState(false);
 
     const [btnIsDisabled, setBtnIsDisabled] = useState(true);
-    const [selectedCabinet, setSelectedCabinet] = useState();
+    const [selectedGroup, setSelectedGroup] = useState();
 
     useEffect(() => {
         axios.post('/react/search/get-universities')
@@ -33,12 +29,12 @@ function index(props) {
                 setSelUnOpt(res.data);
                 setSelUnIsDisabled(false);
             })
-            .catch((error) => {alertException(error.response.status)})
+            .catch((error) => {alertException(error.response.status)});
     }, []);
 
     const tphOnSearch = (searchText) => {
         setTphIsLoading(true);
-        axios.post('/react/search/get-cabinets-autocomplete/' + searchText)
+        axios.post('/react/search/get-parties-autocomplete/' + searchText)
             .then((res) => {
                 setTphOptions(res.data);
                 setTphIsLoading(false);
@@ -49,9 +45,8 @@ function index(props) {
 
     const tphOnChange = (query) => {
         if (typeof query[0] === 'undefined' || typeof query[0].value === 'undefined') return;
-        setSelectedCabinet(query[0].value);
+        setSelectedGroup(query[0].value);
         setBtnIsDisabled(false);
-
     };
 
     const tphOnInputChange = () => {
@@ -61,49 +56,28 @@ function index(props) {
     const selUnOnChange = (data) => {
         if (typeof data.value === 'undefined') return;
 
-        setSelBldngValue('');
-        setSelBldngIsDisabled(true);
-
-        setSelCabinetValue('');
-        setSelCabinetOpt([]);
-        setSelCabinetIsDisabled(true);
-
+        setSelGrValue('');
+        setSelGrIsDisabled(true);
         setBtnIsDisabled(true);
 
-        axios.post('/react/search/get-buildings/' + data.value)
+        axios.post('/react/search/get-parties/' + data.value)
             .then((res) => {
-                setSelBldngOpt(res.data);
-                setSelBldngIsDisabled(false);
+                setSelGrOpt(res.data);
+                setSelGrIsDisabled(false);
             })
             .catch((error) => {alertException(error.response.status)});
     };
 
-    const selBldngOnChange = (data) => {
+    const selGrOnChange = (data) => {
         if (typeof data.value === 'undefined') return;
 
-        setSelBldngValue(data);
-        setSelCabinetValue('');
-        setSelCabinetIsDisabled(true);
-        setBtnIsDisabled(true);
-
-        axios.post('/react/search/get-cabinets/' + data.value)
-            .then((res) => {
-                setSelCabinetOpt(res.data);
-                setSelCabinetIsDisabled(false);
-            })
-            .catch((error) => {alertException(error.response.status)});
-    };
-
-    const selCabinetOnChange = (data) => {
-        if (typeof data.value === 'undefined') return;
-
-        setSelCabinetValue(data);
-        setSelectedCabinet(data.value);
+        setSelGrValue(data);
+        setSelectedGroup(data.value);
         setBtnIsDisabled(false);
     };
 
     const redirect = () => {
-        let url = "/schedule/cabinet/" + selectedCabinet;
+        let url = "/schedule/group/" + selectedGroup;
         preloaderStart();
         setTimeout(() => {
             props.push(url);
@@ -111,11 +85,9 @@ function index(props) {
         }, 300)
     };
 
-
-
     return (
         <div>
-            <p className={'enter-group'}>Введите номер аудитории</p>
+            <p className={'enter-group'}>Введите название группы</p>
             <AsyncTypeahead
                 id="home-autocomplete"
                 className={'input typeahead'}
@@ -136,26 +108,20 @@ function index(props) {
             <p className="row-delimiter">или</p>
 
             <Select
+                name="group-select"
                 options={selUnOpt}
                 placeholder={'Выберите университет'}
                 className={'select select-type-1 ' + (selUnIsDisabled ? 'disabled' : '')}
                 onChange={ (data) => {selUnOnChange(data)} }
             />
             <Select
-                options={selBldngOpt}
-                value={selBldngValue}
-                placeholder={'Выберите корпус'}
-                className={'select select-type-1 ' + (selBldngIsDisabled ? 'disabled' : '')}
-                onChange={ (data) => {selBldngOnChange(data)} }
-                isDisabled={selBldngIsDisabled}
-            />
-            <Select
-                options={selCabinetOpt}
-                value={selCabinetValue}
-                placeholder={'Выберите аудиторию'}
-                className={'select select-type-1 ' + (selCabinetIsDisabled ? 'disabled' : '')}
-                onChange={ (data) => {selCabinetOnChange(data)} }
-                isDisabled={selCabinetIsDisabled}
+                name="group-select"
+                options={selGrOpt}
+                value={selGrValue}
+                placeholder={'Выберите группу'}
+                className={'select select-type-1 ' + (selGrIsDisabled ? 'disabled' : '')}
+                onChange={ (data) => {selGrOnChange(data)} }
+                isDisabled={selGrIsDisabled}
             />
             <button type="button" className={"w-100 btn btn-type-2"} onClick={() => redirect()} disabled={btnIsDisabled} >Поиск</button>
         </div>

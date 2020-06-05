@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import {AsyncTypeahead} from "react-bootstrap-typeahead";
-import Select from "../../../src/Select";
+import Select from "../../../../src/Select";
 import {bindActionCreators} from "redux";
 import {push} from "connected-react-router";
 import {connect} from "react-redux";
 import axios from "axios";
 import { withRouter } from 'react-router-dom';
-import { preloaderStart, preloaderEnd } from "../../../src/Preloader/Preloader";
-import { alert, alertException } from "../../../src/Alert/Alert";
+import { preloaderStart, preloaderEnd } from "../../../../src/Preloader/Preloader";
+import { alertException } from "../../../../src/Alert/Alert";
 
 function index(props) {
     const [selUnOpt, setSelUnOpt] = useState([]);
     const [selUnIsDisabled, setSelUnIsDisabled] = useState(true);
 
-    const [selGrOpt, setSelGrOpt] = useState([]);
-    const [selGrValue, setSelGrValue] = useState();
-    const [selGrIsDisabled, setSelGrIsDisabled] = useState(true);
+    const [selTchrOpt, setSelTchrOpt] = useState([]);
+    const [selTchrValue, setSelTchrValue] = useState();
+    const [selTchrIsDisabled, setSelTchrIsDisabled] = useState(true);
 
     const [tphOptions, setTphOptions] = useState([]);
     const [tphIsLoading, setTphIsLoading] = useState(false);
 
     const [btnIsDisabled, setBtnIsDisabled] = useState(true);
-    const [selectedGroup, setSelectedGroup] = useState();
+    const [selectedTeacher, setSelectedTeacher] = useState();
 
     useEffect(() => {
         axios.post('/react/search/get-universities')
@@ -34,7 +34,7 @@ function index(props) {
 
     const tphOnSearch = (searchText) => {
         setTphIsLoading(true);
-        axios.post('/react/search/get-parties-autocomplete/' + searchText)
+        axios.post('/react/search/get-teachers-autocomplete/' + searchText)
             .then((res) => {
                 setTphOptions(res.data);
                 setTphIsLoading(false);
@@ -45,7 +45,7 @@ function index(props) {
 
     const tphOnChange = (query) => {
         if (typeof query[0] === 'undefined' || typeof query[0].value === 'undefined') return;
-        setSelectedGroup(query[0].value);
+        setSelectedTeacher(query[0].value);
         setBtnIsDisabled(false);
     };
 
@@ -56,28 +56,31 @@ function index(props) {
     const selUnOnChange = (data) => {
         if (typeof data.value === 'undefined') return;
 
-        setSelGrValue('');
-        setSelGrIsDisabled(true);
+        setSelTchrValue('');
+        setSelTchrIsDisabled(true);
         setBtnIsDisabled(true);
 
-        axios.post('/react/search/get-parties/' + data.value)
+        axios.post('/react/search/get-teachers/' + data.value)
             .then((res) => {
-                setSelGrOpt(res.data);
-                setSelGrIsDisabled(false);
+                setSelTchrOpt(res.data);
+                setSelTchrIsDisabled(false);
             })
             .catch((error) => {alertException(error.response.status)});
     };
 
-    const selGrOnChange = (data) => {
+    const selTchrOnChange = (data) => {
         if (typeof data.value === 'undefined') return;
 
-        setSelGrValue(data);
-        setSelectedGroup(data.value);
+        setSelTchrValue(data);
+        setSelectedTeacher(data.value);
         setBtnIsDisabled(false);
     };
 
+
+
+
     const redirect = () => {
-        let url = "/schedule/group/" + selectedGroup;
+        let url = "/schedule/teacher/" + selectedTeacher;
         preloaderStart();
         setTimeout(() => {
             props.push(url);
@@ -85,9 +88,11 @@ function index(props) {
         }, 300)
     };
 
+
+
     return (
         <div>
-            <p className={'enter-group'}>Введите название группы</p>
+            <p className={'enter-group'}>Введите фамилию преподавателя</p>
             <AsyncTypeahead
                 id="home-autocomplete"
                 className={'input typeahead'}
@@ -116,12 +121,12 @@ function index(props) {
             />
             <Select
                 name="group-select"
-                options={selGrOpt}
-                value={selGrValue}
-                placeholder={'Выберите группу'}
-                className={'select select-type-1 ' + (selGrIsDisabled ? 'disabled' : '')}
-                onChange={ (data) => {selGrOnChange(data)} }
-                isDisabled={selGrIsDisabled}
+                options={selTchrOpt}
+                value={selTchrValue}
+                placeholder={'Выберите преподавателя'}
+                className={'select select-type-1 ' + (selTchrIsDisabled ? 'disabled' : '')}
+                onChange={ (data) => {selTchrOnChange(data)} }
+                isDisabled={selTchrIsDisabled}
             />
             <button type="button" className={"w-100 btn btn-type-2"} onClick={() => redirect()} disabled={btnIsDisabled} >Поиск</button>
         </div>

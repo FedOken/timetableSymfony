@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import {bindActionCreators} from "redux";
-import {changeHeaderType} from "../../redux/actions/header";
+import {changeHeaderType} from "../../../redux/actions/header";
 import {connect} from "react-redux";
 import { push } from 'connected-react-router'
-import HeaderItem from "./elements/HeaderItem";
-import HeaderLogo from "./elements/HeaderLogo";
+import HeaderItem from "./src/HeaderItem";
+import HeaderLogo from "./src/HeaderLogo";
+import './style.scss';
 
 function index(props) {
 

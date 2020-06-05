@@ -1,29 +1,29 @@
 import React, {useEffect} from 'react';
 import {BrowserRouter as Router, Switch, Route, withRouter} from "react-router-dom";
-import Header from './Header';
-import Footer from "./Footer";
-import Welcome from "../page/welcome/Welcome/Welcome";
-import Schedule from "../page/schedule/Schedule/Schedule";
-import Contact from "../page/contact/Contact/Contact";
-import Business from "../page/contact/Business/Business";
-import Technical from "../page/contact/Technical/Technical";
-import Search from "../page/search/Search";
-import Login from "../page/authenticate/Login/Login";
-import Register from "../page/authenticate/Register/Register";
-import ConfirmEmailSend from "../page/authenticate/ConfirmEmailSend/ConfirmEmailSend";
-import ResetPasswordEmailSend from "../page/authenticate/ResetPasswordEmailSend/ResetPasswordEmailSend";
-import ResetPassword from "../page/authenticate/ResetPassword/ResetPassword";
-import Profile from "../page/profile/Profile";
+import Header from '../Header/Header';
+import Footer from "../Footer/Footer";
+import Welcome from "../../page/welcome/Welcome/Welcome";
+import Schedule from "../../page/schedule/Schedule/Schedule";
+import Contact from "../../page/contact/Contact/Contact";
+import Business from "../../page/contact/Business/Business";
+import Technical from "../../page/contact/Technical/Technical";
+import Search from "../../page/search/Search/Search";
+import Login from "../../page/authenticate/Login/Login";
+import Register from "../../page/authenticate/Register/Register";
+import ConfirmEmailSend from "../../page/authenticate/ConfirmEmailSend/ConfirmEmailSend";
+import ResetPasswordEmailSend from "../../page/authenticate/ResetPasswordEmailSend/ResetPasswordEmailSend";
+import ResetPassword from "../../page/authenticate/ResetPassword/ResetPassword";
+import Profile from "../../page/profile/Profile/Profile";
 import {connect} from "react-redux";
-import {preloaderEnd, preloaderStart} from "../src/Preloader/Preloader";
+import {preloaderEnd, preloaderStart} from "../../src/Preloader/Preloader";
 import axios from "axios";
-import {alertException} from "../src/Alert/Alert";
+import {alertException} from "../../src/Alert/Alert";
 import {bindActionCreators} from "redux";
-import {changeUserData} from "../../redux/actions/user";
-import {isEmpty} from '../src/Helper'
+import {changeUserData} from "../../../redux/actions/user";
+import {isEmpty} from '../../src/Helper'
 
-import '../../../css/font/Neucha/Neucha-Regular.ttf'
-
+import './style.scss';
+import '../../../../css/font/Neucha/Neucha-Regular.ttf';
 
 function index(props) {
 
