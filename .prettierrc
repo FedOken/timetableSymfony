@@ -1,0 +1,12 @@
+{
+  "trailingComma": "all",
+  "tabWidth": 2,
+  "semi": false,
+  "singleQuote": true,
+  "printWidth": 120,
+  "functionCallArgumentNewline": "never",
+  "function-call-argument-newline": ["error", "never"],
+  "jsxBracketSameLine": true,
+  "bracketSpacing": false,
+  "endOfLine": "auto"
+}

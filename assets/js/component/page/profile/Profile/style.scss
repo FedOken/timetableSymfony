@@ -2,40 +2,48 @@
 
 .profile {
   display: flex;
-  justify-content: center;
   flex-direction: column;
   align-items: center;
 
   .block-center {
     margin-top: 50px;
 
-    div {
-      margin-bottom: 50px;
+    .block {
+      margin-top: 20px;
+      @include font-16;
+
+      .block-title {
+        @include font-20;
+        color: $primary_60;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
 
       p {
-        @include font-16;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
+        display: flex;
+        span {
+          text-transform: capitalize;
+          width: 90px;
+        }
       }
-      .title {
-        font-size: 22px;
-        line-height: 24px;
-        font-weight: bold;
-      }
-
       input {
-        margin-bottom: 10px;
+        margin-top: 10px;
       }
     }
 
     .buttons {
       display: flex;
-      justify-content: space-between;
-
+      justify-content: flex-end;
+      margin-top: 20px;
       .btn {
         margin: 0;
+        width: 100px;
+        &:first-child {
+          margin-right: 15px;
+        }
       }
     }
-
   }
 
 

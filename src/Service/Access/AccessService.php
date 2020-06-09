@@ -15,12 +15,6 @@ class AccessService
         $this->em = $em;
     }
 
-    public function test()
-    {
-        $test = 1;
-        return 'asdad';
-    }
-
     /**
      * Create access code for User entity
      * A-0. Global access

@@ -1,33 +1,32 @@
-import React from "react";
-import {NavLink} from "react-router-dom";
-import {bindActionCreators} from "redux";
-import {push} from "connected-react-router";
-import {connect} from "react-redux";
+import React from 'react'
+import {NavLink} from 'react-router-dom'
+import {bindActionCreators} from 'redux'
+import {push} from 'connected-react-router'
+import {connect} from 'react-redux'
 
 const index = (props) => {
+  const reduxRoute = (url) => {
+    props.push(url)
+  }
 
-    const reduxRoute = (url) => {
-        props.push(url);
-    };
-
-    return (
-        <div className={'header_item'}>
-            <NavLink exact to={props.item.url} onClick={() => reduxRoute(props.item.url)}>
-                <div className={'icon'}>
-                    {props.item.icon}
-                    {props.item.icon}
-                </div>
-                <div className={'text'}>
-                    <span className={'visible'}>{props.item.text}</span>
-                    <span className={'hidden'}>{props.item.text}</span>
-                </div>
-            </NavLink>
+  return (
+    <div className={'header_item'}>
+      <NavLink exact to={props.url} onClick={() => reduxRoute(props.url)}>
+        <div className={'icon'}>
+          {props.icon}
+          {props.icon}
         </div>
-    );
-};
-
-function matchDispatchToProps(dispatch) {
-    return bindActionCreators({push: push}, dispatch)
+        <div className={'text'}>
+          <span className={'visible'}>{props.text}</span>
+          <span className={'hidden'}>{props.text}</span>
+        </div>
+      </NavLink>
+    </div>
+  )
 }
 
-export default connect(null, matchDispatchToProps)(index);
+function matchDispatchToProps(dispatch) {
+  return bindActionCreators({push: push}, dispatch)
+}
+
+export default connect(null, matchDispatchToProps)(index)

@@ -1,50 +1,50 @@
-import React, {useState, useEffect} from 'react';
-import {bindActionCreators} from "redux";
-import {changeHeaderType} from "../../../redux/actions/header";
-import {connect} from "react-redux";
-import { push } from 'connected-react-router'
-import HeaderItem from "./src/HeaderItem";
-import HeaderLogo from "./src/HeaderLogo";
-import './style.scss';
+import React from 'react'
+import {connect} from 'react-redux'
+import HeaderItem from './src/HeaderItem'
+import HeaderLogo from './src/HeaderLogo'
+import {getRoleLabel} from '../../src/Auth'
+import {iconHome, iconPanel, iconCalendar, iconSearch, iconLogo, iconContact, iconLogin, iconProfile,} from '../../src/Icon'
+import './style.scss'
 
 function index(props) {
-
-    const rendering = () => {
-        return props.items.map((item, key) => {
-            if (item.id === 'logo') {
-                return <HeaderLogo item={item} key={key}/>;
-            } else {
-                return <HeaderItem item={item} key={key}/>;
-            }
-        });
-    };
-
-    if (props.pathname === '/welcome') {
-        return (
-            <header className={'only_logo'}>
-                {props.items.find((item) => {
-                    return item.id === 'logo';
-                }).icon}
-            </header>
-        );
-    } else {
-        return (
-            <header>
-                {rendering()}
-            </header>
-        );
+  const renderFirstElement = () => {
+    if (props.user.isLogin) {
+      let rolesForPanel = [getRoleLabel('admin'), getRoleLabel('university')]
+      if (rolesForPanel.includes(props.user.data.role)) {
+        return <HeaderItem url={'/admin'} icon={iconPanel} text={'Panel'} />
+      }
+      return <HeaderItem url={'/sch'} icon={iconCalendar} text={'Schedule'} />
     }
+    return <HeaderItem url={'/welcome'} icon={iconHome} text={'Home'} />
+  }
+
+  const renderLastElement = () => {
+    if (props.user.isLogin) {
+      return <HeaderItem url={'/profile'} icon={iconProfile} text={'Profile'} />
+    }
+    return <HeaderItem url={'/login'} icon={iconLogin} text={'Login'} />
+  }
+
+  if (props.pathname === '/welcome') {
+    return <header className={'header only_logo'}>{iconLogo}</header>
+  } else {
+    return (
+      <header className={'header'}>
+        {renderFirstElement()}
+        <HeaderItem url={'/search'} icon={iconSearch} text={'Search'} />
+        <HeaderLogo url={'/welcome'} icon={iconLogo} />
+        <HeaderItem url={'/contact'} icon={iconContact} text={'Contact us'} />
+        {renderLastElement()}
+      </header>
+    )
+  }
 }
 
 function mapStateToProps(state) {
-    return {
-        items: state.header.items,
-        pathname: state.router.location.pathname,
-    }
+  return {
+    user: state.user,
+    pathname: state.router.location.pathname,
+  }
 }
 
-function matchDispatchToProps(dispatch) {
-    return bindActionCreators({changeHeaderType: changeHeaderType, push: push}, dispatch)
-}
-
-export default connect(mapStateToProps, matchDispatchToProps)(index);
+export default connect(mapStateToProps)(index)
