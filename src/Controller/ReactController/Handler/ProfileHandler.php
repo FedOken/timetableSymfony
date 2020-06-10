@@ -16,10 +16,10 @@ use Symfony\Component\Security\Core\Encoder\NativePasswordEncoder;
 
 class ProfileHandler extends BaseHandler
 {
-    public function getUserData($userId): array
+    public function getUserData($userCode): array
     {
         try {
-            $user = $this->em->getRepository(User::class)->findOneBy(['id' => $userId]);
+            $user = $this->em->getRepository(User::class)->findOneBy(['code' => $userCode]);
             if (!$user) throw new \Exception("User not found.");
 
             $accessObj = $this->access->getAccessObject($user);

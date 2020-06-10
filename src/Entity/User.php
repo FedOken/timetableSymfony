@@ -397,14 +397,5 @@ class User extends UserBase implements UserInterface
 
 
     /* ADDITIONAL FUNCTIONS */
-    public function serialize()
-    {
-        $data = [
-            'id' => $this->id,
-            'email' => $this->email,
-            'role' => $this->roles[0],
-            'code' => $this->code,
-        ];
-        return $data;
-    }
+
 }

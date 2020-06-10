@@ -18,11 +18,11 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route("/react/profile/get-user-data/{userId}", name="react-profile-getUserData")
+     * @Route("/react/profile/get-user-data/{userCode}", name="react-profile-getUserData")
      */
-    public function reactProfileGetUserData($userId)
+    public function reactProfileGetUserData($userCode)
     {
-        $data = $this->handler->getUserData($userId);
+        $data = $this->handler->getUserData($userCode);
         return new JsonResponse($data);
     }
 }

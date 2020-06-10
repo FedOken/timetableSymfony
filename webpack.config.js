@@ -81,18 +81,18 @@ module.exports = {
   },
   output: {
     filename: '[name].js',
-    path: __dirname + '/public/build'
+    path: __dirname + '/public/build',
   },
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: {loader: "babel-loader"},
+        use: {loader: 'babel-loader'},
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"]
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.s[ac]ss$/i,
@@ -107,7 +107,7 @@ module.exports = {
               name: './font/[name].[ext]',
             },
           },
-        ]
+        ],
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
@@ -118,7 +118,7 @@ module.exports = {
               name: './image/[name].[ext]',
             },
           },
-        ]
+        ],
       },
       // {
       //   test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
@@ -131,6 +131,6 @@ module.exports = {
       //     },
       //   ]
       // }
-    ]
-  }
+    ],
+  },
 };

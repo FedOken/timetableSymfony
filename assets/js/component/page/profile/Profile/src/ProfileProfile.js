@@ -1,67 +1,87 @@
-import React, {useEffect, useState} from 'react'
-import {bindActionCreators} from 'redux'
-import {push} from 'connected-react-router'
-import {connect} from 'react-redux'
-import {validateForm} from '../../../../src/FormValidation'
-import {withRouter} from 'react-router-dom'
-import {isEmpty} from '../../../../src/Helper'
-import axios from 'axios'
-import {alertException} from '../../../../src/Alert/Alert'
-import {preloaderEnd, preloaderStart} from '../../../../src/Preloader/Preloader'
+import React, {useEffect, useState} from 'react';
+import {bindActionCreators} from 'redux';
+import {push} from 'connected-react-router';
+import {connect} from 'react-redux';
+import {validateForm} from '../../../../src/FormValidation';
+import {withRouter} from 'react-router-dom';
+import axios from 'axios';
+import {alertException} from '../../../../src/Alert/Alert';
+import {preloaderEnd, preloaderStart} from '../../../../src/Preloader/Preloader';
+import {userLogout} from '../../../../../redux/actions/user';
+import {isEmpty} from '../../../../src/Helper';
 
 function index(props) {
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [email, setEmail] = useState('awdwad')
-  const [phone, setPhone] = useState('')
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
 
   useEffect(() => {
-    console.log(props.user)
-    preloaderStart()
-    axios
-      .post(`/react/profile/get-user-data/${props.user.data.id}`)
-      .then((res) => {
-        if (res.data.status) {
-          let data = res.data.data
-          for (let prop in data) {
-            let p = document.createElement('p')
-            p.innerHTML = data[prop]
-            let span = document.createElement('span')
-            span.innerHTML = prop + ':'
-            p.prepend(span)
+    // if (props.user.isLoaded && !isEmpty(props.user.data)) {
+    //   setFirstName(props.user.data.first_name);
+    //   setLastName(props.user.data.last_name);
+    //   setEmail(props.user.data.email);
+    //   setFirstName(props.user.data.phone);
+    // }
+  });
 
-            let cont = document.querySelector('.profile-info')
-            cont.appendChild(p)
+  // if (props.user.isLoaded && !isEmpty(props.user.data)) {
+  //   setFirstName(props.user.data.first_name);
+  //   setLastName(props.user.data.last_name);
+  //   setEmail(props.user.data.email);
+  //   setFirstName(props.user.data.phone);
+  // }
+
+  const renderMainInfo = () => {
+    if (props.user.isLoaded && !isEmpty(props.user.data)) {
+      console.log(1);
+      preloaderStart();
+      axios
+        .post(`/react/profile/get-user-data/${props.user.data.code}`)
+        .then((res) => {
+          if (res.data.status) {
+            let data = res.data.data;
+            for (let prop in data) {
+              let p = document.createElement('p');
+              p.innerHTML = data[prop];
+              let span = document.createElement('span');
+              span.innerHTML = prop + ':';
+              p.prepend(span);
+
+              let cont = document.querySelector('.profile-info');
+              cont.appendChild(p);
+            }
           }
-        }
-      })
-      .catch((error) => {
-        alertException(error.response.status)
-      })
-      .then(() => {
-        preloaderEnd()
-        //preloaderEnd()
-      })
-  })
-
-  const renderInfo = () => {
-    return (
-      <p>
-        <span>Университет:</span>Национальный Транспортный Университет
-      </p>
-    )
-  }
+        })
+        .catch((error) => {
+          alertException(error.response.status);
+        })
+        .then(() => {
+          preloaderEnd();
+        });
+    }
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    if (!validateForm('profile-profile')) return
-  }
+    e.preventDefault();
+    if (!validateForm('profile-profile')) return;
+  };
+
+  const clickLogout = () => {
+    props.userLogout();
+    redirect('/login');
+  };
+
+  const redirect = (url) => {
+    props.push(url);
+    props.history.push(url);
+  };
 
   return (
     <form className={'profile-profile'} onSubmit={(e) => handleSubmit(e)} autoComplete="off" noValidate>
       <div className={'block'}>
         <p className={'block-title'}>Общая информация</p>
-        <div className={'profile-info'}></div>
+        <div className={'profile-info'}>{renderMainInfo()}</div>
         <div className={`form-group`}>
           <input
             className={`form-control input input-type-1 w-100`}
@@ -108,7 +128,7 @@ function index(props) {
         </div>
       </div>
       <div className={'buttons'}>
-        <button type="button" className={'btn btn-type-1'}>
+        <button type="button" className={'btn btn-type-1'} onClick={() => {clickLogout()}}>
           Выйти
         </button>
         <button type="submit" className={'btn btn-type-2'}>
@@ -116,18 +136,17 @@ function index(props) {
         </button>
       </div>
     </form>
-  )
+  );
 }
 
 function mapStateToProps(state) {
-  console.log(123);
   return {
     user: state.user,
-  }
+  };
 }
 
 function matchDispatchToProps(dispatch) {
-  return bindActionCreators({push: push}, dispatch)
+  return bindActionCreators({push: push, userLogout: userLogout}, dispatch);
 }
 
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(index))
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(index));

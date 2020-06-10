@@ -12,6 +12,7 @@ module.exports = {
     es6: true,
     node: true,
   },
+  parser: 'babel-eslint',
   plugins: ['prettier'],
   rules: {
     'no-console': 0,
