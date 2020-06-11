@@ -1,85 +1,87 @@
-import React, {useEffect, useState} from 'react'
-import {bindActionCreators} from 'redux'
-import {push} from 'connected-react-router'
-import {connect} from 'react-redux'
-import {preloaderEnd, preloaderStart} from '../../../src/Preloader/Preloader'
-import axios from 'axios'
-import {alert, alertException} from '../../../src/Alert/Alert'
-import {validateForm} from '../../../src/FormValidation'
-import {userLogin} from '../../../../redux/actions/user'
-import './style.scss'
+import React, {useEffect, useState} from 'react';
+import {bindActionCreators} from 'redux';
+import {push} from 'connected-react-router';
+import {connect} from 'react-redux';
+import {preloaderEnd, preloaderStart} from '../../../src/Preloader/Preloader';
+import axios from 'axios';
+import {alert, alertException} from '../../../src/Alert/Alert';
+import {validateForm} from '../../../src/FormValidation';
+import {userLogin} from '../../../../redux/actions/user';
+import './style.scss';
 
 function index(props) {
-  const [token, setToken] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [token, setToken] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const [btnIsDisabled, setBtnIsDisabled] = useState(true)
+  const [btnIsDisabled, setBtnIsDisabled] = useState(true);
 
   useEffect(() => {
     axios
       .post(`/react/login/get-csrf-token`)
       .then((res) => {
-        setToken(res.data)
-        setBtnIsDisabled(false)
+        setToken(res.data);
+        setBtnIsDisabled(false);
       })
       .catch((error) => {
-        alertException(error.response.status)
-      })
-  }, [])
+        alertException(error.response.status);
+      });
+  }, []);
 
   const clickRegister = () => {
-    redirect('/register')
-  }
+    redirect('/register');
+  };
 
   const clickResetPassword = () => {
-    redirect('/reset-password')
-  }
+    redirect('/reset-password');
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!validateForm('login-form')) {
-      return
+      return;
     }
 
-    let formData = new FormData()
-    formData.set('email', email)
-    formData.set('password', password)
-    formData.set('_csrf_token', token)
+    let formData = new FormData();
+    formData.set('email', email);
+    formData.set('password', password);
+    formData.set('_csrf_token', token);
 
-    preloaderStart()
+    preloaderStart();
     axios
       .post(`/react/login/login`, formData)
       .then((res) => {
+        console.log(res.data.status);
         if (res.data.status) {
-          alert('success', res.data.reason)
+          alert('success', res.data.reason);
           props.userLogin({
             data: {
               id: res.data.user.id,
               email: res.data.user.email,
               role: res.data.user.role,
             },
-          })
-          redirect('/profile')
+          });
+          console.log(1);
+          redirect('/profile');
         } else {
-          alert('error', res.data.reason)
+          alert('error', res.data.reason);
           //If email not confirm, send again
           if (res.data.reasonCode === 101) {
-            redirect(`/register/confirm-email-send/${res.data.code}`)
+            redirect(`/register/confirm-email-send/${res.data.code}`);
           }
-          preloaderEnd()
+          preloaderEnd();
         }
       })
       .catch((error) => {
-        alertException(error.response.status)
-        preloaderEnd()
-      })
-  }
+        alertException(error.response.status);
+        preloaderEnd();
+      });
+  };
 
   const redirect = (url) => {
-    props.push(url)
-    props.history.push(url)
-  }
+    props.push(url);
+    props.history.push(url);
+  };
 
   return (
     <div className="login container">
@@ -129,17 +131,17 @@ function index(props) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function mapStateToProps(state) {
   return {
     user: state.user,
-  }
+  };
 }
 
 function matchDispatchToProps(dispatch) {
-  return bindActionCreators({push: push, userLogin: userLogin}, dispatch)
+  return bindActionCreators({push: push, userLogin: userLogin}, dispatch);
 }
 
-export default connect(mapStateToProps, matchDispatchToProps)(index)
+export default connect(mapStateToProps, matchDispatchToProps)(index);

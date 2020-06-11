@@ -17,48 +17,49 @@ function index(props) {
   const [phone, setPhone] = useState('');
 
   useEffect(() => {
-    // if (props.user.isLoaded && !isEmpty(props.user.data)) {
-    //   setFirstName(props.user.data.first_name);
-    //   setLastName(props.user.data.last_name);
-    //   setEmail(props.user.data.email);
-    //   setFirstName(props.user.data.phone);
-    // }
+
+    if (props.user.isLoaded && !isEmpty(props.user.data)) {
+      setFirstName(props.user.data.first_name ? props.user.data.first_name : '');
+      setLastName(props.user.data.last_name ? props.user.data.last_name : '');
+      setEmail(props.user.data.email);
+      setFirstName(props.user.data.phone);
+    }
   });
 
-  // if (props.user.isLoaded && !isEmpty(props.user.data)) {
-  //   setFirstName(props.user.data.first_name);
-  //   setLastName(props.user.data.last_name);
-  //   setEmail(props.user.data.email);
-  //   setFirstName(props.user.data.phone);
-  // }
-
   const renderMainInfo = () => {
-    if (props.user.isLoaded && !isEmpty(props.user.data)) {
-      console.log(1);
-      preloaderStart();
-      axios
-        .post(`/react/profile/get-user-data/${props.user.data.code}`)
-        .then((res) => {
-          if (res.data.status) {
-            let data = res.data.data;
-            for (let prop in data) {
-              let p = document.createElement('p');
-              p.innerHTML = data[prop];
-              let span = document.createElement('span');
-              span.innerHTML = prop + ':';
-              p.prepend(span);
+    // if (props.user.isLoaded && !isEmpty(props.user.data)) {
+    //   console.log(1);
+    //   preloaderStart();
+    //   axios
+    //     .post(`/react/profile/get-user-data/${props.user.data.code}`)
+    //     .then((res) => {
+    //       if (res.data.status) {
+    //         let data = res.data.data;
+    //         for (let prop in data) {
+    //           let p = document.createElement('p');
+    //           p.innerHTML = data[prop];
+    //           let span = document.createElement('span');
+    //           span.innerHTML = prop + ':';
+    //           p.prepend(span);
+    //
+    //           let cont = document.querySelector('.profile-info');
+    //           cont.appendChild(p);
+    //         }
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       alertException(error.response.status);
+    //     })
+    //     .then(() => {
+    //       preloaderEnd();
+    //     });
+    // }
+  };
 
-              let cont = document.querySelector('.profile-info');
-              cont.appendChild(p);
-            }
-          }
-        })
-        .catch((error) => {
-          alertException(error.response.status);
-        })
-        .then(() => {
-          preloaderEnd();
-        });
+  const test = () => {
+    if (props.user.isLoaded && !isEmpty(props.user.data)) {
+      setEmail(props.user.data.email)
+      return email;
     }
   };
 
@@ -105,6 +106,7 @@ function index(props) {
       </div>
       <div className={'block'}>
         <p className={'block-title'}>Контакты</p>
+        {/*{test()}*/}
         <div className={`form-group`}>
           <input
             className={`form-control input input-type-1 w-100`}

@@ -3,6 +3,7 @@ namespace App\Entity\EventListener;
 
 use App\Entity\Handler\UserHandler;
 use App\Entity\User;
+use App\Service\StringService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 

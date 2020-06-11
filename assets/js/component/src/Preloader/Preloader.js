@@ -1,8 +1,6 @@
 import React from 'react';
 import './style.scss';
 
-const duration = '2.5s';
-
 export default function index(props) {
     return (
         <div className={'preloader_container'}>

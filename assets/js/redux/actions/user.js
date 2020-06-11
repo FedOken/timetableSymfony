@@ -27,7 +27,7 @@ export const userUpdate = (data) => {
     preloaderStart();
     dispatch(updateStarted(data));
     axios
-      .post(`/react/layout/get-user`)
+      .post(`/api/user/get-user`)
       .then((res) => {
         if (res.data.status) {
           return dispatch(updateSuccess(res.data.data));
