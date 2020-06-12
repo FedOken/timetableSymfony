@@ -1,36 +1,77 @@
-let data = {
+let model = {
   isLoading: false,
   error: null,
-  isLoaded: false,
   data: {},
+};
+let relation = {
+  isLoading: false,
+  error: null,
+  data: {},
+};
+let data = {
+  model: model,
+  relation: relation,
 };
 
 export default function user(state = data, action) {
   switch (action.type) {
     case 'USER_LOGIN':
       return Object.assign({}, state, {isLogin: true}, action.payload);
-    case 'USER_LOADING':
+
+    case 'USER_UPDATE_LOADING':
       return {
         ...state,
-        isLoading: true,
-        error: null,
-        isLoaded: false,
-        data: {},
+        model: {
+          ...model,
+          isLoading: true,
+        },
       };
-    case 'USER_SUCCESS':
+    case 'USER_UPDATE_SUCCESS':
       return {
         ...state,
-        isLoading: false,
-        isLoaded: true,
-        data: action.payload,
+        model: {
+          ...model,
+          isLoading: false,
+          data: action.payload,
+        },
       };
-    case 'USER_FAILURE':
+    case 'USER_UPDATE_FAILURE':
       return {
         ...state,
-        isLoading: false,
-        isLoaded: true,
-        error: action.payload,
+        model: {
+          ...model,
+          isLoading: false,
+          error: action.payload,
+        },
       };
+
+    case 'USER_RELATION_LOADING':
+      return {
+        ...state,
+        relation: {
+          ...relation,
+          isLoading: true,
+        },
+      };
+    case 'USER_RELATION_SUCCESS':
+      return {
+        ...state,
+        relation: {
+          ...relation,
+          isLoading: false,
+          data: action.payload,
+        },
+      };
+    case 'USER_RELATION_FAILURE':
+      return {
+        ...state,
+        relation: {
+          ...relation,
+          isLoading: false,
+          error: action.payload,
+        },
+      };
+
     case 'USER_LOGOUT':
       return data;
     default:

@@ -8,34 +8,66 @@ export const userLogout = () => {
   };
 };
 
-const updateStarted = () => ({
-  type: 'USER_LOADING',
+/*-------------------------*/
+const modelLoading = () => ({
+  type: 'USER_UPDATE_LOADING',
 });
-
-const updateSuccess = (data) => ({
-  type: 'USER_SUCCESS',
+const modelSuccess = (data) => ({
+  type: 'USER_UPDATE_SUCCESS',
   payload: data,
 });
-
-const updateFailure = (error) => ({
-  type: 'USER_FAILURE',
+const modelFailure = (error) => ({
+  type: 'USER_UPDATE_FAILURE',
   payload: error,
 });
-
-export const userUpdate = (data) => {
+export const loadUserModel = (data) => {
   return (dispatch) => {
     preloaderStart();
-    dispatch(updateStarted(data));
+    dispatch(modelLoading(data));
     axios
       .post(`/api/user/get-user`)
       .then((res) => {
         if (res.data.status) {
-          return dispatch(updateSuccess(res.data.data));
+          return dispatch(modelSuccess(res.data.data));
         }
-        dispatch(updateFailure(res.data.error));
+        dispatch(modelFailure(res.data.error));
       })
       .catch((error) => {
-        dispatch(updateFailure(error.message));
+        dispatch(modelFailure(error.message));
+        alertException(error);
+      })
+      .then(() => {
+        preloaderEnd();
+      });
+  };
+};
+
+/*-------------------------*/
+const relationLoading = () => ({
+  type: 'USER_RELATION_LOADING',
+});
+const relationSuccess = (data) => ({
+  type: 'USER_RELATION_SUCCESS',
+  payload: data,
+});
+const relationFailure = (error) => ({
+  type: 'USER_RELATION_FAILURE',
+  payload: error,
+});
+export const loadUserRelation = (data) => {
+  return (dispatch) => {
+    preloaderStart();
+    dispatch(relationLoading(data));
+    axios
+      .post(`/api/user/get-relation`)
+      .then((res) => {
+        if (res.data.status) {
+          return dispatch(relationSuccess(res.data.data));
+        }
+        dispatch(relationFailure(res.data.error));
+      })
+      .catch((error) => {
+        dispatch(relationFailure(error.message));
         alertException(error);
       })
       .then(() => {

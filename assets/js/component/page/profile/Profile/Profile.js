@@ -7,7 +7,7 @@ import './style.scss';
 import Tabs from '../../../src/Tabs/Tabs';
 import TabsItem from '../../../src/Tabs/TabsItem';
 import {iconDoor, iconProfile, iconShield, iconTeacher} from '../../../src/Icon';
-import ProfileProfile from './src/ProfileProfile';
+import ProfileProfile from './src/ProfileProfile/ProfileProfile';
 
 function index(props) {
   return (

@@ -16,14 +16,14 @@ import ResetPassword from '../../page/authenticate/ResetPassword/ResetPassword';
 import Profile from '../../page/profile/Profile/Profile';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {userUpdate} from '../../../redux/actions/user';
+import {loadUserModel} from '../../../redux/actions/user';
 
 import './style.scss';
 import '../../../../css/font/Neucha/Neucha-Regular.ttf';
 
 function index(props) {
   useEffect(() => {
-    props.userUpdate();
+    props.loadUserModel();
   }, []);
 
   return (
@@ -59,7 +59,7 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch) {
-  return bindActionCreators({userUpdate: userUpdate}, dispatch);
+  return bindActionCreators({loadUserModel: loadUserModel}, dispatch);
 }
 
 export default withRouter(connect(mapStateToProps, matchDispatchToProps)(index));

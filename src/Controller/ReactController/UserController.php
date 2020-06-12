@@ -26,4 +26,14 @@ class UserController extends AbstractController
         $data = $this->handler->getUserData();
         return new JsonResponse($data);
     }
+
+    /**
+     * @Route("/api/user/get-relation", name="api-user-getRelation")
+     * @return JsonResponse
+     */
+    public function apiUserGetRelation()
+    {
+        $data = $this->handler->getUserRelation();
+        return new JsonResponse($data);
+    }
 }
