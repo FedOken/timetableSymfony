@@ -9,9 +9,9 @@ import {isEmpty} from '../../src/Helper';
 
 function index(props) {
   const renderFirstElement = () => {
-    if (!isEmpty(props.user.data)) {
+    if (!isEmpty(props.user.model.data)) {
       let rolesForPanel = [getRoleLabel('admin'), getRoleLabel('university')];
-      if (rolesForPanel.includes(props.user.data.role)) {
+      if (rolesForPanel.includes(props.user.model.data.role)) {
         return <HeaderItem url={'/admin'} icon={iconPanel} text={'Panel'} />;
       }
       return <HeaderItem url={'/sch'} icon={iconCalendar} text={'Schedule'} />;
@@ -20,7 +20,7 @@ function index(props) {
   };
 
   const renderLastElement = () => {
-    if (!isEmpty(props.user.data)) {
+    if (!isEmpty(props.user.model.data)) {
       return <HeaderItem url={'/profile'} icon={iconProfile} text={'Profile'} />;
     }
     return <HeaderItem url={'/login'} icon={iconLogin} text={'Login'} />;

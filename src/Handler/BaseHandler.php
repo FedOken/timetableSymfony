@@ -12,13 +12,10 @@ use Doctrine\ORM\EntityManagerInterface;
 class BaseHandler
 {
     protected $access;
-    protected $em;
 
-    public function __construct(AccessService $access, EntityManagerInterface $entityManager)
+    public function __construct(AccessService $access)
     {
         //Access service
         $this->access = $access;
-        //Manager
-        $this->em = $entityManager;
     }
 }

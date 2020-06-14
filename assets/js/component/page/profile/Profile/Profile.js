@@ -1,37 +1,60 @@
 import React, {useEffect} from 'react';
 import {bindActionCreators} from 'redux';
-import {push} from 'connected-react-router';
 import {connect} from 'react-redux';
-import {preloaderEnd} from '../../../src/Preloader/Preloader';
 import './style.scss';
 import Tabs from '../../../src/Tabs/Tabs';
 import TabsItem from '../../../src/Tabs/TabsItem';
-import {iconDoor, iconProfile, iconShield, iconTeacher} from '../../../src/Icon';
-import ProfileProfile from './src/ProfileProfile/ProfileProfile';
+import {iconDoor, iconProfile, iconShield, iconTeacher, iconGroup} from '../../../src/Icon';
+import Common from './src/Common';
+import Teacher from './src/Teacher';
+import Party from './src/Party';
+import Cabinet from './src/Cabinet';
+import Security from './src/Security';
+import {isEmpty} from '../../../src/Helper';
+import {loadUserRelation} from '../../../../redux/actions/user';
 
 function index(props) {
+  useEffect(() => {
+    if (isEmpty(props.user.relation.data) && !props.user.relation.isLoading && !isEmpty(props.user.model.data)) {
+      props.loadUserRelation();
+    }
+  });
+
   return (
     <div className="profile container">
-      <div className="col-xs-12 col-sm-6 block-center">
-        <Tabs className={'tabs'} id={'profile-tabs'}>
-          <TabsItem group={'student'} title={'Профиль'} active={true} svg={iconProfile}>
-            <ProfileProfile />
-          </TabsItem>
-          <TabsItem group={'teacher'} title={'Преподаватели'} svg={iconTeacher}></TabsItem>
-          <TabsItem group={'teacher'} title={'Аудитории'} svg={iconDoor}>
-            <p>asdassd</p>
-          </TabsItem>
-          <TabsItem group={'university'} title={'Безопасность'} svg={iconShield}>
-            <p>asdsasdasasd</p>
-          </TabsItem>
-        </Tabs>
+      <div className={'row'}>
+        <div className="col-xs-12 col-sm-6 block-center">
+          <Tabs className={'tabs'} id={'profile-tabs'}>
+            <TabsItem group={'student'} title={'Профиль'} active={true} svg={iconProfile}>
+              <Common />
+            </TabsItem>
+            <TabsItem group={'group'} title={'Группы'} svg={iconGroup} disabled={props.user.model.data.role === 'ROLE_PARTY_MANAGER'}>
+              <Party />
+            </TabsItem>
+            <TabsItem group={'teacher'} title={'Преподаватели'} svg={iconTeacher}>
+              <Teacher />
+            </TabsItem>
+            <TabsItem group={'cabinet'} title={'Аудитории'} svg={iconDoor}>
+              <Cabinet />
+            </TabsItem>
+            <TabsItem group={'university'} title={'Безопасность'} svg={iconShield}>
+              <Security />
+            </TabsItem>
+          </Tabs>
+        </div>
       </div>
     </div>
   );
 }
 
-function matchDispatchToProps(dispatch) {
-  return bindActionCreators({push: push}, dispatch);
+function mapStateToProps(state) {
+  return {
+    user: state.user,
+  };
 }
 
-export default connect(null, matchDispatchToProps)(index);
+function matchDispatchToProps(dispatch) {
+  return bindActionCreators({loadUserRelation: loadUserRelation}, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(index);

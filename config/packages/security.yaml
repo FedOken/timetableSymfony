@@ -22,7 +22,8 @@ security:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
             logout:
-                path: logout
+                path: api-user-logoutStart
+                target: api-user-logoutEnd
 
     role_hierarchy:
         ROLE_ADMIN: [ ROLE_UNIVERSITY_MANAGER, ROLE_FACULTY_MANAGER, ROLE_PARTY_MANAGER, ROLE_TEACHER, ROLE_USER ]

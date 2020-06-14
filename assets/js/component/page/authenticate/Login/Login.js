@@ -6,7 +6,7 @@ import {preloaderEnd, preloaderStart} from '../../../src/Preloader/Preloader';
 import axios from 'axios';
 import {alert, alertException} from '../../../src/Alert/Alert';
 import {validateForm} from '../../../src/FormValidation';
-import {userLogin} from '../../../../redux/actions/user';
+import {loadUserModel} from '../../../../redux/actions/user';
 import './style.scss';
 
 function index(props) {
@@ -18,7 +18,7 @@ function index(props) {
 
   useEffect(() => {
     axios
-      .post(`/react/login/get-csrf-token`)
+      .post(`/api/user/get-csrf-token`)
       .then((res) => {
         setToken(res.data);
         setBtnIsDisabled(false);
@@ -49,23 +49,15 @@ function index(props) {
 
     preloaderStart();
     axios
-      .post(`/react/login/login`, formData)
+      .post(`/api/user/login-start`, formData)
       .then((res) => {
-        console.log(res.data.status);
         if (res.data.status) {
           alert('success', res.data.reason);
-          props.userLogin({
-            data: {
-              id: res.data.user.id,
-              email: res.data.user.email,
-              role: res.data.user.role,
-            },
-          });
-          console.log(1);
+          props.loadUserModel();
+          preloaderEnd();
           redirect('/profile');
         } else {
           alert('error', res.data.reason);
-          //If email not confirm, send again
           if (res.data.reasonCode === 101) {
             redirect(`/register/confirm-email-send/${res.data.code}`);
           }
@@ -141,7 +133,7 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch) {
-  return bindActionCreators({push: push, userLogin: userLogin}, dispatch);
+  return bindActionCreators({push: push, loadUserModel: loadUserModel}, dispatch);
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(index);

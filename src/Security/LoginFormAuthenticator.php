@@ -55,7 +55,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function supports(Request $request)
     {
-        return 'react-login-login' === $request->attributes->get('_route') && $request->isMethod('POST');
+        return 'api-user-loginStart' === $request->attributes->get('_route') && $request->isMethod('POST');
     }
 
     public function getCredentials(Request $request)
@@ -116,7 +116,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $request->getSession()->set(self::USER_CODE, $this->userCode);
         $request->getSession()->set(self::REASON, 'You have successfully log-in!');
 
-        return new RedirectResponse($this->urlGenerator->generate('react-login-response'));
+        return new RedirectResponse($this->urlGenerator->generate('api-user-loginEnd'));
     }
 
 
@@ -127,7 +127,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $request->getSession()->set(self::USER_CODE, $this->userCode);
         $request->getSession()->set(self::REASON, $exception->getMessage());
 
-        return new RedirectResponse($this->urlGenerator->generate('react-login-response'));
+        return new RedirectResponse($this->urlGenerator->generate('api-user-loginEnd'));
     }
 
     protected function getLoginUrl()

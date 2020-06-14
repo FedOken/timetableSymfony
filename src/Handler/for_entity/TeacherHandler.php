@@ -6,7 +6,7 @@ use App\Entity\Schedule;
 use App\Handler\BaseHandler;
 use App\Helper\ArrayHelper;
 
-class TeacherHandler extends BaseHandler
+class TeacherHandler
 {
     /**
      * @param $weekId

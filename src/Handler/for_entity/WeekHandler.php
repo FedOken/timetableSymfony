@@ -5,7 +5,7 @@ namespace App\Handler\for_entity;
 use App\Entity\Schedule;
 use App\Handler\BaseHandler;
 
-class WeekHandler extends BaseHandler
+class WeekHandler
 {
     const WEEK_ALL = '-';
 }

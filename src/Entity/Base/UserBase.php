@@ -23,6 +23,6 @@ class UserBase extends BaseEntity
 
     public function rules()
     {
-        return ['email', 'password', 'access_code', 'status', 'roles'];
+        return ['email', 'password', 'access_code', 'status', 'roles', 'first_name', 'last_name', 'phone'];
     }
 }

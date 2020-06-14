@@ -1,110 +1,106 @@
-import React, {useEffect, useState} from 'react'
-import {bindActionCreators} from 'redux'
-import {push} from 'connected-react-router'
-import {connect} from 'react-redux'
-import Select from '../../../../src/Select'
-import axios from 'axios'
-import {alert, alertException} from '../../../../src/Alert/Alert'
-import {validateForm} from '../../../../src/FormValidation'
-import {isEmpty} from '../../../../src/Helper'
-import {preloaderEnd, preloaderStart} from '../../../../src/Preloader/Preloader'
-import {withRouter} from 'react-router-dom'
+import React, {useEffect, useState} from 'react';
+import {bindActionCreators} from 'redux';
+import {push} from 'connected-react-router';
+import {connect} from 'react-redux';
+import Select from '../../../../src/Select';
+import axios from 'axios';
+import {alert, alertException} from '../../../../src/Alert/Alert';
+import {validateForm} from '../../../../src/FormValidation';
+import {isEmpty, partiesDataToOptions} from '../../../../src/Helper';
+import {preloaderEnd, preloaderStart} from '../../../../src/Preloader/Preloader';
+import {withRouter} from 'react-router-dom';
+import {loadPartiesByUniversity} from '../../../../../redux/actions/party';
 
 function index(props) {
-  const [selUnIsDisabled, setSelUnIsDisabled] = useState(true)
+  const [selUnVal, setSelUnVal] = useState();
 
-  const [selGrOpt, setSelGrOpt] = useState([])
-  const [selGrValue, setSelGrValue] = useState()
-  const [selGrIsDisabled, setSelGrIsDisabled] = useState(true)
-  const [selectedGroup, setSelectedGroup] = useState()
+  const [selGrOpt, setSelGrOpt] = useState([]);
+  const [selGrOptAct, setSelGrOptAct] = useState(null);
+  const [selGrVal, setSelGrVal] = useState();
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
-    if (!isEmpty(props.selUnOpt)) {
-      setSelUnIsDisabled(false)
+    if (!props.party.isLoading) {
+      let parties = props.party.data.filter((party) => {
+        return party.unId === selUnVal;
+      });
+
+      setSelGrVal(null);
+      setSelGrOptAct(null);
+      setSelGrOpt(partiesDataToOptions(parties));
     }
-  })
+  }, [selUnVal, props.party]);
 
   const selUnOnChange = (data) => {
-    if (typeof data.value === 'undefined') return
-
-    setSelGrValue('')
-    setSelGrIsDisabled(true)
-
-    axios
-      .post('/react/search/get-parties/' + data.value)
-      .then((res) => {
-        setSelGrOpt(res.data)
-        setSelGrIsDisabled(false)
-      })
-      .catch((error) => {
-        alertException(error.response.status)
-      })
-  }
+    let unId = data.value;
+    if (isEmpty(unId)) return;
+    setSelUnVal(unId);
+    props.loadPartiesByUniversity(unId);
+  };
 
   const selGrOnChange = (data) => {
-    if (isEmpty(data.value)) return
-    setSelGrValue(data)
-    setSelectedGroup(data.value)
-  }
+    if (isEmpty(data.value)) return;
+    setSelGrOptAct(data);
+    setSelGrVal(data.value);
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    if (!validateForm('register-user', {selGr: selectedGroup})) {
-      return
+    e.preventDefault();
+    if (!validateForm('register-user', {selGr: selGrVal})) {
+      return;
     }
 
-    let formData = new FormData()
-    formData.set('id', selectedGroup)
-    formData.set('User[email]', email)
-    formData.set('User[password]', password)
+    let formData = new FormData();
+    formData.set('id', selGrVal);
+    formData.set('User[email]', email);
+    formData.set('User[password]', password);
 
-    preloaderStart()
+    preloaderStart();
     axios
       .post('/react/register/create-party-user', formData)
       .then((res) => {
-        let data = res.data
+        let data = res.data;
         if (!data.status) {
-          alert('error', data.error)
-          return
+          alert('error', data.error);
+          return;
         }
-        redirect(`/register/confirm-email-send/${data.code}`)
+        redirect(`/register/confirm-email-send/${data.code}`);
       })
       .catch((error) => {
-        alertException(error.response.status)
+        alertException(error.response.status);
       })
       .then(() => {
-        preloaderEnd()
-      })
-  }
+        preloaderEnd();
+      });
+  };
 
   const redirect = (url) => {
-    props.push(url)
-    props.history.push(url)
-  }
+    props.push(url);
+    props.history.push(url);
+  };
 
   return (
     <form className={'register-user'} onSubmit={(e) => handleSubmit(e)} autoComplete="off" noValidate>
       <Select
         options={props.selUnOpt}
         placeholder={'Выберите университет'}
-        className={'select select-type-1 ' + (selUnIsDisabled ? 'disabled' : '')}
+        className={'select select-type-1 ' + (isEmpty(props.selUnOpt) ? 'disabled' : '')}
         onChange={(data) => {
-          selUnOnChange(data)
+          selUnOnChange(data);
         }}
       />
       <div className={`form-group`} id={'selGr'}>
         <Select
           options={selGrOpt}
-          value={selGrValue}
+          value={selGrOptAct}
           placeholder={'Выберите группу'}
-          className={'select select-type-1 ' + (selGrIsDisabled ? 'disabled' : '')}
+          className={'select select-type-1 ' + (isEmpty(selUnVal) ? 'disabled' : '')}
           onChange={(data) => {
-            selGrOnChange(data)
+            selGrOnChange(data);
           }}
-          isDisabled={selGrIsDisabled}
+          isDisabled={isEmpty(selUnVal)}
         />
         <span className={'error'} />
       </div>
@@ -138,11 +134,17 @@ function index(props) {
         Подтвердить
       </button>
     </form>
-  )
+  );
+}
+
+function mapStateToProps(state) {
+  return {
+    party: state.party,
+  };
 }
 
 function matchDispatchToProps(dispatch) {
-  return bindActionCreators({push: push}, dispatch)
+  return bindActionCreators({push: push, loadPartiesByUniversity: loadPartiesByUniversity}, dispatch);
 }
 
-export default withRouter(connect(null, matchDispatchToProps)(index))
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(index));

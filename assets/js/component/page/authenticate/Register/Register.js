@@ -1,27 +1,24 @@
-import React, {useEffect, useState} from 'react'
-import Tabs from '../../../src/Tabs/Tabs'
-import TabsItem from '../../../src/Tabs/TabsItem'
-import axios from 'axios'
-import {alertException} from '../../../src/Alert/Alert'
-import RegisterGroup from './src/RegisterGroup'
-import RegisterTeacher from './src/RegisterTeacher'
-import RegisterUniversity from './src/RegisterUniversity'
-import {iconUser, iconTeacher, iconUniversity} from '../../../src/Icon'
-import './style.scss'
+import React, {useEffect, useState} from 'react';
+import Tabs from '../../../src/Tabs/Tabs';
+import TabsItem from '../../../src/Tabs/TabsItem';
+import RegisterGroup from './src/RegisterGroup';
+import RegisterTeacher from './src/RegisterTeacher';
+import RegisterUniversity from './src/RegisterUniversity';
+import {iconUser, iconTeacher, iconUniversity} from '../../../src/Icon';
+import './style.scss';
+import {bindActionCreators} from 'redux';
+import {loadUniversities} from '../../../../redux/actions/univeristy';
+import {connect} from 'react-redux';
+import {isEmpty, unDataToOptions} from '../../../src/Helper';
 
 function index(props) {
-  const [selUnOpt, setSelUnOpt] = useState([])
+  const [unSelOpt, setUnSelOpt] = useState([]);
 
   useEffect(() => {
-    axios
-      .post('/react/search/get-universities')
-      .then((res) => {
-        setSelUnOpt(res.data)
-      })
-      .catch((error) => {
-        alertException(error.response.status)
-      })
-  }, [])
+    if (!props.university.isLoaded && !props.university.isLoading) props.loadUniversities();
+    if (isEmpty(props.university.data) || !isEmpty(unSelOpt)) return;
+    setUnSelOpt(unDataToOptions(props.university.data));
+  });
 
   return (
     <div className="container">
@@ -32,10 +29,10 @@ function index(props) {
 
             <Tabs className={'tabs'} id={'register-tabs'}>
               <TabsItem group={'student'} title={'Студентам'} active={true} svg={iconUser}>
-                <RegisterGroup selUnOpt={selUnOpt} />
+                <RegisterGroup selUnOpt={unSelOpt} />
               </TabsItem>
               <TabsItem group={'teacher'} title={'Преподавателям'} svg={iconTeacher}>
-                <RegisterTeacher selUnOpt={selUnOpt} />
+                <RegisterTeacher selUnOpt={unSelOpt} />
               </TabsItem>
               <TabsItem group={'university'} title={'Университетам'} svg={iconUniversity}>
                 <RegisterUniversity />
@@ -45,7 +42,17 @@ function index(props) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default index
+function mapStateToProps(state) {
+  return {
+    university: state.university,
+  };
+}
+
+function matchDispatchToProps(dispatch) {
+  return bindActionCreators({loadUniversities: loadUniversities}, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(index);
