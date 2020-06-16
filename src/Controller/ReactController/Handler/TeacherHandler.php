@@ -2,31 +2,32 @@
 
 namespace App\Controller\ReactController\Handler;
 
-use App\Entity\Party;
-use App\Repository\PartyRepository;
+use App\Entity\Teacher;
+use App\Repository\TeacherRepository;
 
-class PartyHandler extends BaseHandler
+class TeacherHandler extends BaseHandler
 {
     /**
-     * Return parties for selected university
+     * Return teachers for selected university
      * @param int $unId
      * @return array
      */
-    public function getPartiesByUniversity(int $unId): array
+    public function getTeachersByUniversity(int $unId): array
     {
         try {
-            /**@var PartyRepository $repo */
-            $repo = $this->em->getRepository(Party::class);
-            $models = $repo->findByUniversity($unId);
+            /**@var TeacherRepository $repo */
+            $repo = $this->em->getRepository(Teacher::class);
+            $models = $repo->findBy(['university' => $unId]);
 
             $data = [];
-            /**@var Party $model */
+            /**@var Teacher $model */
             foreach ($models as $model) {
                 $data[] = [
                     'id' => $model->id,
                     'unId' => $unId,
-                    'facId' => $model->faculty->id,
                     'name' => $model->name,
+                    'nameFull' => $model->name_full,
+                    'position' => $model->position,
                 ];
             }
             return [
@@ -47,18 +48,18 @@ class PartyHandler extends BaseHandler
      * @param string $query
      * @return array
      */
-    public function getPartiesByName(string $query): array
+    public function getTeachersByName(string $query): array
     {
         try {
             $query = trim($query);
             if (!$query) return [];
 
-            /**@var PartyRepository $repo */
-            $repo = $this->em->getRepository(Party::class);
+            /**@var TeacherRepository $repo */
+            $repo = $this->em->getRepository(Teacher::class);
             $models = $repo->findByName($query);
 
             $data = [];
-            /**@var Party $model*/
+            /**@var Teacher $model*/
             foreach ($models as $model) {
                 $data[] = ['value' => $model->id, 'label' => $model->name];
             }

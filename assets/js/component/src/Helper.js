@@ -23,27 +23,14 @@ export function isEmpty(data) {
 }
 
 /**
- * Transform university data to select options
+ * Transform data to select options
  * @param data
  * @returns {[]}
  */
-export function unDataToOptions(data) {
-  let unSel = [];
-  data.forEach((un) => {
-    unSel.push({label: un.name, value: un.id});
+export function dataToOptions(data) {
+  let resp = [];
+  data.forEach((model) => {
+    resp.push({label: model.name, value: model.id});
   });
-  return unSel;
-}
-
-/**
- * Transform party data to select options
- * @param data
- * @returns {[]}
- */
-export function partiesDataToOptions(data) {
-  let partiesSel = [];
-  data.forEach((party) => {
-    partiesSel.push({label: party.name, value: party.id});
-  });
-  return partiesSel;
+  return resp;
 }

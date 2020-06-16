@@ -9,7 +9,7 @@ import './style.scss';
 import {bindActionCreators} from 'redux';
 import {loadUniversities} from '../../../../redux/actions/univeristy';
 import {connect} from 'react-redux';
-import {isEmpty, unDataToOptions} from '../../../src/Helper';
+import {isEmpty, dataToOptions} from '../../../src/Helper';
 
 function index(props) {
   const [unSelOpt, setUnSelOpt] = useState([]);
@@ -17,7 +17,7 @@ function index(props) {
   useEffect(() => {
     if (!props.university.isLoaded && !props.university.isLoading) props.loadUniversities();
     if (isEmpty(props.university.data) || !isEmpty(unSelOpt)) return;
-    setUnSelOpt(unDataToOptions(props.university.data));
+    setUnSelOpt(dataToOptions(props.university.data));
   });
 
   return (

@@ -6,7 +6,7 @@ import Select from '../../../../src/Select';
 import axios from 'axios';
 import {alert, alertException} from '../../../../src/Alert/Alert';
 import {validateForm} from '../../../../src/FormValidation';
-import {isEmpty, partiesDataToOptions} from '../../../../src/Helper';
+import {isEmpty, dataToOptions} from '../../../../src/Helper';
 import {preloaderEnd, preloaderStart} from '../../../../src/Preloader/Preloader';
 import {withRouter} from 'react-router-dom';
 import {loadPartiesByUniversity} from '../../../../../redux/actions/party';
@@ -29,7 +29,7 @@ function index(props) {
 
       setSelGrVal(null);
       setSelGrOptAct(null);
-      setSelGrOpt(partiesDataToOptions(parties));
+      setSelGrOpt(dataToOptions(parties));
     }
   }, [selUnVal, props.party]);
 

@@ -24,7 +24,7 @@ class UniversityHandler extends BaseHandler
                 $models[] = [
                     'id' => $model->id,
                     'name' => $model->name,
-                    'name_full' => $model->name_full
+                    'nameFull' => $model->name_full
                 ];
             }
             return [

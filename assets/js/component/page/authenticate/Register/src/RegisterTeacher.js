@@ -6,59 +6,54 @@ import Select from '../../../../src/Select';
 import axios from 'axios';
 import {alert, alertException} from '../../../../src/Alert/Alert';
 import {validateForm} from '../../../../src/FormValidation';
-import {isEmpty} from '../../../../src/Helper';
+import {isEmpty, dataToOptions} from '../../../../src/Helper'
 import {preloaderEnd, preloaderStart} from '../../../../src/Preloader/Preloader';
 import {withRouter} from 'react-router-dom';
+import {loadTeachersByUniversity} from '../../../../../redux/actions/teacher';
 
 function index(props) {
-  const [selUnIsDisabled, setSelUnIsDisabled] = useState(true);
+  const [selUnVal, setSelUnVal] = useState();
 
   const [selTchrOpt, setSelTchrOpt] = useState([]);
-  const [selTchrValue, setSelTchrValue] = useState();
-  const [selTchrIsDisabled, setSelTchrIsDisabled] = useState(true);
-  const [selectedTchr, setSelectedTchr] = useState();
+  const [selTchrOptAct, setSelTchrOptAct] = useState(null);
+  const [selTchrVal, setSelTchrVal] = useState();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    if (!isEmpty(props.selUnOpt)) {
-      setSelUnIsDisabled(false);
+    if (!props.teacher.isLoading) {
+      let parties = props.teacher.data.filter((teacher) => {
+        return teacher.unId === selUnVal;
+      });
+
+      setSelTchrVal(null);
+      setSelTchrOptAct(null);
+      setSelTchrOpt(dataToOptions(parties));
     }
-  });
+  }, [selUnVal, props.teacher]);
 
   const selUnOnChange = (data) => {
-    if (typeof data.value === 'undefined') return;
-
-    setSelTchrValue('');
-    setSelectedTchr(null);
-    setSelTchrIsDisabled(true);
-
-    axios
-      .post('/react/search/get-teachers/' + data.value)
-      .then((res) => {
-        setSelTchrOpt(res.data);
-        setSelTchrIsDisabled(false);
-      })
-      .catch((error) => {
-        alertException(error.response.status);
-      });
+    let unId = data.value;
+    if (isEmpty(unId)) return;
+    setSelUnVal(unId);
+    props.loadTeachersByUniversity(unId);
   };
 
   const selTchrOnChange = (data) => {
     if (isEmpty(data.value)) return;
-    setSelTchrValue(data);
-    setSelectedTchr(data.value);
+    setSelTchrOptAct(data);
+    setSelTchrVal(data.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!validateForm('register-teacher', {selTchr: selectedTchr})) {
+    if (!validateForm('register-teacher', {selTchr: selTchrVal})) {
       return;
     }
 
     let formData = new FormData();
-    formData.set('id', selectedTchr);
+    formData.set('id', selTchrVal);
     formData.set('User[email]', email);
     formData.set('User[password]', password);
 
@@ -91,7 +86,7 @@ function index(props) {
       <Select
         options={props.selUnOpt}
         placeholder={'Выберите университет'}
-        className={'select select-type-1 ' + (selUnIsDisabled ? 'disabled' : '')}
+        className={'select select-type-1 ' + (isEmpty(props.selUnOpt) ? 'disabled' : '')}
         onChange={(data) => {
           selUnOnChange(data);
         }}
@@ -99,13 +94,13 @@ function index(props) {
       <div className={`form-group`} id={'selTchr'}>
         <Select
           options={selTchrOpt}
-          value={selTchrValue}
+          value={selTchrOptAct}
           placeholder={'Выберите группу'}
-          className={'select select-type-1 ' + (selTchrIsDisabled ? 'disabled' : '')}
+          className={'select select-type-1 ' + (isEmpty(selUnVal) ? 'disabled' : '')}
           onChange={(data) => {
             selTchrOnChange(data);
           }}
-          isDisabled={selTchrIsDisabled}
+          isDisabled={isEmpty(selUnVal)}
         />
         <span className={'error'} />
       </div>
@@ -142,8 +137,14 @@ function index(props) {
   );
 }
 
-function matchDispatchToProps(dispatch) {
-  return bindActionCreators({push: push}, dispatch);
+function mapStateToProps(state) {
+  return {
+    teacher: state.teacher,
+  };
 }
 
-export default withRouter(connect(null, matchDispatchToProps)(index));
+function matchDispatchToProps(dispatch) {
+  return bindActionCreators({push: push, loadTeachersByUniversity: loadTeachersByUniversity}, dispatch);
+}
+
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(index));

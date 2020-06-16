@@ -4,29 +4,29 @@ import {preloaderEnd, preloaderStart} from '../../component/src/Preloader/Preloa
 
 /*-------------------------*/
 const loading = () => ({
-  type: 'PARTY_LOADING',
+  type: 'CABINET_LOADING',
 });
-const success = (data, unId) => ({
-  type: 'PARTY_SUCCESS',
+const success = (data, buildingId) => ({
+  type: 'CABINET_SUCCESS',
   payload: data,
-  unId: unId,
+  buildingId: buildingId,
 });
 const failure = (error) => ({
-  type: 'PARTY_FAILURE',
+  type: 'CABINET_FAILURE',
   payload: error,
 });
-export const loadPartiesByUniversity = (unId) => {
+export const loadCabinetsByBuilding = (unId) => {
   return (dispatch, getState) => {
     /** Dont upload existing parties */
-    if (getState().party.loadedUn.includes(unId)) return;
+    if (getState().cabinet.loadedBuilding.includes(unId)) return;
 
     preloaderStart();
     dispatch(loading());
     axios
-      .post(`/api/party/get-parties-by-university/${unId}`)
+      .post(`/api/cabinet/get-cabinets-by-building/${unId}`)
       .then((res) => {
         if (res.data.status) {
-          return dispatch(success(res.data.data, res.data.unId));
+          return dispatch(success(res.data.data, res.data.buildingId));
         }
         dispatch(failure(res.data.error));
       })
