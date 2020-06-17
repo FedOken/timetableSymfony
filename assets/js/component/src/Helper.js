@@ -6,6 +6,8 @@
 export function isEmpty(data) {
   if (typeof data === 'undefined' || data === null) return true;
 
+  if (typeof data === 'string' && data.length === 0) return true;
+
   if (Array.isArray(data)) {
     if (data.length > 0) return false;
   }

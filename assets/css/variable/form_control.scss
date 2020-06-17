@@ -92,17 +92,27 @@
       outline: 0;
       box-shadow: 0 0 0 0.2rem rgba(74, 112, 122, 0.25);
     }
+    &:-internal-autofill-selected {
+      background: $background !important;
+      color: $primary_100 !important;
+    }
   }
 
   &.typeahead {
+    &:focus {}
+    outline: none;
+
+    div:focus {
+      outline: none;
+    }
     .rbt-input-hint-container {
       input {
-        color: $primary_100;
+        color: $primary_100 !important;
         border-color: $primary_75;
 
         &:focus {
           border-color: $primary_100;
-          outline: 0;
+          outline: none;
           box-shadow: 0 0 0 0.2rem rgba(74, 112, 122, 0.25)
         }
       }
@@ -110,6 +120,13 @@
 
     .dropdown-menu a {
       color: $primary_100;
+
+      .rbt-highlight-text {
+        padding: 0;
+        font-weight: bold;
+        background-color: unset;
+        color: $primary_100;
+      }
 
       &:hover, &:active, &.active  {
         background-color: rgba($primary_100, .15);
@@ -190,6 +207,8 @@
   }
 
   &.has-error span.error{
+    width: 100%;
+    text-align: left;
     display: block;
   }
 

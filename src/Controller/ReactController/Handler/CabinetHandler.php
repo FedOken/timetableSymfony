@@ -3,7 +3,9 @@
 namespace App\Controller\ReactController\Handler;
 
 use App\Entity\Cabinet;
+use App\Entity\Party;
 use App\Repository\CabinetRepository;
+use App\Repository\PartyRepository;
 
 class CabinetHandler extends BaseHandler
 {
@@ -17,7 +19,7 @@ class CabinetHandler extends BaseHandler
         try {
             /**@var CabinetRepository $repo */
             $repo = $this->em->getRepository(Cabinet::class);
-            $models = $repo->findBy(['building' => $buildingId]);
+            $models = $repo->findBy(['building' => $buildingId], ['name' => 'ASC']);
 
             $data = [];
             /**@var Cabinet $model */
@@ -32,6 +34,38 @@ class CabinetHandler extends BaseHandler
                 'status' => true,
                 'data' => $data,
                 'buildingId' => $buildingId
+            ];
+        } catch (\Exception $e) {
+            return [
+                'status' => false,
+                'error' => $e->getMessage()
+            ];
+        }
+    }
+
+    /**
+     * Return autocomplete result
+     * @param string $query
+     * @return array
+     */
+    public function getCabinetsByName(string $query): array
+    {
+        try {
+            $query = trim($query);
+            if (!$query) return [];
+
+            /**@var CabinetRepository $repo */
+            $repo = $this->em->getRepository(Cabinet::class);
+            $models = $repo->findByName($query);
+
+            $data = [];
+            /**@var Cabinet $model*/
+            foreach ($models as $model) {
+                $data[] = ['value' => $model->id, 'label' => $model->name];
+            }
+            return [
+                'status' => true,
+                'data' => $data,
             ];
         } catch (\Exception $e) {
             return [

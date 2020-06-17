@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 import axios from 'axios';
 import {withRouter} from 'react-router-dom';
 import {preloaderStart, preloaderEnd} from '../../../../src/Preloader/Preloader';
-import {alertException} from '../../../../src/Alert/Alert';
+import {alert, alertException} from '../../../../src/Alert/Alert'
 import {loadBuildingsByUniversity} from '../../../../../redux/actions/building';
 import {loadCabinetsByBuilding} from '../../../../../redux/actions/cabinet';
 import {dataToOptions, isEmpty} from '../../../../src/Helper';
@@ -19,35 +19,48 @@ function index(props) {
   const [selBldngOptAct, setSelBldngOptAct] = useState(null);
   const [selBldngVal, setSelBldngVal] = useState();
 
-  const [selCabinetOpt, setSelCabinetOpt] = useState([]);
-  const [selCabinetValue, setSelCabinetValue] = useState();
-  const [selCabinetIsDisabled, setSelCabinetIsDisabled] = useState(true);
+  const [selCabOpt, setSelCabOpt] = useState([]);
+  const [selCabOptAct, setSelCabOptAct] = useState(null);
+  const [selCabVal, setSelCabVal] = useState();
 
   const [tphOptions, setTphOptions] = useState([]);
   const [tphIsLoading, setTphIsLoading] = useState(false);
 
   const [btnIsDisabled, setBtnIsDisabled] = useState(true);
-  const [selectedCabinet, setSelectedCabinet] = useState();
 
   useEffect(() => {
-    if (!props.building.isLoading) {
-      let buildings = props.building.data.filter((building) => {
-        return building.unId === selUnVal;
-      });
+    let buildings = props.building.data.filter((building) => {
+      return building.unId === selUnVal;
+    });
 
-      setSelBldngVal(null);
-      setSelBldngOptAct(null);
-      setBtnIsDisabled(true);
-      setSelBldngOpt(dataToOptions(buildings));
-    }
-  }, [selUnVal, props.building, selBldngVal, props.cabinet]);
+    setSelBldngVal(null);
+    setSelBldngOptAct(null);
+    setSelBldngOpt(dataToOptions(buildings));
+
+    setBtnIsDisabled(true);
+  }, [selUnVal, props.building]);
+
+  useEffect(() => {
+    let cabinets = props.cabinet.data.filter((cabinet) => {
+      return cabinet.buildingId === selBldngVal;
+    });
+
+    setSelCabVal(null);
+    setSelCabOptAct(null);
+    setSelCabOpt(dataToOptions(cabinets));
+    setBtnIsDisabled(true);
+  }, [selBldngVal, props.cabinet]);
 
   const tphOnSearch = (searchText) => {
     setTphIsLoading(true);
     axios
-      .post('/react/search/get-cabinets-autocomplete/' + searchText)
+      .get(`/api/cabinet/get-cabinets-by-name/${searchText}`)
       .then((res) => {
-        setTphOptions(res.data);
+        if (res.data.status) {
+          setTphOptions(res.data.data);
+        } else {
+          alert('error', res.data.error);
+        }
         setTphIsLoading(false);
       })
       .catch((error) => {
@@ -60,7 +73,7 @@ function index(props) {
 
   const tphOnChange = (query) => {
     if (typeof query[0] === 'undefined' || typeof query[0].value === 'undefined') return;
-    setSelectedCabinet(query[0].value);
+    setSelCabVal(query[0].value);
     setBtnIsDisabled(false);
   };
 
@@ -73,27 +86,6 @@ function index(props) {
     if (isEmpty(unId)) return;
     setSelUnVal(unId);
     props.loadBuildingsByUniversity(unId);
-
-    // if (typeof data.value === 'undefined') return;
-    //
-    // setSelBldngValue('');
-    // setSelBldngIsDisabled(true);
-    //
-    // setSelCabinetValue('');
-    // setSelCabinetOpt([]);
-    // setSelCabinetIsDisabled(true);
-    //
-    // setBtnIsDisabled(true);
-    //
-    // axios
-    //   .post('/react/search/get-buildings/' + data.value)
-    //   .then((res) => {
-    //     setSelBldngOpt(res.data);
-    //     setSelBldngIsDisabled(false);
-    //   })
-    //   .catch((error) => {
-    //     alertException(error.response.status);
-    //   });
   };
 
   const selBldngOnChange = (data) => {
@@ -103,35 +95,17 @@ function index(props) {
     setSelBldngVal(buildingId);
     setBtnIsDisabled(true);
     props.loadCabinetsByBuilding(buildingId);
-
-    // if (typeof data.value === 'undefined') return;
-    //
-    // setSelBldngValue(data);
-    // setSelCabinetValue('');
-    // setSelCabinetIsDisabled(true);
-    // setBtnIsDisabled(true);
-    //
-    // axios
-    //   .post('/react/search/get-cabinets/' + data.value)
-    //   .then((res) => {
-    //     setSelCabinetOpt(res.data);
-    //     setSelCabinetIsDisabled(false);
-    //   })
-    //   .catch((error) => {
-    //     alertException(error.response.status);
-    //   });
   };
 
   const selCabinetOnChange = (data) => {
-    if (typeof data.value === 'undefined') return;
-
-    setSelCabinetValue(data);
-    setSelectedCabinet(data.value);
+    if (isEmpty(data.value)) return;
+    setSelCabOptAct(data);
+    setSelCabVal(data.value);
     setBtnIsDisabled(false);
   };
 
   const redirect = () => {
-    let url = '/schedule/cabinet/' + selectedCabinet;
+    let url = `/schedule/cabinet/${selCabVal}`;
     preloaderStart();
     setTimeout(() => {
       props.push(url);
@@ -186,14 +160,14 @@ function index(props) {
         isDisabled={isEmpty(selUnVal)}
       />
       <Select
-        options={selCabinetOpt}
-        value={selCabinetValue}
+        options={selCabOpt}
+        value={selCabOptAct}
         placeholder={'Выберите аудиторию'}
-        className={'select select-type-1 ' + (selCabinetIsDisabled ? 'disabled' : '')}
+        className={'select select-type-1 ' + (isEmpty(selBldngVal) ? 'disabled' : '')}
         onChange={(data) => {
           selCabinetOnChange(data);
         }}
-        isDisabled={selCabinetIsDisabled}
+        isDisabled={isEmpty(selBldngVal)}
       />
       <button type="button" className={'w-100 btn btn-type-2'} onClick={() => redirect()} disabled={btnIsDisabled}>
         Поиск

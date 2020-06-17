@@ -29,4 +29,15 @@ class CabinetController extends AbstractController
         $data = $this->handler->getCabinetsByBuilding($buildingId);
         return new JsonResponse($data);
     }
+
+    /**
+     * @Route("/api/cabinet/get-cabinets-by-name/{name}", name="api-cabinet-getCabinetsByName")
+     * @param string $name
+     * @return JsonResponse
+     */
+    public function apiCabinetGetCabinetsByName($name)
+    {
+        $data = $this->handler->getCabinetsByName($name);
+        return new JsonResponse($data);
+    }
 }

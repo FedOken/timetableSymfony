@@ -1,7 +1,9 @@
 @import '../../../../../css/sass_components';
 
 .business, .technical {
-  @include flex-jk_center-fd_column;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
 
   p {
     text-align: center;
@@ -9,38 +11,25 @@
   }
 
   .title {
-    @include font-45
+    @include font-45;
+    letter-spacing: -1px;
   }
 
-  .block {
-    display: flex;
-    margin-bottom: 10px;
-    align-items: center;
+  .row.form {
+    padding: 10px;
 
-    input {
-      flex: 1 0 auto;
+    .form-group {
+      margin-bottom: 10px;
     }
-    span {
-      width: 100px;
-      text-align: center;
-      font-size: 25px;
-      //font-weight: bold;
+
+    textarea {
+      height: 141px;
     }
   }
 
   .description {
     @include font-25;
     font-weight: normal;
-    margin: 10px 0 40px 0;
-  }
-
-  .block_button {
-    display: flex;
-    justify-content: flex-end;
-
-    .btn {
-      width: 160px;
-      margin: 10px 0 0 0;
-    }
+    margin: 10px 0 30px 0;
   }
 }

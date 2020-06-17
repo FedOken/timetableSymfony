@@ -46,6 +46,7 @@ function index(props) {
         } else {
           alert('error', res.data.error);
         }
+        setTphIsLoading(false);
       })
       .catch((error) => {
         alertException(error.response.status);
