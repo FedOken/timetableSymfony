@@ -8,6 +8,7 @@ import {ConnectedRouter} from 'connected-react-router';
 import Layout from './component/layout/Layout/Layout';
 import Alert from './component/src/Alert/Alert';
 import Preloader from './component/src/Preloader/Preloader';
+import Title from './component/src/Title';
 
 const store = configureStore();
 
@@ -15,6 +16,7 @@ ReactDom.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <BrowserRouter>
+        <Title />
         <Particles />
         <Alert />
         <Preloader />

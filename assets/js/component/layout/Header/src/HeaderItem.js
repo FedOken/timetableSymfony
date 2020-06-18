@@ -1,17 +1,20 @@
-import React from 'react'
-import {NavLink} from 'react-router-dom'
-import {bindActionCreators} from 'redux'
-import {push} from 'connected-react-router'
-import {connect} from 'react-redux'
+import React from 'react';
+import {NavLink, withRouter} from 'react-router-dom';
+import {bindActionCreators} from 'redux';
+import {push} from 'connected-react-router';
+import {connect} from 'react-redux';
 
 const index = (props) => {
   const reduxRoute = (url) => {
-    props.push(url)
-  }
+    props.push(url);
+  };
 
   return (
     <div className={'header_item'}>
-      <NavLink exact to={props.url} onClick={() => reduxRoute(props.url)}>
+      <NavLink
+        to={props.url}
+        className={props.activeLinks.includes(props.pathname) ? 'active' : ''}
+        onClick={() => reduxRoute(props.url)}>
         <div className={'icon'}>
           {props.icon}
           {props.icon}
@@ -22,11 +25,17 @@ const index = (props) => {
         </div>
       </NavLink>
     </div>
-  )
+  );
+};
+
+function mapStateToProps(state) {
+  return {
+    pathname: state.router.location.pathname,
+  };
 }
 
 function matchDispatchToProps(dispatch) {
-  return bindActionCreators({push: push}, dispatch)
+  return bindActionCreators({push: push}, dispatch);
 }
 
-export default connect(null, matchDispatchToProps)(index)
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(index));

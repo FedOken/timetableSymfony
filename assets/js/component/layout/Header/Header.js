@@ -12,18 +12,25 @@ function index(props) {
     if (!isEmpty(props.user.model.data)) {
       let rolesForPanel = [getRoleLabel('admin'), getRoleLabel('university')];
       if (rolesForPanel.includes(props.user.model.data.role)) {
-        return <HeaderItem url={'/admin'} icon={iconPanel} text={'Panel'} />;
+        return <HeaderItem url={'/admin'} icon={iconPanel} text={'Panel'} activeLinks={[]} />;
       }
-      return <HeaderItem url={'/sch'} icon={iconCalendar} text={'Schedule'} />;
+      return <HeaderItem url={'/sch'} icon={iconCalendar} text={'Schedule'} activeLinks={['/sch']} />;
     }
-    return <HeaderItem url={'/welcome'} icon={iconHome} text={'Home'} />;
+    return <HeaderItem url={'/welcome'} icon={iconHome} text={'Home'} activeLinks={[]} />;
   };
 
   const renderLastElement = () => {
     if (!isEmpty(props.user.model.data)) {
-      return <HeaderItem url={'/profile'} icon={iconProfile} text={'Profile'} />;
+      return <HeaderItem url={'/profile'} icon={iconProfile} text={'Profile'} activeLinks={['/profile']} />;
     }
-    return <HeaderItem url={'/login'} icon={iconLogin} text={'Login'} />;
+    return (
+      <HeaderItem
+        url={'/login'}
+        icon={iconLogin}
+        text={'Login'}
+        activeLinks={['/login', '/register', '/reset-password', '/reset-password/email-send']}
+      />
+    );
   };
 
   if (props.pathname === '/welcome') {
@@ -32,9 +39,14 @@ function index(props) {
     return (
       <header className={'header'}>
         {renderFirstElement()}
-        <HeaderItem url={'/search'} icon={iconSearch} text={'Search'} />
-        <HeaderLogo url={'/welcome'} icon={iconLogo} />
-        <HeaderItem url={'/contact'} icon={iconContact} text={'Contact us'} />
+        <HeaderItem url={'/search'} icon={iconSearch} text={'Search'} activeLinks={['/search']} />
+        <HeaderLogo url={'/welcome'} icon={iconLogo} activeLinks={['/welcome']} />
+        <HeaderItem
+          url={'/contact'}
+          icon={iconContact}
+          text={'Contact us'}
+          activeLinks={['/contact', '/contact/business', '/contact/technical']}
+        />
         {renderLastElement()}
       </header>
     );

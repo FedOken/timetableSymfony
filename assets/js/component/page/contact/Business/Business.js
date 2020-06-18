@@ -52,9 +52,9 @@ function index(props) {
   return (
     <div className="container">
       <div className={'row business'}>
-        <div className={'col-10'}>
-          <p className={'title'}>И Ваш университет может принять участие в проекте!</p>
-          <p className={'description'}>Как бы там ни было, заполните форму ниже и с Вами скоро свяжутся</p>
+        <div className={'col-8'}>
+          <p className={'title'}>И Вы может принять участие в проекте!</p>
+          <p className={'description'}>Заполните форму ниже и с Вами скоро свяжутся</p>
           <form className={'contact-business'} onSubmit={(e) => handleSubmit(e)} autoComplete="off" noValidate>
             <div className={'row form'}>
               <div className={'col-4'}>

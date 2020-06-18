@@ -44,6 +44,7 @@ function index(props) {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete={'new-password'}
             min={5}
             required
           />
@@ -56,6 +57,7 @@ function index(props) {
             type="password"
             value={repPassword}
             onChange={(e) => setRepPassword(e.target.value)}
+            autoComplete={'new-password'}
             required
           />
           <span className={'error'} />
@@ -68,6 +70,6 @@ function index(props) {
       </div>
     </form>
   );
-};
+}
 
 export default index;
