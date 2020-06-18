@@ -4,11 +4,12 @@ import {generateUrl, baseAxios} from './axios_helper';
  * API:
  * @param {object} params
  * @param {object} postData
+ * @param {boolean} fullResp
  * @returns {Promise<[]>}
  */
-export async function getUserCsrfToken(params = {}, postData = {}) {
+export async function getUserCsrfToken(params = {}, postData = {}, fullResp = false) {
   let url = generateUrl(`/api/user/get-csrf-token`, params);
-  return await baseAxios(url);
+  return await baseAxios(url, false, 'GET', fullResp);
 }
 
 /**

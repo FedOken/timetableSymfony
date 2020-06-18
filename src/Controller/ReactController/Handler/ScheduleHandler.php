@@ -8,7 +8,6 @@ use App\Entity\Party;
 use App\Entity\Teacher;
 use App\Entity\UniversityTime;
 use App\Entity\Week;
-use App\Handler\BaseHandler;
 use App\Handler\for_entity\WeekHandler;
 use App\Helper\ArrayHelper;
 use App\Repository\CabinetRepository;

@@ -19,7 +19,7 @@ export const loadUniversities = () => {
   return (dispatch, getState) => {
     if (!isEmpty(getState().university.data)) return;
 
-    preloaderStart();
+    //preloaderStart();
     dispatch(loading());
     axios
       .post(`/api/university/get-universities`)
@@ -34,7 +34,7 @@ export const loadUniversities = () => {
         alertException(error);
       })
       .then(() => {
-        preloaderEnd();
+        //preloaderEnd();
       });
   };
 };
