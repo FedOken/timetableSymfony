@@ -9,6 +9,7 @@ use App\Entity\Teacher;
 use App\Entity\University;
 use App\Entity\User;
 use Exception;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Encoder\NativePasswordEncoder;
 
 class UserHandler extends BaseHandler

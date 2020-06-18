@@ -3,7 +3,9 @@
 namespace App\Controller\ReactController;
 
 use App\Controller\ReactController\Handler\UserHandler;
+use App\Entity\User;
 use App\Security\LoginFormAuthenticator;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,8 +27,19 @@ class UserController extends AbstractController
      */
     public function apiUserGetCsrfToken()
     {
-        $token = $this->container->get('security.csrf.token_manager')->getToken('authenticate')->getValue();
-        return new JsonResponse($token);
+        try {
+            $token = $this->container->get('security.csrf.token_manager')->getToken('authenticate')->getValue();
+            $data = [
+                'status' => true,
+                'data' => $token
+            ];
+        } catch (Exception $e) {
+            $data = [
+                'status' => false,
+                'error' => $e->getMessage()
+            ];
+        }
+        return new JsonResponse($data);
     }
 
 
@@ -48,8 +61,8 @@ class UserController extends AbstractController
     {
         $response = [
             'status' => $request->getSession()->get(LoginFormAuthenticator::LOGIN_STATUS),
-            'reasonCode' => $request->getSession()->get(LoginFormAuthenticator::REASON_CODE),
-            'reason' => $request->getSession()->get(LoginFormAuthenticator::REASON),
+            'errorCode' => $request->getSession()->get(LoginFormAuthenticator::REASON_CODE),
+            'error' => $request->getSession()->get(LoginFormAuthenticator::REASON),
             'code' => $request->getSession()->get(LoginFormAuthenticator::USER_CODE),
             'user' => $this->getUser() ? $this->getUser()->handler->serialize() : null,
         ];

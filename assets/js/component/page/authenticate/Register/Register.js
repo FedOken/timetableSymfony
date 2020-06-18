@@ -26,7 +26,6 @@ function index(props) {
         <div className="col-xs-12 col-sm-4 block-center">
           <div className={'block-register'}>
             <span className={'block-name'}>Регистрация</span>
-
             <Tabs className={'tabs'} id={'register-tabs'}>
               <TabsItem group={'student'} title={'Студентам'} active={true} svg={iconUser}>
                 <RegisterGroup selUnOpt={unSelOpt} />

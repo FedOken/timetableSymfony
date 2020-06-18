@@ -2,11 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {bindActionCreators} from 'redux';
 import {push} from 'connected-react-router';
 import {connect} from 'react-redux';
-import {preloaderEnd, preloaderStart} from '../../../src/Preloader/Preloader';
-import axios from 'axios';
 import {alert, alertException} from '../../../src/Alert/Alert';
 import {validateForm} from '../../../src/FormValidation';
 import {loadUserModel} from '../../../../redux/actions/user';
+import {getUserCsrfToken, postUserLogin} from '../../../src/axios/axios';
 import './style.scss';
 
 function index(props) {
@@ -17,15 +16,10 @@ function index(props) {
   const [btnIsDisabled, setBtnIsDisabled] = useState(true);
 
   useEffect(() => {
-    axios
-      .post(`/api/user/get-csrf-token`)
-      .then((res) => {
-        setToken(res.data);
-        setBtnIsDisabled(false);
-      })
-      .catch((error) => {
-        alertException(error.response.status);
-      });
+    getUserCsrfToken().then((res) => {
+      setToken(res.data);
+      setBtnIsDisabled(false);
+    });
   }, []);
 
   const clickRegister = () => {
@@ -47,27 +41,17 @@ function index(props) {
     formData.set('password', password);
     formData.set('_csrf_token', token);
 
-    preloaderStart();
-    axios
-      .post(`/api/user/login-start`, formData)
-      .then((res) => {
-        if (res.data.status) {
-          alert('success', res.data.reason);
-          props.loadUserModel();
-          preloaderEnd();
-          redirect('/profile');
-        } else {
-          alert('error', res.data.reason);
-          if (res.data.reasonCode === 101) {
-            redirect(`/register/confirm-email-send/${res.data.code}`);
-          }
-          preloaderEnd();
+    postUserLogin({}, formData, true).then((res) => {
+      if (res.status) {
+        props.loadUserModel();
+        redirect('/profile');
+      } else {
+        alert('error', res.error);
+        if (res.errorCode === 101) {
+          redirect(`/register/confirm-email-send/${res.code}`);
         }
-      })
-      .catch((error) => {
-        alertException(error.response.status);
-        preloaderEnd();
-      });
+      }
+    });
   };
 
   const redirect = (url) => {

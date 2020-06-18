@@ -85,6 +85,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         /**@var User $user*/
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
 
+        $this->checkCredentials($credentials, $user);
+
         if (!$user) {
             $this->reasonCode = self::CODE_INCORRECT_DATA;
             throw new CustomUserMessageAuthenticationException('Incorrect email or password.');
