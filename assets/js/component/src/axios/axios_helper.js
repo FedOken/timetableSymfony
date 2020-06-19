@@ -31,14 +31,14 @@ export function generateUrl(baseUrl, params = {}) {
  * @param {object} fullResp
  * @returns {Promise<Array>}
  */
-export async function baseAxios(url, usePreloader = false, method = 'GET', postData, fullResp) {
+export async function baseAxios(url, usePreloader = false, method = 'GET', postData = {}, fullResp = false) {
   if (usePreloader) preloaderStart();
   let resp = [];
   await axios({method: method, url: url, data: postData})
     .then((res) => {
       if (fullResp) resp = res.data;
       else {
-        if (res.data.status) resp = res.data;
+        if (res.data.status) resp = res.data.data;
         else alert('error', res.data.error);
       }
     })

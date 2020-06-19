@@ -4,9 +4,10 @@ import TimeBlock from '../TimeBlock/TimeBlock';
 import ScheduleBlock from '../ScheduleBlock/ScheduleBlock';
 import {preloaderEnd, preloaderStart} from '../../../../../src/Preloader/Preloader';
 import axios from 'axios';
-import {alertException} from '../../../../../src/Alert/Alert';
+import { alert, alertException } from "../../../../../src/Alert/Alert";
 import ScheduleBlockEmpty from '../ScheduleBlockEmpty/ScheduleBlockEmpty';
 import {isEmpty} from '../../../../../src/Helper';
+import {getScheduleData} from '../../../../../src/axios/axios';
 import './style.scss';
 
 export default function Week(props) {
@@ -17,6 +18,9 @@ export default function Week(props) {
   const [data, setData] = useState({});
 
   useEffect(() => {
+    // getScheduleData(type, week.id, model.id).then((res) => {
+    //   setData(res);
+    // });
     preloaderStart();
     axios
       .post(`/api/schedule/get-data/${type}/${week.id}/${model.id}`)

@@ -8,12 +8,14 @@ use App\Entity\Party;
 use App\Entity\Schedule;
 use App\Entity\Teacher;
 use App\Entity\UniversityTime;
+use App\Entity\User;
 use App\Entity\Week;
 use App\Helper\ArrayHelper;
 use App\Repository\CabinetRepository;
 use App\Repository\PartyRepository;
 use App\Repository\TeacherRepository;
 use App\Repository\WeekRepository;
+use Exception;
 
 class ScheduleHandler extends BaseHandler
 {
@@ -74,24 +76,32 @@ class ScheduleHandler extends BaseHandler
 
     public function formWeeks(string $type, int $id): array
     {
-        $unId = $this->getModelAndUnIdByType($type, $id)['unId'];
-        $model = $this->getModelAndUnIdByType($type, $id)['model'];
-        if (!$unId || !$model) return [];
+        try {
+            $unId = $this->getModelAndUnIdByType($type, $id)['unId'];
+            $model = $this->getModelAndUnIdByType($type, $id)['model'];
+            if (!$unId || !$model) return [];
 
-        /** @var $repoWeeks WeekRepository */
-        $repoWeeks = $this->em->getRepository(Week::class);
-        $weekModels = $repoWeeks->getWeeksByUniversity([$unId]);
+            /** @var $repoWeeks WeekRepository */
+            $repoWeeks = $this->em->getRepository(Week::class);
+            $weekModels = $repoWeeks->getWeeksByUniversity([$unId]);
 
-        $weeks = [];
-        /** @var $week Week */
-        foreach ($weekModels as $week) {
-            $weeks[] = $week->serialize();
+            $weeks = [];
+            /** @var $week Week */
+            foreach ($weekModels as $week) {
+                $weeks[] = $week->serialize();
+            }
+            $data = ['weeks' => $weeks, 'model' => $model->serialize()];
+
+            return [
+                'status' => true,
+                'data' => $data
+            ];
+        } catch (Exception $e) {
+            return [
+                'status' => false,
+                'error' => $e->getMessage()
+            ];
         }
-
-        return [
-            'weeks' => $weeks,
-            'model' => $model->serialize()
-        ];
     }
 
 

@@ -37,11 +37,7 @@ class ScheduleController extends AbstractController
      */
     public function reactScheduleGetWeeks($type, $id)
     {
-        try {
-            $data = $this->handler->formWeeks($type, $id);
-        } catch (\Exception $e) {
-            $data = [];
-        }
+        $data = $this->handler->formWeeks($type, $id);
         return new JsonResponse($data);
     }
 }

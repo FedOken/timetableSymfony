@@ -23,3 +23,26 @@ export async function postUserLogin(params = {}, postData = {}, fullResp = false
   let url = generateUrl(`/api/user/login-start`, params);
   return await baseAxios(url, true, 'POST', postData, fullResp);
 }
+
+/**
+ * API:
+ * @param {string} type
+ * @param {int} week
+ * @param {int} modelId
+ * @returns {Promise<[]>}
+ */
+export async function getScheduleData(type, week, modelId) {
+  let url = generateUrl(`/api/schedule/get-data/${type}/${week}/${modelId}`);
+  return await baseAxios(url, true);
+}
+
+/**
+ * API:
+ * @param {string} type
+ * @param {int} modelId
+ * @returns {Promise<[]>}
+ */
+export async function getScheduleWeeks(type, modelId) {
+  let url = generateUrl(`/api/schedule/get-weeks/${type}/${modelId}`);
+  return await baseAxios(url, true);
+}
