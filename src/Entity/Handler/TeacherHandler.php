@@ -1,30 +1,19 @@
 <?php
 
-namespace App\Handler\for_entity;
+namespace App\Entity\Handler;
 
+use App\Entity\Cabinet;
 use App\Entity\Schedule;
-use App\Handler\BaseHandler;
+use App\Entity\Teacher;
 use App\Helper\ArrayHelper;
 
 class TeacherHandler
 {
-    /**
-     * @param $weekId
-     * @param $teacherId
-     * @param $dayId
-     * @param $timeId
-     * @return object[]|null
-     */
-    public function getScheduleByParams($weekId, $teacherId, $dayId, $timeId)
-    {
-        $repoSch = $this->em->getRepository(Schedule::class);
+    private $model;
 
-        return $repoSch->findBy([
-            'week' => $weekId,
-            'teacher' => $teacherId,
-            'day' => $dayId,
-            'universityTime' => $timeId,
-        ]);
+    public function __construct(Teacher $model)
+    {
+        $this->model = $model;
     }
 
     /**

@@ -15,10 +15,10 @@ module.exports = {
   parser: 'babel-eslint',
   plugins: ['prettier'],
   rules: {
-    'ident': 2,
+    //'ident': 2,
     'no-console': 0,
     'no-unused-vars': 0,
     'prettier/prettier': 'error',
     'react/prop-types': 0,
   },
-}
+};

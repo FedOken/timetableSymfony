@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Handler\for_entity\CabinetHandler;
+use App\Entity\Handler\CabinetHandler;
 use App\Helper\ArrayHelper;
 use App\Helper\MagicTrait;
 use App\Repository\BuildingRepository;

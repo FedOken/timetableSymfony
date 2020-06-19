@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Handler\for_entity\TeacherHandler;
+use App\Entity\Handler\TeacherHandler;
 use App\Helper\MagicTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -73,7 +73,7 @@ class Teacher
 
     public $handler;
 
-    public function __construct(TeacherHandler $teacherHandler)
+    public function __construct()
     {
         $this->schedules = new ArrayCollection();
         $this->users = new ArrayCollection();

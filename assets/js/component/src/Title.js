@@ -1,11 +1,8 @@
 import React from 'react';
-import {bindActionCreators} from 'redux';
-import {push} from 'connected-react-router';
-import {withRouter} from 'react-router';
 import {connect} from 'react-redux';
 import {isEmpty} from './Helper';
 
-function index(props) {
+function Title(props) {
   const titles = {
     '/welcome': 'Schedule - Welcome',
     '/search': 'Schedule - Search',
@@ -25,7 +22,7 @@ function index(props) {
     document.title = titles[props.pathname];
   }
 
-  return '';
+  return <div></div>;
 }
 
 function mapStateToProps(state) {
@@ -34,8 +31,4 @@ function mapStateToProps(state) {
   };
 }
 
-function matchDispatchToProps(dispatch) {
-  return bindActionCreators({push: push}, dispatch);
-}
-
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(index));
+export default connect(mapStateToProps)(Title);

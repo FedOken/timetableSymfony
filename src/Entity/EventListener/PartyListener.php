@@ -1,22 +1,20 @@
 <?php
 namespace App\Entity\EventListener;
 
+use App\Entity\Handler\PartyHandler;
 use App\Entity\Party;
-use App\Handler\for_entity\PartyHandler;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 class PartyListener
 {
-    private $handler;
-
-    public function __construct(PartyHandler $handler)
-    {
-        $this->handler = $handler;
-    }
-
+    /**
+     * After model load
+     * @param Party $model
+     * @param LifecycleEventArgs $args
+     */
     public function postLoad(Party $model, LifecycleEventArgs $args)
     {
-        $model->handler = $this->handler;
+        $model->handler = new PartyHandler($model);
         return;
     }
 }

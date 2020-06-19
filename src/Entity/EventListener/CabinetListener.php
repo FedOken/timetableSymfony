@@ -2,21 +2,19 @@
 namespace App\Entity\EventListener;
 
 use App\Entity\Cabinet;
-use App\Handler\for_entity\CabinetHandler;
+use App\Entity\Handler\CabinetHandler;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 class CabinetListener
 {
-    private $handler;
-
-    public function __construct(CabinetHandler $handler)
-    {
-        $this->handler = $handler;
-    }
-
+    /**
+     * After model load
+     * @param Cabinet $model
+     * @param LifecycleEventArgs $args
+     */
     public function postLoad(Cabinet $model, LifecycleEventArgs $args)
     {
-        $model->handler = $this->handler;
+        $model->handler = new CabinetHandler($model);
         return;
     }
 }

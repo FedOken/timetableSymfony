@@ -1,6 +1,6 @@
 import React from 'react';
 import './style.scss';
-import {isEmpty} from '../Helper'
+import {isEmpty} from '../Helper';
 
 const left = 20;
 const showDuration = 8000;

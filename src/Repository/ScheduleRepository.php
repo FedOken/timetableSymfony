@@ -38,4 +38,35 @@ class ScheduleRepository extends ServiceEntityRepository
 
         return $scheduleWithWeek;
     }
+
+    /**
+     * @param int $universityId
+     * @return University[]
+     */
+    public function findSchByParams(string $type, array $weekIds, int $id, int $day, int $time)
+    {
+        $query = $this->createQueryBuilder('tb');
+        $query->andWhere('tb.week IN (:weekIds)');
+        $query->setParameter('weekIds', $weekIds);
+        $query->andWhere('tb.day = (:day)');
+        $query->setParameter('day', $day);
+        $query->andWhere('tb.universityTime = (:time)');
+        $query->setParameter('time', $time);
+
+        switch ($type) {
+            case 'group':
+                $query->andWhere('tb.party = (:id)');
+                $query->setParameter('id', $id);
+                break;
+            case 'teacher':
+                $query->andWhere('tb.teacher = (:id)');
+                $query->setParameter('id', $id);
+                break;
+            case 'cabinet':
+                $query->andWhere('tb.cabinet = (:id)');
+                $query->setParameter('id', $id);
+                break;
+        }
+        return $query->getQuery()->getResult();
+    }
 }

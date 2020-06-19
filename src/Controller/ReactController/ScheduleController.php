@@ -18,6 +18,9 @@ class ScheduleController extends AbstractController
 
     /**
      * @Route("/api/schedule/get-data/{type}/{week}/{id}", name="api-schedule-getData")
+     * @param string $type
+     * @param int $week
+     * @param int $id
      * @return JsonResponse
      */
     public function reactScheduleGetData(string $type, int $week, int $id)

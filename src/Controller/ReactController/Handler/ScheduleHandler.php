@@ -5,10 +5,10 @@ namespace App\Controller\ReactController\Handler;
 use App\Entity\Cabinet;
 use App\Entity\Day;
 use App\Entity\Party;
+use App\Entity\Schedule;
 use App\Entity\Teacher;
 use App\Entity\UniversityTime;
 use App\Entity\Week;
-use App\Handler\for_entity\WeekHandler;
 use App\Helper\ArrayHelper;
 use App\Repository\CabinetRepository;
 use App\Repository\PartyRepository;
@@ -17,20 +17,24 @@ use App\Repository\WeekRepository;
 
 class ScheduleHandler extends BaseHandler
 {
+    private $unId;
+    private $searchModel;
+
     public function formSchedule(string $type, int $week, int $id): array
     {
-        $unId = $this->getModelAndUnIdByType($type, $id)['unId'];
+        $unId = $this->unId ?: $this->getModelAndUnIdByType($type, $id)['unId'];
         /**@var Party|Teacher|Cabinet $model */
-        $model = $this->getModelAndUnIdByType($type, $id)['model'];
+        $model = $this->searchModel ?: $this->getModelAndUnIdByType($type, $id)['model'];
 
         $repoDay = $this->em->getRepository(Day::class);
         $repoWeek = $this->em->getRepository(Week::class);
         $repoTime = $this->em->getRepository(UniversityTime::class);
+        $repoSch = $this->em->getRepository(Schedule::class);
 
         $days = $repoDay->findAll();
         $times = $repoTime->findBy(['university' => $unId]);
 
-        $weekAll = $repoWeek->findOneBy(['university' => $unId, 'name' => WeekHandler::WEEK_ALL]);
+        $weekAll = $repoWeek->findOneBy(['university' => $unId, 'name' => Week::WEEK_ALL]);
         $weekIds = [$week, $weekAll->id];
 
         $schedules = $schedulesList = [];
@@ -41,7 +45,7 @@ class ScheduleHandler extends BaseHandler
 
             /** @var UniversityTime $time */
             foreach ($times as $time) {
-                $schdModels = $model->handler->getScheduleByParams($weekIds, $id, $day->id, $time->id);
+                $schdModels = $repoSch->findSchByParams($type, $weekIds, $id, $day->id, $time->id);
 
                 if ($schdModels) {
                     $schdModels = $model->handler->serializeForSchedule($schdModels);
@@ -122,6 +126,8 @@ class ScheduleHandler extends BaseHandler
                 $unId = null;
                 $model = null;
         }
+        $this->unId = $unId;
+        $this->searchModel = $model;
         return ['unId' => $unId, 'model' => $model];
     }
 

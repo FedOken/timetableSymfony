@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Base\WeekBase;
 use App\Helper\MagicTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,7 +24,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @property Schedule[] $schedules
  * @property University $university
  */
-class Week
+class Week extends WeekBase
 {
     use MagicTrait;
 

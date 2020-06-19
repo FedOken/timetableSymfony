@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Handler\for_entity\PartyHandler;
+use App\Entity\Handler\PartyHandler;
 use App\Helper\MagicTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -60,7 +60,7 @@ class Party
 
     public $handler;
 
-    public function __construct(PartyHandler $partyHandler)
+    public function __construct()
     {
         $this->schedules = new ArrayCollection();
         $this->users = new ArrayCollection();
