@@ -1,12 +1,13 @@
 import {isEmpty} from './Helper';
+import {t} from '../src/translate/translate';
 
 /**
- *
- * @param formClass Form class name
- * @param selObjs Where key - form-group id
+ * @param {string} lang
+ * @param {object} formClass Form class name
+ * @param {object} selObjs Where key - form-group id
  * @returns {boolean}
  */
-export function validateForm(formClass, selObjs = {}) {
+export function validateForm(lang, formClass, selObjs = {}) {
   let formHasError = false;
 
   //Validate inputs
@@ -18,7 +19,7 @@ export function validateForm(formClass, selObjs = {}) {
       if (!valError.status) {
         formHasError = true;
         control.closest('.form-group').classList.add('has-error');
-        control.closest('.form-group').querySelector('span.error').innerHTML = valError.error;
+        control.closest('.form-group').querySelector('span.error').innerHTML = t(lang, valError.error);
       } else {
         control.closest('.form-group').classList.remove('has-error');
         control.closest('.form-group').querySelector('span.error').innerHTML = '';
@@ -35,7 +36,7 @@ export function validateForm(formClass, selObjs = {}) {
     if (!selObjs[selId]) {
       formHasError = true;
       formGr.classList.add('has-error');
-      formGr.querySelector('span.error').innerHTML = 'This field required';
+      formGr.querySelector('span.error').innerHTML = t(lang, 'This field required');
     } else {
       formGr.classList.remove('has-error');
       formGr.querySelector('span.error').innerHTML = '';
@@ -78,7 +79,7 @@ function validateInput(element) {
   }
 
   if (required && !checkRequired(value) && isEmpty(resp.error)) {
-    resp.error = 'This field required';
+    resp.error = 'This field is required';
   }
 
   if (isEmpty(resp.error)) {
@@ -96,7 +97,7 @@ function validateTextarea(element) {
   let resp = {status: true, error: ''};
 
   if (required && !checkRequired(value)) {
-    resp.error = 'This field required';
+    resp.error = 'This field is required';
   }
 
   if (isEmpty(resp.error)) {

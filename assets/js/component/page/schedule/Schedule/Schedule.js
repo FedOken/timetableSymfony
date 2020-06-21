@@ -1,15 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import Week from './src/Week/Week';
 import {connect} from 'react-redux';
-import {preloaderEnd, preloaderStart} from '../../../src/Preloader/Preloader';
-import axios from 'axios';
-import {alertException} from '../../../src/Alert/Alert';
 import {withRouter} from 'react-router';
 import {isEmpty} from '../../../src/Helper';
 import {bindActionCreators} from 'redux';
 import {push} from 'connected-react-router';
 import {getScheduleWeeks} from '../../../src/axios/axios';
 import './style.scss';
+import { preloaderEnd } from "../../../src/Preloader/Preloader";
 
 function index(props) {
   const [data, setData] = useState();
@@ -19,29 +17,13 @@ function index(props) {
 
   useEffect(() => {
     getScheduleWeeks(type, params[params.length - 1]).then((res) => {
-      console.log(res);
       setData(res);
+      preloaderEnd();
     });
-    // preloaderStart();
-    // axios
-    //   .post(`/api/schedule/get-weeks/${type}/${params[params.length - 1]}`)
-    //   .then((res) => {
-    //     setData(res.data);
-    //   })
-    //   .catch((error) => {
-    //     alertException(error.response.status);
-    //   })
-    //   .then(() => {
-    //     preloaderEnd();
-    //   });
-    // preloaderEnd();
   }, []);
 
   const renderDays = () => {
     if (isEmpty(data)) return;
-
-    console.log(data);
-
     return Object.keys(data.weeks).map((key) => {
       return <Week key={key} week={data.weeks[key]} model={data.model} type={type} />;
     });

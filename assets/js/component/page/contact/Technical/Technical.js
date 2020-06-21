@@ -6,6 +6,8 @@ import {validateForm} from '../../../src/FormValidation';
 import {preloaderEnd, preloaderStart} from '../../../src/Preloader/Preloader';
 import axios from 'axios';
 import {alert, alertException} from '../../../src/Alert/Alert';
+import {t} from '../../../src/translate/translate';
+import {sendContactLetter} from '../../../src/axios/axios';
 
 function index(props) {
   const [email, setEmail] = useState('');
@@ -14,7 +16,7 @@ function index(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!validateForm('contact-technical')) {
+    if (!validateForm(props.lang, 'contact-technical')) {
       return;
     }
 
@@ -24,23 +26,10 @@ function index(props) {
     formData.set('Contact[message]', message);
     formData.set('Contact[type]', 21);
 
-    preloaderStart();
-    axios
-      .post('/api/contact/send-contact-letter', formData)
-      .then((res) => {
-        let data = res.data;
-        if (!res.data.status) {
-          alert('error', data.error);
-        }
-        alert('success', "Your message has been processed. We'll be in touch soon.");
-        redirect(`/contact`);
-      })
-      .catch((error) => {
-        alertException(error.response.status);
-      })
-      .then(() => {
-        preloaderEnd();
-      });
+    sendContactLetter({}, formData).then((res) => {
+      alert('success', t(props.lang, "Your message has been processed. We'll be in touch soon."));
+      redirect(`/contact`);
+    });
   };
 
   const redirect = (url) => {
@@ -52,8 +41,8 @@ function index(props) {
     <div className="container">
       <div className={'row technical'}>
         <div className={'col-10'}>
-          <p className={'title'}>Обнаружили ошибку или знаете как сделать лучше?</p>
-          <p className={'description'}>Опишите как можно подробнее, мы обязательно Вам ответим</p>
+          <p className={'title'}>{t(props.lang, 'Did you find a mistake or know how to do better?')}</p>
+          <p className={'description'}>{t(props.lang, 'Describe as much as possible, we will answer you')}</p>
           <form className={'contact-technical'} onSubmit={(e) => handleSubmit(e)} autoComplete="off" noValidate>
             <div className={'row form'}>
               <div className={'col-4'}>
@@ -72,7 +61,7 @@ function index(props) {
                 <div className={`form-group`}>
                   <input
                     className={'form-control input input-type-1 w-100'}
-                    placeholder={'Телефон'}
+                    placeholder={t(props.lang, 'Phone')}
                     type="text"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
@@ -88,12 +77,10 @@ function index(props) {
                 <div className={`form-group`}>
                   <textarea
                     className={'form-control txt-area area-type-1'}
-                    placeholder={'Ваше сообщение'}
+                    placeholder={t(props.lang, 'Your message')}
                     rows="5"
                     onChange={(e) => setMessage(e.target.value)}
-                    required
-                  >
-                  </textarea>
+                    required></textarea>
                   <span className={'error'} />
                 </div>
               </div>
@@ -105,8 +92,14 @@ function index(props) {
   );
 }
 
-function matchDispatchToProps(dispatch) {
-  return bindActionCreators({push: push}, dispatch);
-}
+const mapToProps = (state) => {
+  return {
+    lang: state.lang,
+  };
+};
 
-export default connect(null, matchDispatchToProps)(index);
+const matchDispatch = (dispatch) => {
+  return bindActionCreators({push: push}, dispatch);
+};
+
+export default connect(mapToProps, matchDispatch)(index);

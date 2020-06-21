@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import {AsyncTypeahead} from 'react-bootstrap-typeahead';
 import Select from '../../../../src/Select';
 import {bindActionCreators} from 'redux';
 import {push} from 'connected-react-router';
@@ -7,9 +6,11 @@ import {connect} from 'react-redux';
 import axios from 'axios';
 import {withRouter} from 'react-router-dom';
 import {preloaderStart, preloaderEnd} from '../../../../src/Preloader/Preloader';
-import {alert, alertException} from '../../../../src/Alert/Alert'
+import {alert, alertException} from '../../../../src/Alert/Alert';
 import {loadTeachersByUniversity} from '../../../../../redux/actions/teacher';
-import {isEmpty, dataToOptions} from '../../../../src/Helper'
+import {isEmpty, dataToOptions} from '../../../../src/Helper';
+import Typeahead from '../../../../src/Typeahead';
+import {t} from '../../../../src/translate/translate';
 
 function index(props) {
   const [selUnVal, setSelUnVal] = useState();
@@ -91,36 +92,21 @@ function index(props) {
 
   return (
     <div>
-      <p className={'enter-group'}>Введите фамилию преподавателя</p>
-      <AsyncTypeahead
-        id="home-autocomplete"
-        className={'input typeahead'}
+      <p className={'enter-group'}>{t(props.lang, 'Enter teacher name')}</p>
+      <Typeahead
         isLoading={tphIsLoading}
-        onSearch={(query) => {
-          tphOnSearch(query);
-        }}
-        onChange={(query) => {
-          tphOnChange(query);
-        }}
-        onInputChange={() => {
-          tphOnInputChange();
-        }}
+        onSearch={tphOnSearch}
+        onChange={tphOnChange}
+        onInputChange={tphOnInputChange}
         options={tphOptions}
-        useCache={false}
-        promptText={'Вводите для поиска...'}
-        searchText={'Идет поиск...'}
-        emptyLabel={'Ничего не найдено'}
-        paginationText={'Показать больше...'}
-        maxResults={6}
-        minLength={1}
       />
 
-      <p className="row-delimiter">или</p>
+      <p className="row-delimiter">{t(props.lang, 'or')}</p>
 
       <Select
         name="group-select"
         options={props.selUnOpt}
-        placeholder={'Выберите университет'}
+        placeholder={t(props.lang, 'Select university')}
         className={'select select-type-1 ' + (isEmpty(props.selUnOpt) ? 'disabled' : '')}
         onChange={(data) => {
           selUnOnChange(data);
@@ -130,28 +116,29 @@ function index(props) {
         name="group-select"
         options={selTchrOpt}
         value={selTchrOptAct}
-        placeholder={'Выберите преподавателя'}
-        className={'select select-type-1 ' + (isEmpty(selUnVal) ? 'disabled' : '')}
+        placeholder={t(props.lang, 'Select teacher')}
+        className={'select select-type-1 ' + (isEmpty(props.teacher.data) ? 'disabled' : '')}
         onChange={(data) => {
           selTchrOnChange(data);
         }}
         isDisabled={isEmpty(selUnVal)}
       />
       <button type="button" className={'w-100 btn btn-type-2'} onClick={() => redirect()} disabled={btnIsDisabled}>
-        Поиск
+        {t(props.lang, 'Search')}
       </button>
     </div>
   );
 }
 
-function mapStateToProps(state) {
+const mapToProps = (state) => {
   return {
     teacher: state.teacher,
+    lang: state.lang,
   };
-}
+};
 
-function matchDispatchToProps(dispatch) {
+const matchDispatch = (dispatch) => {
   return bindActionCreators({push: push, loadTeachersByUniversity: loadTeachersByUniversity}, dispatch);
-}
+};
 
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(index));
+export default withRouter(connect(mapToProps, matchDispatch)(index));

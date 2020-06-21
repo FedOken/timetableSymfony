@@ -7,10 +7,12 @@ import party from './src/party';
 import teacher from './src/teacher';
 import building from './src/building';
 import cabinet from './src/cabinet';
+import lang from './src/lang';
 
 const createRootReducer = (history) =>
   combineReducers({
     router: connectRouter(history),
+    lang: lang,
     user: user,
     university: university,
     party: party,

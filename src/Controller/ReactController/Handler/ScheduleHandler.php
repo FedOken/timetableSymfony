@@ -24,54 +24,66 @@ class ScheduleHandler extends BaseHandler
 
     public function formSchedule(string $type, int $week, int $id): array
     {
-        $unId = $this->unId ?: $this->getModelAndUnIdByType($type, $id)['unId'];
-        /**@var Party|Teacher|Cabinet $model */
-        $model = $this->searchModel ?: $this->getModelAndUnIdByType($type, $id)['model'];
+        try {
+            $unId = $this->unId ?: $this->getModelAndUnIdByType($type, $id)['unId'];
+            /**@var Party|Teacher|Cabinet $model */
+            $model = $this->searchModel ?: $this->getModelAndUnIdByType($type, $id)['model'];
 
-        $repoDay = $this->em->getRepository(Day::class);
-        $repoWeek = $this->em->getRepository(Week::class);
-        $repoTime = $this->em->getRepository(UniversityTime::class);
-        $repoSch = $this->em->getRepository(Schedule::class);
+            $repoDay = $this->em->getRepository(Day::class);
+            $repoWeek = $this->em->getRepository(Week::class);
+            $repoTime = $this->em->getRepository(UniversityTime::class);
+            $repoSch = $this->em->getRepository(Schedule::class);
 
-        $days = $repoDay->findAll();
-        $times = $repoTime->findBy(['university' => $unId]);
+            $days = $repoDay->findAll();
+            $times = $repoTime->findBy(['university' => $unId]);
 
-        $weekAll = $repoWeek->findOneBy(['university' => $unId, 'name' => Week::WEEK_ALL]);
-        $weekIds = [$week, $weekAll->id];
+            $weekAll = $repoWeek->findOneBy(['university' => $unId, 'name' => Week::WEEK_ALL]);
+            $weekIds = [$week, $weekAll->id];
 
-        $schedules = $schedulesList = [];
-        $scheduleIsExist = false;
-        /** @var Day $day */
-        foreach ($days as $key => $day) {
-            if (in_array($day->id, [6, 7])) continue;
+            $schedules = $schedulesList = [];
+            $scheduleIsExist = false;
+            /** @var Day $day */
+            foreach ($days as $key => $day) {
+                if (in_array($day->id, [6, 7])) continue;
 
-            /** @var UniversityTime $time */
-            foreach ($times as $time) {
-                $schdModels = $repoSch->findSchByParams($type, $weekIds, $id, $day->id, $time->id);
+                /** @var UniversityTime $time */
+                foreach ($times as $time) {
+                    $schdModels = $repoSch->findSchByParams($type, $weekIds, $id, $day->id, $time->id);
 
-                if ($schdModels) {
-                    $schdModels = $model->handler->serializeForSchedule($schdModels);
-                    $schedulesList[] = $schdModels;
-                    $scheduleIsExist = true;
+                    if ($schdModels) {
+                        $schdModels = $model->handler->serializeForSchedule($schdModels);
+                        $schedulesList[] = $schdModels;
+                        $scheduleIsExist = true;
+                    }
+
+                    $schedules[$key][$time->id] = $schdModels;
                 }
-
-                $schedules[$key][$time->id] = $schdModels;
             }
+
+            if (!$scheduleIsExist) return [];
+            $schedules = $this->formSchedules($schedules);
+            $times = $this->formTimes($schedules);
+            $days = $this->formDays();
+
+            $data = [
+                'schedules' => $schedules,
+                'days' => $this->formDays(),
+                'times' => $times,
+                'buildingsByType' => $this->formBuildings($schedulesList),
+                'timesOpacityPercent' => $this->timesOpacityPercent($times),
+                'dayOpacityPercent' => $this->dayOpacityPercent($days),
+            ];
+
+            return [
+                'status' => true,
+                'data' => $data
+            ];
+        } catch (Exception $e) {
+            return [
+                'status' => false,
+                'error' => $e->getMessage()
+            ];
         }
-
-        if (!$scheduleIsExist) return [];
-        $schedules = $this->formSchedules($schedules);
-        $times = $this->formTimes($schedules);
-        $days = $this->formDays();
-
-        return [
-            'schedules' => $schedules,
-            'days' => $this->formDays(),
-            'times' => $times,
-            'buildingsByType' => $this->formBuildings($schedulesList),
-            'timesOpacityPercent' => $this->timesOpacityPercent($times),
-            'dayOpacityPercent' => $this->dayOpacityPercent($days),
-        ];
     }
 
     public function formWeeks(string $type, int $id): array
@@ -107,7 +119,6 @@ class ScheduleHandler extends BaseHandler
 
 
     /* PRIVATE FUNCTIONS*/
-
     private function getModelAndUnIdByType(string $type, int $id): array
     {
         switch ($type) {

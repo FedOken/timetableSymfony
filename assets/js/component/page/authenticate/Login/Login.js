@@ -7,6 +7,7 @@ import {validateForm} from '../../../src/FormValidation';
 import {loadUserModel} from '../../../../redux/actions/user';
 import {getUserCsrfToken, postUserLogin} from '../../../src/axios/axios';
 import './style.scss';
+import {t} from '../../../src/translate/translate';
 
 function index(props) {
   const [token, setToken] = useState('');
@@ -17,7 +18,7 @@ function index(props) {
 
   useEffect(() => {
     getUserCsrfToken().then((res) => {
-      setToken(res.data);
+      setToken(res);
       setBtnIsDisabled(false);
     });
   }, []);
@@ -32,7 +33,7 @@ function index(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!validateForm('login-form')) {
+    if (!validateForm(props.lang, 'login-form')) {
       return;
     }
 
@@ -63,7 +64,7 @@ function index(props) {
     <div className="login container">
       <div className="col-xs-12 col-sm-6 col-md-4 block-center">
         <div className={'block-login'}>
-          <span className={'block-name'}>Вход</span>
+          <span className={'block-name'}>{t(props.lang, 'Entry')}</span>
 
           <form className={'login-form'} onSubmit={(e) => handleSubmit(e)} autoComplete="off" noValidate>
             <div className={`form-group`}>
@@ -83,7 +84,7 @@ function index(props) {
             <div className={`form-group`}>
               <input
                 className={'form-control input input-type-1 w-100'}
-                placeholder={'Пароль'}
+                placeholder={t(props.lang, 'Password')}
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -93,15 +94,17 @@ function index(props) {
               <span className={'error'} />
             </div>
             <button type="submit" className={'w-100 btn btn-type-2'} disabled={btnIsDisabled}>
-              Войти
+              {t(props.lang, 'Log in')}
             </button>
           </form>
           <div className={'block-additional'}>
             <p>
-              Все еще нет аккаунта? <span onClick={() => clickRegister()}>Создайте</span>
+              {t(props.lang, 'Still no account')}?{' '}
+              <span onClick={() => clickRegister()}>{t(props.lang, 'Create')}!</span>
             </p>
             <p>
-              Забыли пароль? <span onClick={() => clickResetPassword()}>Восстановите!</span>
+              {t(props.lang, 'Forgot your password')}?{' '}
+              <span onClick={() => clickResetPassword()}>{t(props.lang, 'Restore')}!</span>
             </p>
           </div>
         </div>
@@ -110,14 +113,15 @@ function index(props) {
   );
 }
 
-function mapStateToProps(state) {
+const mapToProps = (state) => {
   return {
     user: state.user,
+    lang: state.lang,
   };
-}
+};
 
-function matchDispatchToProps(dispatch) {
+const matchDispatch = (dispatch) => {
   return bindActionCreators({push: push, loadUserModel: loadUserModel}, dispatch);
-}
+};
 
-export default connect(mapStateToProps, matchDispatchToProps)(index);
+export default connect(mapToProps, matchDispatch)(index);

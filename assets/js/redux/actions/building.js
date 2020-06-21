@@ -20,7 +20,6 @@ export const loadBuildingsByUniversity = (unId) => {
     /** Dont upload existing parties */
     if (getState().building.loadedUn.includes(unId)) return;
 
-    preloaderStart();
     dispatch(loading());
     axios
       .post(`/api/building/get-buildings-by-university/${unId}`)
@@ -33,9 +32,6 @@ export const loadBuildingsByUniversity = (unId) => {
       .catch((error) => {
         dispatch(failure(error.message));
         alertException(error);
-      })
-      .then(() => {
-        preloaderEnd();
       });
   };
 };

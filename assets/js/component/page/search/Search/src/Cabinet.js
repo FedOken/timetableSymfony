@@ -7,10 +7,12 @@ import {connect} from 'react-redux';
 import axios from 'axios';
 import {withRouter} from 'react-router-dom';
 import {preloaderStart, preloaderEnd} from '../../../../src/Preloader/Preloader';
-import {alert, alertException} from '../../../../src/Alert/Alert'
+import {alert, alertException} from '../../../../src/Alert/Alert';
 import {loadBuildingsByUniversity} from '../../../../../redux/actions/building';
 import {loadCabinetsByBuilding} from '../../../../../redux/actions/cabinet';
 import {dataToOptions, isEmpty} from '../../../../src/Helper';
+import Typeahead from '../../../../src/Typeahead';
+import {t} from '../../../../src/translate/translate';
 
 function index(props) {
   const [selUnVal, setSelUnVal] = useState();
@@ -115,35 +117,20 @@ function index(props) {
 
   return (
     <div>
-      <p className={'enter-group'}>Введите номер аудитории</p>
-      <AsyncTypeahead
-        id="home-autocomplete"
-        className={'input typeahead'}
+      <p className={'enter-group'}>{t(props.lang, 'Enter cabinet number')}</p>
+      <Typeahead
         isLoading={tphIsLoading}
-        onSearch={(query) => {
-          tphOnSearch(query);
-        }}
-        onChange={(query) => {
-          tphOnChange(query);
-        }}
-        onInputChange={() => {
-          tphOnInputChange();
-        }}
+        onSearch={tphOnSearch}
+        onChange={tphOnChange}
+        onInputChange={tphOnInputChange}
         options={tphOptions}
-        useCache={false}
-        promptText={'Вводите для поиска...'}
-        searchText={'Идет поиск...'}
-        emptyLabel={'Ничего не найдено'}
-        paginationText={'Показать больше...'}
-        maxResults={6}
-        minLength={1}
       />
 
-      <p className="row-delimiter">или</p>
+      <p className="row-delimiter">{t(props.lang, 'or')}</p>
 
       <Select
         options={props.selUnOpt}
-        placeholder={'Выберите университет'}
+        placeholder={t(props.lang, 'Select university')}
         className={'select select-type-1 ' + (isEmpty(props.selUnOpt) ? 'disabled' : '')}
         onChange={(data) => {
           selUnOnChange(data);
@@ -152,8 +139,8 @@ function index(props) {
       <Select
         options={selBldngOpt}
         value={selBldngOptAct}
-        placeholder={'Выберите корпус'}
-        className={'select select-type-1 ' + (isEmpty(selUnVal) ? 'disabled' : '')}
+        placeholder={t(props.lang, 'Select building')}
+        className={'select select-type-1 ' + (isEmpty(props.building.data) ? 'disabled' : '')}
         onChange={(data) => {
           selBldngOnChange(data);
         }}
@@ -162,32 +149,33 @@ function index(props) {
       <Select
         options={selCabOpt}
         value={selCabOptAct}
-        placeholder={'Выберите аудиторию'}
-        className={'select select-type-1 ' + (isEmpty(selBldngVal) ? 'disabled' : '')}
+        placeholder={t(props.lang, 'Select cabinet')}
+        className={'select select-type-1 ' + (isEmpty(props.cabinet.data) ? 'disabled' : '')}
         onChange={(data) => {
           selCabinetOnChange(data);
         }}
         isDisabled={isEmpty(selBldngVal)}
       />
       <button type="button" className={'w-100 btn btn-type-2'} onClick={() => redirect()} disabled={btnIsDisabled}>
-        Поиск
+        {t(props.lang, 'Search')}
       </button>
     </div>
   );
 }
 
-function mapStateToProps(state) {
+const mapToProps = (state) => {
   return {
     building: state.building,
     cabinet: state.cabinet,
+    lang: state.lang,
   };
-}
+};
 
-function matchDispatchToProps(dispatch) {
+const matchDispatch = (dispatch) => {
   return bindActionCreators(
     {push: push, loadBuildingsByUniversity: loadBuildingsByUniversity, loadCabinetsByBuilding: loadCabinetsByBuilding},
     dispatch,
   );
-}
+};
 
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(index));
+export default withRouter(connect(mapToProps, matchDispatch)(index));

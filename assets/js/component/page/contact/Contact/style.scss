@@ -4,6 +4,7 @@ $transitionDuration: 0.2s;
 
 .contact {
   @include flex-jk_center-fd_column;
+  align-items: center;
 
   p {
     text-align: center;
@@ -20,8 +21,12 @@ $transitionDuration: 0.2s;
 
   .block_container {
     position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
 
-    .content {
+    .block_content {
       display: flex;
       flex-direction: column;
       justify-content: center;

@@ -20,7 +20,6 @@ export const loadCabinetsByBuilding = (unId) => {
     /** Dont upload existing parties */
     if (getState().cabinet.loadedBuilding.includes(unId)) return;
 
-    preloaderStart();
     dispatch(loading());
     axios
       .post(`/api/cabinet/get-cabinets-by-building/${unId}`)
@@ -33,9 +32,6 @@ export const loadCabinetsByBuilding = (unId) => {
       .catch((error) => {
         dispatch(failure(error.message));
         alertException(error);
-      })
-      .then(() => {
-        preloaderEnd();
       });
   };
 };

@@ -8,5 +8,5 @@
   "function-call-argument-newline": ["error", "never"],
   "jsxBracketSameLine": true,
   "bracketSpacing": false,
-  "endOfLine": "auto"
+  "endOfLine": "auto",
 }

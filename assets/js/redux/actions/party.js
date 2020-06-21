@@ -20,7 +20,6 @@ export const loadPartiesByUniversity = (unId) => {
     /** Dont upload existing parties */
     if (getState().party.loadedUn.includes(unId)) return;
 
-    preloaderStart();
     dispatch(loading());
     axios
       .post(`/api/party/get-parties-by-university/${unId}`)
@@ -33,9 +32,6 @@ export const loadPartiesByUniversity = (unId) => {
       .catch((error) => {
         dispatch(failure(error.message));
         alertException(error);
-      })
-      .then(() => {
-        preloaderEnd();
       });
   };
 };

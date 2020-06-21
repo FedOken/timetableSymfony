@@ -18,21 +18,9 @@ export default function Week(props) {
   const [data, setData] = useState({});
 
   useEffect(() => {
-    // getScheduleData(type, week.id, model.id).then((res) => {
-    //   setData(res);
-    // });
-    preloaderStart();
-    axios
-      .post(`/api/schedule/get-data/${type}/${week.id}/${model.id}`)
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((error) => {
-        alertException(error.response.status);
-      })
-      .then(() => {
-        preloaderEnd();
-      });
+    getScheduleData(type, week.id, model.id).then((res) => {
+      setData(res);
+    });
   }, []);
 
   const renderDays = () => {

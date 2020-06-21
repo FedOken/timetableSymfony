@@ -3,6 +3,7 @@
 .search {
   @include flex-jk_center-fd_column;
   align-items: center;
+  height: 100%;
 
   .block-search {
     @include block-border;

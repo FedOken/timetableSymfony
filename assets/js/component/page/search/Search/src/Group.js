@@ -10,6 +10,8 @@ import {preloaderStart, preloaderEnd} from '../../../../src/Preloader/Preloader'
 import {alert, alertException} from '../../../../src/Alert/Alert';
 import {isEmpty, dataToOptions} from '../../../../src/Helper';
 import {loadPartiesByUniversity} from '../../../../../redux/actions/party';
+import {t} from '../../../../src/translate/translate';
+import Typeahead from '../../../../src/Typeahead';
 
 function index(props) {
   const [selUnVal, setSelUnVal] = useState();
@@ -91,36 +93,21 @@ function index(props) {
 
   return (
     <div>
-      <p className={'enter-group'}>Введите название группы</p>
-      <AsyncTypeahead
-        id="home-autocomplete"
-        className={'input typeahead'}
+      <p className={'enter-group'}>{t(props.lang, 'Enter group name')}</p>
+      <Typeahead
         isLoading={tphIsLoading}
-        onSearch={(query) => {
-          tphOnSearch(query);
-        }}
-        onChange={(query) => {
-          tphOnChange(query);
-        }}
-        onInputChange={() => {
-          tphOnInputChange();
-        }}
+        onSearch={tphOnSearch}
+        onChange={tphOnChange}
+        onInputChange={tphOnInputChange}
         options={tphOptions}
-        useCache={false}
-        promptText={'Вводите для поиска...'}
-        searchText={'Идет поиск...'}
-        emptyLabel={'Ничего не найдено'}
-        paginationText={'Показать больше...'}
-        maxResults={6}
-        minLength={1}
       />
 
-      <p className="row-delimiter">или</p>
+      <p className="row-delimiter">{t(props.lang, 'or')}</p>
 
       <Select
         name="group-select"
         options={props.selUnOpt}
-        placeholder={'Выберите университет'}
+        placeholder={t(props.lang, 'Select university')}
         className={'select select-type-1 ' + (isEmpty(props.selUnOpt) ? 'disabled' : '')}
         onChange={(data) => {
           selUnOnChange(data);
@@ -130,28 +117,29 @@ function index(props) {
         name="group-select"
         options={selGrOpt}
         value={selGrOptAct}
-        placeholder={'Выберите группу'}
-        className={'select select-type-1 ' + (isEmpty(selUnVal) ? 'disabled' : '')}
+        placeholder={t(props.lang, 'Select group')}
+        className={'select select-type-1 ' + (isEmpty(props.party.data) ? 'disabled' : '')}
         onChange={(data) => {
           selGrOnChange(data);
         }}
         isDisabled={isEmpty(selUnVal)}
       />
       <button type="button" className={'w-100 btn btn-type-2'} onClick={() => redirect()} disabled={btnIsDisabled}>
-        Поиск
+        {t(props.lang, 'Search')}
       </button>
     </div>
   );
 }
 
-function mapStateToProps(state) {
+const mapToProps = (state) => {
   return {
     party: state.party,
+    lang: state.lang,
   };
-}
+};
 
-function matchDispatchToProps(dispatch) {
+const matchDispatch = (dispatch) => {
   return bindActionCreators({push: push, loadPartiesByUniversity: loadPartiesByUniversity}, dispatch);
-}
+};
 
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(index));
+export default withRouter(connect(mapToProps, matchDispatch)(index));

@@ -84,6 +84,10 @@ $logoPadding: 5px;
 
     .bot_block {
       border-top: 2px solid $primary_100;
+
+      a:hover {
+        color: $selection_100;
+      }
     }
   }
 }
