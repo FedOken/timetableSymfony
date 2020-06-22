@@ -3,13 +3,12 @@ import {bindActionCreators} from 'redux';
 import {push} from 'connected-react-router';
 import {connect} from 'react-redux';
 import Select from '../../../../src/Select';
-import axios from 'axios';
-import {alert, alertException} from '../../../../src/Alert/Alert';
 import {validateForm} from '../../../../src/FormValidation';
 import {isEmpty, dataToOptions} from '../../../../src/Helper';
-import {preloaderEnd, preloaderStart} from '../../../../src/Preloader/Preloader';
 import {withRouter} from 'react-router-dom';
 import {loadPartiesByUniversity} from '../../../../../redux/actions/party';
+import {t} from '../../../../src/translate/translate';
+import {createPartyUser} from '../../../../src/axios/axios';
 
 function index(props) {
   const [selUnVal, setSelUnVal] = useState();
@@ -37,6 +36,7 @@ function index(props) {
     let unId = data.value;
     if (isEmpty(unId)) return;
     setSelUnVal(unId);
+    setSelGrOpt(null);
     props.loadPartiesByUniversity(unId);
   };
 
@@ -48,7 +48,7 @@ function index(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!validateForm('register-user', {selGr: selGrVal})) {
+    if (!validateForm(props.lang, 'register-user', {selGr: selGrVal})) {
       return;
     }
 
@@ -57,23 +57,9 @@ function index(props) {
     formData.set('User[email]', email);
     formData.set('User[password]', password);
 
-    preloaderStart();
-    axios
-      .post('/react/register/create-party-user', formData)
-      .then((res) => {
-        let data = res.data;
-        if (!data.status) {
-          alert('error', data.error);
-          return;
-        }
-        redirect(`/register/confirm-email-send/${data.code}`);
-      })
-      .catch((error) => {
-        alertException(error.response.status);
-      })
-      .then(() => {
-        preloaderEnd();
-      });
+    createPartyUser(props.lang, formData).then((res) => {
+      redirect(`/register/confirm-email-send/${res}`);
+    });
   };
 
   const redirect = (url) => {
@@ -85,7 +71,7 @@ function index(props) {
     <form className={'register-user'} onSubmit={(e) => handleSubmit(e)} autoComplete="off" noValidate>
       <Select
         options={props.selUnOpt}
-        placeholder={'Выберите университет'}
+        placeholder={t(props.lang, 'Select university')}
         className={'select select-type-1 ' + (isEmpty(props.selUnOpt) ? 'disabled' : '')}
         onChange={(data) => {
           selUnOnChange(data);
@@ -95,12 +81,12 @@ function index(props) {
         <Select
           options={selGrOpt}
           value={selGrOptAct}
-          placeholder={'Выберите группу'}
-          className={'select select-type-1 ' + (isEmpty(selUnVal) ? 'disabled' : '')}
+          placeholder={t(props.lang, 'Select group')}
+          className={'select select-type-1 ' + (isEmpty(selGrOpt) ? 'disabled' : '')}
           onChange={(data) => {
             selGrOnChange(data);
           }}
-          isDisabled={isEmpty(selUnVal)}
+          isDisabled={isEmpty(selGrOpt)}
         />
         <span className={'error'} />
       </div>
@@ -121,7 +107,7 @@ function index(props) {
       <div className={`form-group`}>
         <input
           className={'form-control input input-type-1 w-100'}
-          placeholder={'Пароль'}
+          placeholder={t(props.lang, 'Password')}
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -131,20 +117,21 @@ function index(props) {
         <span className={'error'} />
       </div>
       <button type="submit" className={'w-100 btn btn-type-2'}>
-        Подтвердить
+        {t(props.lang, 'Confirm')}
       </button>
     </form>
   );
 }
 
-function mapStateToProps(state) {
+const mapToProps = (state) => {
   return {
+    lang: state.lang,
     party: state.party,
   };
-}
+};
 
-function matchDispatchToProps(dispatch) {
+const matchDispatch = (dispatch) => {
   return bindActionCreators({push: push, loadPartiesByUniversity: loadPartiesByUniversity}, dispatch);
-}
+};
 
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(index));
+export default withRouter(connect(mapToProps, matchDispatch)(index));

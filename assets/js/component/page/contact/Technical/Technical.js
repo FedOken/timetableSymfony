@@ -3,9 +3,7 @@ import {bindActionCreators} from 'redux';
 import {push} from 'connected-react-router';
 import {connect} from 'react-redux';
 import {validateForm} from '../../../src/FormValidation';
-import {preloaderEnd, preloaderStart} from '../../../src/Preloader/Preloader';
-import axios from 'axios';
-import {alert, alertException} from '../../../src/Alert/Alert';
+import {alert} from '../../../src/Alert/Alert';
 import {t} from '../../../src/translate/translate';
 import {sendContactLetter} from '../../../src/axios/axios';
 
@@ -26,7 +24,7 @@ function index(props) {
     formData.set('Contact[message]', message);
     formData.set('Contact[type]', 21);
 
-    sendContactLetter({}, formData).then((res) => {
+    sendContactLetter(props.lang, formData).then((res) => {
       alert('success', t(props.lang, "Your message has been processed. We'll be in touch soon."));
       redirect(`/contact`);
     });

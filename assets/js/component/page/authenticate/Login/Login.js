@@ -17,7 +17,7 @@ function index(props) {
   const [btnIsDisabled, setBtnIsDisabled] = useState(true);
 
   useEffect(() => {
-    getUserCsrfToken().then((res) => {
+    getUserCsrfToken(props.lang).then((res) => {
       setToken(res);
       setBtnIsDisabled(false);
     });
@@ -42,7 +42,7 @@ function index(props) {
     formData.set('password', password);
     formData.set('_csrf_token', token);
 
-    postUserLogin({}, formData, true).then((res) => {
+    postUserLogin(props.lang, {}, formData, true).then((res) => {
       if (res.status) {
         props.loadUserModel();
         redirect('/profile');
@@ -104,7 +104,7 @@ function index(props) {
             </p>
             <p>
               {t(props.lang, 'Forgot your password')}?{' '}
-              <span onClick={() => clickResetPassword()}>{t(props.lang, 'Restore')}!</span>
+              <span onClick={() => clickResetPassword()}>{t(props.lang, 'Restore1')}!</span>
             </p>
           </div>
         </div>

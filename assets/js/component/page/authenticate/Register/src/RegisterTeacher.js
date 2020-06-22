@@ -3,13 +3,12 @@ import {bindActionCreators} from 'redux';
 import {push} from 'connected-react-router';
 import {connect} from 'react-redux';
 import Select from '../../../../src/Select';
-import axios from 'axios';
-import {alert, alertException} from '../../../../src/Alert/Alert';
 import {validateForm} from '../../../../src/FormValidation';
-import {isEmpty, dataToOptions} from '../../../../src/Helper'
-import {preloaderEnd, preloaderStart} from '../../../../src/Preloader/Preloader';
+import {isEmpty, dataToOptions} from '../../../../src/Helper';
 import {withRouter} from 'react-router-dom';
 import {loadTeachersByUniversity} from '../../../../../redux/actions/teacher';
+import {t} from '../../../../src/translate/translate';
+import {createTeacherUser} from '../../../../src/axios/axios';
 
 function index(props) {
   const [selUnVal, setSelUnVal] = useState();
@@ -37,6 +36,7 @@ function index(props) {
     let unId = data.value;
     if (isEmpty(unId)) return;
     setSelUnVal(unId);
+    setSelTchrOpt(null);
     props.loadTeachersByUniversity(unId);
   };
 
@@ -48,7 +48,7 @@ function index(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!validateForm('register-teacher', {selTchr: selTchrVal})) {
+    if (!validateForm(props.lang, 'register-teacher', {selTchr: selTchrVal})) {
       return;
     }
 
@@ -57,23 +57,9 @@ function index(props) {
     formData.set('User[email]', email);
     formData.set('User[password]', password);
 
-    preloaderStart();
-    axios
-      .post('/react/register/create-teacher-user', formData)
-      .then((res) => {
-        let data = res.data;
-        if (!data.status) {
-          alert('error', data.error);
-          return;
-        }
-        redirect(`/register/confirm-email-send/${data.code}`);
-      })
-      .catch((error) => {
-        alertException(error.response.status);
-      })
-      .then(() => {
-        preloaderEnd();
-      });
+    createTeacherUser(props.lang, formData).then((res) => {
+      redirect(`/register/confirm-email-send/${res}`);
+    });
   };
 
   const redirect = (url) => {
@@ -85,7 +71,7 @@ function index(props) {
     <form className={'register-teacher'} onSubmit={(e) => handleSubmit(e)} autoComplete="off" noValidate>
       <Select
         options={props.selUnOpt}
-        placeholder={'Выберите университет'}
+        placeholder={t(props.lang, 'Select university')}
         className={'select select-type-1 ' + (isEmpty(props.selUnOpt) ? 'disabled' : '')}
         onChange={(data) => {
           selUnOnChange(data);
@@ -95,12 +81,12 @@ function index(props) {
         <Select
           options={selTchrOpt}
           value={selTchrOptAct}
-          placeholder={'Выберите группу'}
-          className={'select select-type-1 ' + (isEmpty(selUnVal) ? 'disabled' : '')}
+          placeholder={t(props.lang, 'Select teacher')}
+          className={'select select-type-1 ' + (isEmpty(selTchrOpt) ? 'disabled' : '')}
           onChange={(data) => {
             selTchrOnChange(data);
           }}
-          isDisabled={isEmpty(selUnVal)}
+          isDisabled={isEmpty(selTchrOpt)}
         />
         <span className={'error'} />
       </div>
@@ -121,7 +107,7 @@ function index(props) {
       <div className={`form-group`}>
         <input
           className={'form-control input input-type-1 w-100'}
-          placeholder={'Пароль'}
+          placeholder={t(props.lang, 'Password')}
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -131,20 +117,21 @@ function index(props) {
         <span className={'error'} />
       </div>
       <button type="submit" className={'w-100 btn btn-type-2'}>
-        Подтвердить
+        {t(props.lang, 'Confirm')}
       </button>
     </form>
   );
 }
 
-function mapStateToProps(state) {
+const mapToProps = (state) => {
   return {
+    lang: state.lang,
     teacher: state.teacher,
   };
-}
+};
 
-function matchDispatchToProps(dispatch) {
+const matchDispatch = (dispatch) => {
   return bindActionCreators({push: push, loadTeachersByUniversity: loadTeachersByUniversity}, dispatch);
-}
+};
 
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(index));
+export default withRouter(connect(mapToProps, matchDispatch)(index));

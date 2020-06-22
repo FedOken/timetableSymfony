@@ -36,7 +36,7 @@ export function validateForm(lang, formClass, selObjs = {}) {
     if (!selObjs[selId]) {
       formHasError = true;
       formGr.classList.add('has-error');
-      formGr.querySelector('span.error').innerHTML = t(lang, 'This field required');
+      formGr.querySelector('span.error').innerHTML = t(lang, 'This field is required');
     } else {
       formGr.classList.remove('has-error');
       formGr.querySelector('span.error').innerHTML = '';

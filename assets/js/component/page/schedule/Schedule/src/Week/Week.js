@@ -2,9 +2,6 @@ import React, {useEffect, useState} from 'react';
 import DayBlock from '../DayBlock/DayBlock';
 import TimeBlock from '../TimeBlock/TimeBlock';
 import ScheduleBlock from '../ScheduleBlock/ScheduleBlock';
-import {preloaderEnd, preloaderStart} from '../../../../../src/Preloader/Preloader';
-import axios from 'axios';
-import { alert, alertException } from "../../../../../src/Alert/Alert";
 import ScheduleBlockEmpty from '../ScheduleBlockEmpty/ScheduleBlockEmpty';
 import {isEmpty} from '../../../../../src/Helper';
 import {getScheduleData} from '../../../../../src/axios/axios';
@@ -18,7 +15,7 @@ export default function Week(props) {
   const [data, setData] = useState({});
 
   useEffect(() => {
-    getScheduleData(type, week.id, model.id).then((res) => {
+    getScheduleData(props.lang, type, week.id, model.id).then((res) => {
       setData(res);
     });
   }, []);

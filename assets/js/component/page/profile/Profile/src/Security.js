@@ -3,6 +3,11 @@ import {validateForm} from '../../../../src/FormValidation';
 import {preloaderEnd, preloaderStart} from '../../../../src/Preloader/Preloader';
 import axios from 'axios';
 import {alert, alertException} from '../../../../src/Alert/Alert';
+import {bindActionCreators} from 'redux';
+import {loadUserRelation} from '../../../../../redux/actions/user';
+import {withRouter} from 'react-router';
+import {connect} from 'react-redux';
+import {t} from '../../../../src/translate/translate';
 
 function index(props) {
   const [password, setPassword] = useState('');
@@ -37,10 +42,11 @@ function index(props) {
   return (
     <form className={'profile-security'} onSubmit={(e) => handleSubmit(e)} autoComplete="off" noValidate>
       <div className={'block'}>
+        <p className={'block-title'}>{t(props.lang, 'Change password')}</p>
         <div className={`form-group`}>
           <input
             className={`form-control input input-type-1 w-100`}
-            placeholder={'Password'}
+            placeholder={t(props.lang, 'Password')}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -53,7 +59,7 @@ function index(props) {
         <div className={`form-group`}>
           <input
             className={`form-control input input-type-1 w-100`}
-            placeholder={'Repeat password'}
+            placeholder={t(props.lang, 'Repeat password')}
             type="password"
             value={repPassword}
             onChange={(e) => setRepPassword(e.target.value)}
@@ -65,11 +71,17 @@ function index(props) {
       </div>
       <div className={'buttons'}>
         <button type="submit" className={'btn btn-type-2'}>
-          Сохранить
+          {t(props.lang, 'Save')}
         </button>
       </div>
     </form>
   );
 }
 
-export default index;
+const mapToProps = (state) => {
+  return {
+    lang: state.lang,
+  };
+};
+
+export default withRouter(connect(mapToProps)(index));

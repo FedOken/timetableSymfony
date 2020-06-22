@@ -10,6 +10,7 @@ import {bindActionCreators} from 'redux';
 import {loadUniversities} from '../../../../redux/actions/univeristy';
 import {connect} from 'react-redux';
 import {isEmpty, dataToOptions} from '../../../src/Helper';
+import {t} from '../../../src/translate/translate';
 
 function index(props) {
   const [unSelOpt, setUnSelOpt] = useState([]);
@@ -25,15 +26,15 @@ function index(props) {
       <div className={'register row'}>
         <div className="col-xs-12 col-sm-4 block-center">
           <div className={'block-register'}>
-            <span className={'block-name'}>Регистрация</span>
+            <span className={'block-name'}>{t(props.lang, 'Registration')}</span>
             <Tabs className={'tabs'} id={'register-tabs'}>
-              <TabsItem group={'student'} title={'Студентам'} active={true} svg={iconUser}>
+              <TabsItem group={'student'} title={t(props.lang, 'For students')} active={true} svg={iconUser}>
                 <RegisterGroup selUnOpt={unSelOpt} />
               </TabsItem>
-              <TabsItem group={'teacher'} title={'Преподавателям'} svg={iconTeacher}>
+              <TabsItem group={'teacher'} title={t(props.lang, 'For teachers')} svg={iconTeacher}>
                 <RegisterTeacher selUnOpt={unSelOpt} />
               </TabsItem>
-              <TabsItem group={'university'} title={'Университетам'} svg={iconUniversity}>
+              <TabsItem group={'university'} title={t(props.lang, 'For universities')} svg={iconUniversity}>
                 <RegisterUniversity />
               </TabsItem>
             </Tabs>
@@ -44,14 +45,15 @@ function index(props) {
   );
 }
 
-function mapStateToProps(state) {
+const mapToProps = (state) => {
   return {
+    lang: state.lang,
     university: state.university,
   };
-}
+};
 
-function matchDispatchToProps(dispatch) {
+const matchDispatch = (dispatch) => {
   return bindActionCreators({loadUniversities: loadUniversities}, dispatch);
-}
+};
 
-export default connect(mapStateToProps, matchDispatchToProps)(index);
+export default connect(mapToProps, matchDispatch)(index);

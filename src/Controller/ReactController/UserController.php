@@ -5,6 +5,8 @@ namespace App\Controller\ReactController;
 use App\Controller\ReactController\Handler\UserHandler;
 use App\Entity\User;
 use App\Security\LoginFormAuthenticator;
+use App\Service\Access\PartyAccess;
+use App\Service\Access\TeacherAccess;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -125,6 +127,53 @@ class UserController extends AbstractController
     public function apiUserUpdatePassword()
     {
         $data = $this->handler->updatePassword();
+        return new JsonResponse($data);
+    }
+
+    /**
+     * @Route("/api/user/confirm-email-send/{code}", name="api-user-confirmEmailSend")
+     * @param string $code
+     * @return JsonResponse
+     */
+    public function apiUserConfirmEmailSend(string $code)
+    {
+        $data = $this->handler->sendConfirmEmailStep1($code);
+        return new JsonResponse($data);
+    }
+
+    /**
+     * @Route("/api/user/create-party-user", name="api-user-createPartyUser")
+     */
+    public function apiUserCreatePartyUser()
+    {
+        $data = $this->handler->saveUser(PartyAccess::getAccessRole());
+        return new JsonResponse($data);
+    }
+
+    /**
+     * @Route("/api/user/create-teacher-user", name="api-user-createTeacherUser")
+     */
+    public function apiUserCreateTeacherUser()
+    {
+        $data = $this->handler->saveUser(TeacherAccess::getAccessRole());
+        return new JsonResponse($data);
+    }
+
+    /**
+     * @Route("/api/user/create-university-user", name="api-user-createUniversityUser")
+     */
+    public function apiUserCreateUniversityUser()
+    {
+        $data = $this->handler->saveUniversityUser();
+        return new JsonResponse($data);
+    }
+
+    /**
+     * @Route("/api/user/reset-password", name="api-user-resetPassword")
+     */
+    public function apiUserResetPassword()
+    {
+        $data = $this->handler->resetPassword();
         return new JsonResponse($data);
     }
 }

@@ -25,7 +25,7 @@ function index(props) {
     formData.set('Contact[message]', message);
     formData.set('Contact[type]', 20);
 
-    sendContactLetter({}, formData).then((res) => {
+    sendContactLetter(props.lang, formData).then((res) => {
       alert('success', t(props.lang, "Your message has been processed. We'll be in touch soon."));
       redirect(`/contact`);
     });

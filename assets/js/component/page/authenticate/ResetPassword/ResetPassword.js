@@ -3,40 +3,28 @@ import {bindActionCreators} from 'redux';
 import {push} from 'connected-react-router';
 import {connect} from 'react-redux';
 import {validateForm} from '../../../src/FormValidation';
-import {preloaderEnd, preloaderStart} from '../../../src/Preloader/Preloader';
-import axios from 'axios';
-import {alert, alertException} from '../../../src/Alert/Alert';
+import {alert} from '../../../src/Alert/Alert';
 import './style.scss';
+import {withRouter} from 'react-router';
+import {t} from '../../../src/translate/translate';
+import {userResetPassword} from '../../../src/axios/axios';
 
 function index(props) {
   const [email, setEmail] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!validateForm('reset-password-form')) {
+    if (!validateForm(props.lang, 'reset-password-form')) {
       return;
     }
 
     let formData = new FormData();
     formData.set('email', email);
 
-    preloaderStart();
-    axios
-      .post('/react/reset-password', formData)
-      .then((res) => {
-        let data = res.data;
-        if (!data.status) {
-          alert('error', data.error);
-          return;
-        }
-        redirect(`/reset-password/email-send`);
-      })
-      .catch((error) => {
-        alertException(error.response.status);
-      })
-      .then(() => {
-        preloaderEnd();
-      });
+    userResetPassword(props.lang, formData).then((res) => {
+      if (!res.status) alert('error', t(props.lang, res.error));
+      else redirect(`/reset-password/email-send`);
+    });
   };
 
   const redirect = (url) => {
@@ -48,7 +36,7 @@ function index(props) {
     <div className="reset-password container">
       <div className="col-xs-12 col-sm-6 col-md-4 block-center">
         <div className={'block-reset'}>
-          <span className={'block-name'}>Восстановление</span>
+          <span className={'block-name'}>{t(props.lang, 'Restore2')}</span>
           <form className={'reset-password-form'} onSubmit={(e) => handleSubmit(e)} noValidate>
             <div className={`form-group`}>
               <input
@@ -62,7 +50,7 @@ function index(props) {
               <span className={'error'} />
             </div>
             <button type={'submit'} className={'w-100 btn btn-type-2'}>
-              Подтвердить
+              {t(props.lang, 'Confirm')}
             </button>
           </form>
         </div>
@@ -71,8 +59,14 @@ function index(props) {
   );
 }
 
-function matchDispatchToProps(dispatch) {
-  return bindActionCreators({push: push}, dispatch);
-}
+const mapToProps = (state) => {
+  return {
+    lang: state.lang,
+  };
+};
 
-export default connect(null, matchDispatchToProps)(index);
+const matchDispatch = (dispatch) => {
+  return bindActionCreators({push: push}, dispatch);
+};
+
+export default withRouter(connect(mapToProps, matchDispatch)(index));

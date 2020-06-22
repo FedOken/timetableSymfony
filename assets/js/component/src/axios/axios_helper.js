@@ -2,6 +2,7 @@ import axios from 'axios';
 import {isEmpty} from '../helper';
 import {alert, alertException} from '../Alert/Alert';
 import {preloaderStart, preloaderEnd} from '../Preloader/Preloader';
+import {t} from '../translate/translate';
 
 /**
  * @param {string} baseUrl
@@ -24,6 +25,7 @@ export function generateUrl(baseUrl, params = {}) {
 }
 
 /**
+ * @param {string} lang
  * @param {string} url
  * @param {boolean} usePreloader
  * @param {string} method
@@ -31,7 +33,7 @@ export function generateUrl(baseUrl, params = {}) {
  * @param {object} fullResp
  * @returns {Promise<Array>}
  */
-export async function baseAxios(url, usePreloader = false, method = 'GET', postData = {}, fullResp = false) {
+export async function baseAxios(lang, url, usePreloader = false, method = 'GET', postData = {}, fullResp = false) {
   if (usePreloader) preloaderStart();
   let resp = [];
   await axios({method: method, url: url, data: postData})
@@ -39,7 +41,7 @@ export async function baseAxios(url, usePreloader = false, method = 'GET', postD
       if (fullResp) resp = res.data;
       else {
         if (res.data.status) resp = res.data.data;
-        else alert('error', res.data.error);
+        else alert('error', t(lang, res.data.error));
       }
     })
     .catch((error) => {

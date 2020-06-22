@@ -7,7 +7,7 @@ import {bindActionCreators} from 'redux';
 import {push} from 'connected-react-router';
 import {getScheduleWeeks} from '../../../src/axios/axios';
 import './style.scss';
-import { preloaderEnd } from "../../../src/Preloader/Preloader";
+import {preloaderEnd} from '../../../src/Preloader/Preloader';
 
 function index(props) {
   const [data, setData] = useState();
@@ -16,7 +16,7 @@ function index(props) {
   let type = params[params.length - 2];
 
   useEffect(() => {
-    getScheduleWeeks(type, params[params.length - 1]).then((res) => {
+    getScheduleWeeks(props.lang, type, params[params.length - 1]).then((res) => {
       setData(res);
       preloaderEnd();
     });
