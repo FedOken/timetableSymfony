@@ -31,17 +31,29 @@ export function generateUrl(baseUrl, params = {}) {
  * @param {string} method
  * @param {object} postData
  * @param {object} fullResp
+ * @param {boolean} showAlert
  * @returns {Promise<Array>}
  */
-export async function baseAxios(lang, url, usePreloader = false, method = 'GET', postData = {}, fullResp = false) {
+export async function baseAxios(
+  lang,
+  url,
+  usePreloader = false,
+  method = 'GET',
+  postData = {},
+  fullResp = false,
+  showAlert = true,
+) {
   if (usePreloader) preloaderStart();
   let resp = [];
   await axios({method: method, url: url, data: postData})
     .then((res) => {
       if (fullResp) resp = res.data;
       else {
-        if (res.data.status) resp = res.data.data;
-        else alert('error', t(lang, res.data.error));
+        if (res.data.status) {
+          resp = res.data.data;
+        } else {
+          if (showAlert) alert('error', t(lang, res.data.error));
+        }
       }
     })
     .catch((error) => {

@@ -1,34 +1,43 @@
 import React, {useEffect, useState} from 'react';
-import {preloaderEnd, preloaderStart} from "../../../../../src/Preloader/Preloader";
+import {preloaderEnd, preloaderStart} from '../../../../../src/Preloader/Preloader';
 import './style.scss';
+import {t} from '../../../../../src/translate/translate';
+import {withRouter} from 'react-router';
+import {connect} from 'react-redux';
 
-export default function DayBlock(props) {
-    const [day] = useState(props.day);
-    const [opacities] = useState(props.opacities);
+function DayBlock(props) {
+  const [day] = useState(props.day);
+  const [opacities] = useState(props.opacities);
 
-    const opacity = opacities[day.id];
+  const opacity = opacities[day.id];
 
-    useEffect(() => {
-        preloaderStart();
-        let divs = document.querySelectorAll('.week');
+  useEffect(() => {
+    preloaderStart();
+    let divs = document.querySelectorAll('.week');
 
-        divs.forEach(function(div) {
-            let div_day = div.querySelectorAll('.block-day');
-            div_day.forEach(function(div) {
-                let opacityLoc = div.getAttribute('opacity');
-                div.style.background = `rgba(74, 112, 122, ${opacityLoc / 100})`;
-            });
-        });
-        preloaderEnd();
+    divs.forEach(function (div) {
+      let div_day = div.querySelectorAll('.block-day');
+      div_day.forEach(function (div) {
+        let opacityLoc = div.getAttribute('opacity');
+        div.style.background = `rgba(74, 112, 122, ${opacityLoc / 100})`;
+      });
+    });
+    preloaderEnd();
+  }, []);
 
-    }, []);
-
-    return (
-        <div className={'col-2'}>
-            <div className={'block-day'} opacity={opacity}>
-                <span>{day.name_full}</span>
-            </div>
-        </div>
-    )
+  return (
+    <div className={'col-2'}>
+      <div className={'block-day'} opacity={opacity}>
+        <span>{t(props.lang, day.name_full, true)}</span>
+      </div>
+    </div>
+  );
 }
 
+const mapToProps = (state) => {
+  return {
+    lang: state.lang,
+  };
+};
+
+export default withRouter(connect(mapToProps)(DayBlock));

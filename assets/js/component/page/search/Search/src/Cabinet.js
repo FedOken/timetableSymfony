@@ -87,6 +87,8 @@ function index(props) {
     let unId = data.value;
     if (isEmpty(unId)) return;
     setSelUnVal(unId);
+    setSelBldngOpt(null);
+    setSelCabOpt(null);
     props.loadBuildingsByUniversity(unId);
   };
 
@@ -95,6 +97,7 @@ function index(props) {
     if (isEmpty(buildingId)) return;
     setSelBldngOptAct(data);
     setSelBldngVal(buildingId);
+    setSelCabOpt(null);
     setBtnIsDisabled(true);
     props.loadCabinetsByBuilding(buildingId);
   };
@@ -140,21 +143,21 @@ function index(props) {
         options={selBldngOpt}
         value={selBldngOptAct}
         placeholder={t(props.lang, 'Select building')}
-        className={'select select-type-1 ' + (isEmpty(props.building.data) ? 'disabled' : '')}
+        className={'select select-type-1 ' + (isEmpty(selBldngOpt) ? 'disabled' : '')}
         onChange={(data) => {
           selBldngOnChange(data);
         }}
-        isDisabled={isEmpty(selUnVal)}
+        isDisabled={isEmpty(selBldngOpt)}
       />
       <Select
         options={selCabOpt}
         value={selCabOptAct}
         placeholder={t(props.lang, 'Select cabinet')}
-        className={'select select-type-1 ' + (isEmpty(props.cabinet.data) ? 'disabled' : '')}
+        className={'select select-type-1 ' + (isEmpty(selCabOpt) ? 'disabled' : '')}
         onChange={(data) => {
           selCabinetOnChange(data);
         }}
-        isDisabled={isEmpty(selBldngVal)}
+        isDisabled={isEmpty(selCabOpt)}
       />
       <button type="button" className={'w-100 btn btn-type-2'} onClick={() => redirect()} disabled={btnIsDisabled}>
         {t(props.lang, 'Search')}

@@ -72,6 +72,7 @@ function index(props) {
     let unId = data.value;
     if (isEmpty(unId)) return;
     setSelUnVal(unId);
+    setSelGrOpt(null);
     props.loadPartiesByUniversity(unId);
   };
 
@@ -118,11 +119,11 @@ function index(props) {
         options={selGrOpt}
         value={selGrOptAct}
         placeholder={t(props.lang, 'Select group')}
-        className={'select select-type-1 ' + (isEmpty(props.party.data) ? 'disabled' : '')}
+        className={'select select-type-1 ' + (isEmpty(selGrOpt) ? 'disabled' : '')}
         onChange={(data) => {
           selGrOnChange(data);
         }}
-        isDisabled={isEmpty(selUnVal)}
+        isDisabled={isEmpty(selGrOpt)}
       />
       <button type="button" className={'w-100 btn btn-type-2'} onClick={() => redirect()} disabled={btnIsDisabled}>
         {t(props.lang, 'Search')}

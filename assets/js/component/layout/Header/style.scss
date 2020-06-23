@@ -20,6 +20,7 @@ header.header {
       display: flex;
       flex-direction: column;
       width: 80px;
+      cursor: pointer;
 
       &.active {
         color: $selection_100;

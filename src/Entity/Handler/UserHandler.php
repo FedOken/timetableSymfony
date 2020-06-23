@@ -27,6 +27,7 @@ class UserHandler
             'first_name' => $this->user->first_name,
             'last_name' => $this->user->last_name,
             'code' => $this->user->code,
+            'access_code' => $this->user->access_code,
         ];
         return $data;
     }

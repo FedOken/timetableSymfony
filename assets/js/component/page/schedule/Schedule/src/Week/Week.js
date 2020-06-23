@@ -6,20 +6,21 @@ import ScheduleBlockEmpty from '../ScheduleBlockEmpty/ScheduleBlockEmpty';
 import {isEmpty} from '../../../../../src/Helper';
 import {getScheduleData} from '../../../../../src/axios/axios';
 import './style.scss';
+import {withRouter} from 'react-router';
+import {connect} from 'react-redux';
+import {t} from '../../../../../src/translate/translate';
 
-export default function Week(props) {
-  const [week] = useState(props.week);
-  const [model] = useState(props.model);
-  const [type] = useState(props.type);
-
+function Week(props) {
   const [data, setData] = useState({});
 
+  /** Upload schedules for current week, by model*/
   useEffect(() => {
-    getScheduleData(props.lang, type, week.id, model.id).then((res) => {
+    getScheduleData(props.lang, props.type, props.week.id, props.model.id).then((res) => {
       setData(res);
     });
   }, []);
 
+  /** Render days (Sunday, Monday...) */
   const renderDays = () => {
     if (isEmpty(data)) return;
     return Object.keys(data.days).map((key) => {
@@ -27,6 +28,7 @@ export default function Week(props) {
     });
   };
 
+  /** Render one row with time and schedules */
   const renderTimeAndScheduleRow = () => {
     return Object.keys(data.times).map((key) => {
       let time = data.times[key];
@@ -47,24 +49,26 @@ export default function Week(props) {
     });
   };
 
+  /** Render schedules in row */
   const renderScheduleRow = (timeKey) => {
     return Object.keys(data.schedules).map((keySchedule) => {
       if (!Object.prototype.hasOwnProperty.call(data.schedules[keySchedule], timeKey)) return '';
 
       let schedule = data.schedules[keySchedule][timeKey];
       if (!isEmpty(schedule)) {
-        return <ScheduleBlock key={keySchedule} data={schedule} buildings={data.buildingsByType} type={type} />;
+        return <ScheduleBlock key={keySchedule} data={schedule} buildings={data.buildingsByType} type={props.type} />;
       } else {
         return <ScheduleBlockEmpty key={keySchedule} />;
       }
     });
   };
 
+  /** Render for who this schedule (party, teacher, cabinet) */
   const renderTitleName = () => {
-    if (type === 'cabinet') {
-      return `ауд. ${model.name}`;
+    if (props.type === 'cabinet') {
+      return `ауд. ${props.model.name}`;
     }
-    return model.name;
+    return props.model.name;
   };
 
   if (!isEmpty(data)) {
@@ -75,7 +79,7 @@ export default function Week(props) {
           <div className={'col-10'}>
             <div className={'block-title'}>
               <span>{renderTitleName()}</span>
-              <span>{week.name}</span>
+              <span>{t(props.lang, props.week.name, true)}</span>
             </div>
           </div>
           <div className={'col-1'}></div>
@@ -92,3 +96,11 @@ export default function Week(props) {
 
   return <div />;
 }
+
+const mapToProps = (state) => {
+  return {
+    lang: state.lang,
+  };
+};
+
+export default withRouter(connect(mapToProps)(Week));

@@ -7,9 +7,7 @@ import {withRouter} from 'react-router-dom';
 import {userLogout, loadUserModel} from '../../../../../redux/actions/user';
 import {isEmpty} from '../../../../src/Helper';
 import {commonInfo} from './src/CommonInfo';
-import axios from 'axios';
-import {alert, alertException} from '../../../../src/Alert/Alert';
-import {preloaderEnd, preloaderStart} from '../../../../src/Preloader/Preloader';
+import {alert} from '../../../../src/Alert/Alert';
 import {t} from '../../../../src/translate/translate';
 import {updateUserModel, userLogoutRequest} from '../../../../src/axios/axios';
 

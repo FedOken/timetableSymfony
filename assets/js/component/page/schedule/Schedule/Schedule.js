@@ -8,6 +8,7 @@ import {push} from 'connected-react-router';
 import {getScheduleWeeks} from '../../../src/axios/axios';
 import './style.scss';
 import {preloaderEnd} from '../../../src/Preloader/Preloader';
+import {t} from '../../../src/translate/translate';
 
 function index(props) {
   const [data, setData] = useState();
@@ -37,9 +38,9 @@ function index(props) {
   if (isEmpty(data)) {
     return (
       <div className="schedule container not-found">
-        <p>Расписание не найдено</p>
+        <p>{t(props.lang, 'Schedules not found')}</p>
         <button type={'button'} className={'btn btn-type-2'} onClick={() => redirect('/search')}>
-          К поиску
+          {t(props.lang, 'To search')}
         </button>
       </div>
     );
@@ -47,14 +48,15 @@ function index(props) {
   return <div className="schedule container">{renderDays()}</div>;
 }
 
-function mapStateToProps(state) {
+const mapToProps = (state) => {
   return {
+    lang: state.lang,
     loc: state.router.location,
   };
-}
+};
 
-function matchDispatchToProps(dispatch) {
+const matchDispatch = (dispatch) => {
   return bindActionCreators({push: push}, dispatch);
-}
+};
 
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(index));
+export default withRouter(connect(mapToProps, matchDispatch)(index));

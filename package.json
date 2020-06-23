@@ -4,7 +4,7 @@
         "@babel/plugin-transform-runtime": "^7.10.1",
         "@babel/preset-react": "^7.7.4",
         "@fortawesome/fontawesome-free": "^5.11.2",
-        "@symfony/webpack-encore": "^0.28.0",
+        "@symfony/webpack-encore": "^0.30.2",
         "babel-core": "^6.26.3",
         "babel-eslint": "^10.1.0",
         "babel-loader": "^8.1.0",

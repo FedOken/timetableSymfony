@@ -3,18 +3,26 @@ import {NavLink, withRouter} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
 import {push} from 'connected-react-router';
 import {connect} from 'react-redux';
+import {preloaderStart} from '../../../src/Preloader/Preloader';
+import {isEmpty} from '../../../src/Helper';
 
 const index = (props) => {
   const reduxRoute = (url) => {
-    props.push(url);
+    if (url === '/profile' && isEmpty(props.user.relation.data)) {
+      preloaderStart();
+      setTimeout(() => {
+        props.push(url);
+        props.history.push(url);
+      }, 300);
+    } else {
+      props.history.push(url);
+      props.push(url);
+    }
   };
 
-  return (
-    <div className={'header_item'}>
-      <NavLink
-        to={props.url}
-        className={props.activeLinks.includes(props.pathname) ? 'active' : ''}
-        onClick={() => reduxRoute(props.url)}>
+  const renderContent = () => {
+    return (
+      <div>
         <div className={'icon'}>
           {props.icon}
           {props.icon}
@@ -23,7 +31,24 @@ const index = (props) => {
           <span className={'visible'}>{props.text}</span>
           <span className={'hidden'}>{props.text}</span>
         </div>
-      </NavLink>
+      </div>
+    );
+  };
+
+  if (props.isBlanc) {
+    return (
+      <div className={'header_item'}>
+        <a href={props.url} target={'_blanc'}>
+          {renderContent()}
+        </a>
+      </div>
+    );
+  }
+  return (
+    <div className={'header_item'}>
+      <a className={props.activeLinks.includes(props.pathname) ? 'active' : ''} onClick={() => reduxRoute(props.url)}>
+        {renderContent()}
+      </a>
     </div>
   );
 };
@@ -31,6 +56,7 @@ const index = (props) => {
 function mapStateToProps(state) {
   return {
     pathname: state.router.location.pathname,
+    user: state.user,
   };
 }
 

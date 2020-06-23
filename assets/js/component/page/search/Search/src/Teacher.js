@@ -71,6 +71,7 @@ function index(props) {
     let unId = data.value;
     if (isEmpty(unId)) return;
     setSelUnVal(unId);
+    setSelTchrOpt(null);
     props.loadTeachersByUniversity(unId);
   };
 
@@ -117,11 +118,11 @@ function index(props) {
         options={selTchrOpt}
         value={selTchrOptAct}
         placeholder={t(props.lang, 'Select teacher')}
-        className={'select select-type-1 ' + (isEmpty(props.teacher.data) ? 'disabled' : '')}
+        className={'select select-type-1 ' + (isEmpty(selTchrOpt) ? 'disabled' : '')}
         onChange={(data) => {
           selTchrOnChange(data);
         }}
-        isDisabled={isEmpty(selUnVal)}
+        isDisabled={isEmpty(selTchrOpt)}
       />
       <button type="button" className={'w-100 btn btn-type-2'} onClick={() => redirect()} disabled={btnIsDisabled}>
         {t(props.lang, 'Search')}

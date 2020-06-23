@@ -1,8 +1,6 @@
-import React from 'react';
-
 export const ua = {
+  Schedule: 'Розклад',
   Panel: 'Панель',
-  Schedule: 'Пошук',
   Home: 'Головна',
   Search: 'Пошук',
   Profile: 'Профіль',
@@ -43,7 +41,7 @@ export const ua = {
   'Fill out the form below and you will be contacted shortly':
     "Заповніть форму нижче і з Вами зв'яжуться найближчим часом",
   "Your message has been processed. We'll be in touch soon.":
-    'Ваше повідомлення оброблено. Ми незабаром зв’яжемось з Вами.',
+    'Ваше повідомлення оброблюється. Ми незабаром зв’яжемось з Вами.',
   Entry: 'Вхід',
   Create: 'Створити',
   Restore1: 'Відновити',
@@ -75,9 +73,9 @@ export const ua = {
   'Letter to you': 'Вам лист',
   'Invalid access code.': 'Невірний код доступу.',
   'Incorrect token.': 'Невірний токен.',
-  'Incorrect email or password.': 'Невірний емейл або пароль.',
+  'Incorrect email or password.': 'Невірний email або пароль.',
   'Email not confirm. Please confirm your email address.':
-    'Емейл не підтверджений. Будь-ласка, підтвердіть свою електронну пошту.',
+    'Email не підтверджений. Будь-ласка, підтвердіть свою електронну пошту.',
   'Your account is disabled. Contact us for details.':
     "Ваш аккаунт заблокований. Зв'яжіться з нами для отримання детальної інформації",
   'You have successfully log-in!': 'Ви успішно зайшли в систему!',
@@ -97,7 +95,18 @@ export const ua = {
   'Full access': 'Повний доступ',
   'Change password': 'Змінити пароль',
   'Access type': 'Тип доступу',
-  // '': '',
+  'Schedules not found': 'Розклад не знайдено',
+  'First week': 'Перший тиждень',
+  'Second week': 'Другий тиждень',
+  Monday: 'Понеділок',
+  Tuesday: 'Вівторок',
+  Wednesday: 'Середа',
+  Thursday: 'Четвер',
+  Friday: "П'ятниця",
+  Saturday: 'Субота',
+  Sunday: 'Неділя',
+  Lecture: 'Лекція',
+  Practice: 'Практика',
   // '': '',
   // '': '',
   // '': '',

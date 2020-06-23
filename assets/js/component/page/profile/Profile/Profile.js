@@ -14,11 +14,14 @@ import {isEmpty} from '../../../src/Helper';
 import {loadUserRelation} from '../../../../redux/actions/user';
 import {withRouter} from 'react-router';
 import {t} from '../../../src/translate/translate';
+import {preloaderEnd} from '../../../src/Preloader/Preloader';
 
 function index(props) {
   useEffect(() => {
     if (isEmpty(props.user.relation.data) && !props.user.relation.isLoading && !isEmpty(props.user.model.data)) {
       props.loadUserRelation();
+    } else if (!isEmpty(props.user.relation.data)) {
+      preloaderEnd();
     }
   });
 

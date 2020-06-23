@@ -7,7 +7,7 @@ import {generateUrl, baseAxios} from './axios_helper';
  */
 export async function getUserCsrfToken(lang) {
   let url = generateUrl(`/api/user/get-csrf-token`);
-  return await baseAxios(lang, url, false, 'GET', );
+  return await baseAxios(lang, url, false, 'GET');
 }
 
 /**
@@ -32,7 +32,7 @@ export async function postUserLogin(lang, params = {}, postData = {}, fullResp =
  */
 export async function getScheduleWeeks(lang, type, modelId) {
   let url = generateUrl(`/api/schedule/get-weeks/${type}/${modelId}`);
-  return await baseAxios(lang, url, true);
+  return await baseAxios(lang, url, true, 'GET', {}, false, false);
 }
 
 /**
