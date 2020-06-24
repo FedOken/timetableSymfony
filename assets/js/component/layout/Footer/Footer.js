@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {iconLogo, iconEarth} from '../../src/Icon';
 import './style.scss';
 import {connect} from 'react-redux';
+import {withRouter} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {push} from 'connected-react-router';
 import {changeLang} from '../../../redux/actions/lang';
@@ -39,14 +40,21 @@ function Footer(props) {
     props.changeLang(e.target.getAttribute('code'));
   };
 
+  const redirect = (url) => {
+    props.push(url);
+    props.history.push(url);
+  };
+
   return (
     <footer className={'footer'}>
       <div className={'text_block left'}>
-        <div className={'top_block'}></div>
+        <div className={'top_block'}>
+          <span onClick={() => redirect('/term-of-use')}>{t(props.lang, 'Term of Use')}</span>
+        </div>
         <div className={'bot_block'}>
           <p>
             <a href="https://www.facebook.com/agooodminute/" target={'_blanc'}>
-              {t(props.lang, 'Invented and developed by Fedorenko')}
+              {t(props.lang, 'Invented and developed by FedOk')}
             </a>
           </p>
         </div>
@@ -82,7 +90,7 @@ const mapToProps = (state) => {
 };
 
 const matchDispatch = (dispatch) => {
-  return bindActionCreators({changeLang: changeLang}, dispatch);
+  return bindActionCreators({push: push, changeLang: changeLang}, dispatch);
 };
 
-export default connect(mapToProps, matchDispatch)(Footer);
+export default withRouter(connect(mapToProps, matchDispatch)(Footer));

@@ -115,4 +115,12 @@ class MainController extends AbstractController
         return $this->render('welcome/index.html.twig');
     }
 
+    /**
+     * @Route("/term-of-use", name="termOfUse")
+     */
+    public function termOfUse()
+    {
+        return $this->render('welcome/index.html.twig');
+    }
+
 }

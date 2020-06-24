@@ -1,0 +1,28 @@
+@import "../../../../../css/sass_components";
+
+.term {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+
+  .block-term {
+    @include block-border;
+
+    .block-name {
+      @include block-name;
+    }
+
+    .group {
+      display: flex;
+      padding-bottom: 10px;
+
+      div:first-child {
+        padding-right: 5px;
+      }
+      div:last-child {
+        text-align: justify;
+      }
+    }
+  }
+}

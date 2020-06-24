@@ -27,12 +27,23 @@ $logoPadding: 5px;
     flex-direction: column;
     width: calc((100% - #{$logoWidth} - #{$logoPadding} - #{$logoPadding})/2);
 
+    .top_block {
+      display: flex;
+      flex-direction: column-reverse;
+
+      span {
+        cursor: pointer;
+        width: fit-content;
+        &:hover {
+          color: $selection_100;
+        }
+      }
+    }
+
     &.right {
       .top_block {
-        display: flex;
         align-items: flex-end;
         padding-bottom: 5px;
-        flex-direction: column-reverse;
       }
 
       .lang {

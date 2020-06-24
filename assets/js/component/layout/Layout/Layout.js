@@ -14,6 +14,7 @@ import ConfirmEmailSend from '../../page/authenticate/ConfirmEmailSend/ConfirmEm
 import ResetPasswordEmailSend from '../../page/authenticate/ResetPasswordEmailSend/ResetPasswordEmailSend';
 import ResetPassword from '../../page/authenticate/ResetPassword/ResetPassword';
 import Profile from '../../page/profile/Profile/Profile';
+import TermOfUse from '../../page/rule/TermOfUse/TermOfUse';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {loadUserModel} from '../../../redux/actions/user';
@@ -44,6 +45,7 @@ function index(props) {
             <Route path="/reset-password/email-send" component={ResetPasswordEmailSend} />
             <Route path="/reset-password" component={ResetPassword} />
             <Route path="/profile" component={Profile} />
+            <Route path="/term-of-use" component={TermOfUse} />
           </Switch>
         </main>
         <Footer />
