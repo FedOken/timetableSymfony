@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\ReactController\Handler;
+namespace App\Controller\API\Handler;
 
 use App\Entity\Cabinet;
 use App\Entity\Day;
@@ -60,7 +60,7 @@ class ScheduleHandler extends BaseHandler
                 }
             }
 
-            if (!$scheduleIsExist) return [];
+            if (!$scheduleIsExist) return ['status' => true, 'data' => []];
             $schedules = $this->formSchedules($schedules);
             $times = $this->formTimes($schedules);
             $days = $this->formDays();

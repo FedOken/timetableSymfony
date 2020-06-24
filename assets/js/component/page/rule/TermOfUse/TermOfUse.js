@@ -11,7 +11,7 @@ function index(props) {
       <div className={'term row'}>
         <div className="col-xs-12 col-sm-6 block-center">
           <div className={'block-term'}>
-            <span className={'block-name'}>{t(props.lang, 'Term of use')}</span>
+            <span className={'block-name'}>{t(props.lang, 'Term of Use')}</span>
             <div className={'group'}>
               <div>1.</div>
               <div>

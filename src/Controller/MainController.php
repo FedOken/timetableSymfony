@@ -16,7 +16,7 @@ class MainController extends AbstractController
      */
     public function main()
     {
-        return $this->render('home/index.html.twig');
+        return $this->redirect('/welcome');
     }
 
     /**

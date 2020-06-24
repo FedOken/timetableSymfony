@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\ReactController\Handler;
+namespace App\Controller\API\Handler;
 
 use App\Entity\University;
 use App\Repository\UniversityRepository;
@@ -16,10 +16,9 @@ class UniversityHandler extends BaseHandler
         try {
             /**@var UniversityRepository $unRepo */
             $unRepo = $this->em->getRepository(University::class);
-            $unModels = $unRepo->findAll();
+            $unModels = $unRepo->findBy(['enable' => 1]);
 
             $models = [];
-            /**@var University $model */
             foreach ($unModels as $model) {
                 $models[] = [
                     'id' => $model->id,

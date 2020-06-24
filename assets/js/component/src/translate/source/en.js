@@ -1,6 +1,4 @@
 export const en = {
-  Panel: 'Панель',
-  Search: 'Поиск',
-  'Test test': 'asdasdasd',
-  'First week': 'Первая неделя',
+  Restore1: 'Restore',
+  Restore2: 'Restore',
 };

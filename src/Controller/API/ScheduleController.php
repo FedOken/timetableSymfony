@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller\ReactController;
+namespace App\Controller\API;
 
-use App\Controller\ReactController\Handler\ScheduleHandler;
+use App\Controller\API\Handler\ScheduleHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;

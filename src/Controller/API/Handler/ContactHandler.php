@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\ReactController\Handler;
+namespace App\Controller\API\Handler;
 
 use App\Entity\Building;
 use App\Entity\Contact;

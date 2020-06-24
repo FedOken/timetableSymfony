@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller\ReactController;
+namespace App\Controller\API;
 
-use App\Controller\ReactController\Handler\UserHandler;
+use App\Controller\API\Handler\UserHandler;
 use App\Entity\User;
 use App\Security\LoginFormAuthenticator;
 use App\Service\Access\PartyAccess;

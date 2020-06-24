@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controller\ReactController;
+namespace App\Controller\API;
 
 
-use App\Controller\ReactController\Handler\PartyHandler;
-use App\Controller\ReactController\Handler\TeacherHandler;
+use App\Controller\API\Handler\PartyHandler;
+use App\Controller\API\Handler\TeacherHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;

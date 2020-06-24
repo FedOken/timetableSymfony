@@ -1,39 +1,38 @@
 <?php
 
-namespace App\Controller\ReactController\Handler;
+namespace App\Controller\API\Handler;
 
-use App\Entity\Cabinet;
 use App\Entity\Party;
-use App\Repository\CabinetRepository;
 use App\Repository\PartyRepository;
 
-class CabinetHandler extends BaseHandler
+class PartyHandler extends BaseHandler
 {
     /**
-     * Return cabinets for selected building
-     * @param int $buildingId
+     * Return parties for selected university
+     * @param int $unId
      * @return array
      */
-    public function getCabinetsByBuilding(int $buildingId): array
+    public function getPartiesByUniversity(int $unId): array
     {
         try {
-            /**@var CabinetRepository $repo */
-            $repo = $this->em->getRepository(Cabinet::class);
-            $models = $repo->findBy(['building' => $buildingId], ['name' => 'ASC']);
+            /**@var PartyRepository $repo */
+            $repo = $this->em->getRepository(Party::class);
+            $models = $repo->findByUniversity($unId);
 
             $data = [];
-            /**@var Cabinet $model */
+            /**@var Party $model */
             foreach ($models as $model) {
                 $data[] = [
                     'id' => $model->id,
-                    'buildingId' => $buildingId,
+                    'unId' => $unId,
+                    'facId' => $model->faculty->id,
                     'name' => $model->name,
                 ];
             }
             return [
                 'status' => true,
                 'data' => $data,
-                'buildingId' => $buildingId
+                'unId' => $unId
             ];
         } catch (\Exception $e) {
             return [
@@ -48,18 +47,18 @@ class CabinetHandler extends BaseHandler
      * @param string $query
      * @return array
      */
-    public function getCabinetsByName(string $query): array
+    public function getPartiesByName(string $query): array
     {
         try {
             $query = trim($query);
             if (!$query) return [];
 
-            /**@var CabinetRepository $repo */
-            $repo = $this->em->getRepository(Cabinet::class);
+            /**@var PartyRepository $repo */
+            $repo = $this->em->getRepository(Party::class);
             $models = $repo->findByName($query);
 
             $data = [];
-            /**@var Cabinet $model*/
+            /**@var Party $model*/
             foreach ($models as $model) {
                 $data[] = ['value' => $model->id, 'label' => $model->name];
             }

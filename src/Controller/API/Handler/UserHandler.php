@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\ReactController\Handler;
+namespace App\Controller\API\Handler;
 
 use App\Entity\Cabinet;
 use App\Entity\Faculty;
@@ -106,7 +106,7 @@ class UserHandler extends BaseHandler
             $code = $this->strService->clearStr($this->request->request->get('code'));
             $role = $id = null;
 
-            $un = $this->em->getRepository(University::class)->findOneBy(['access_code' => $code]);
+            $un = $this->em->getRepository(University::class)->findOneBy(['access_code' => $code, 'enable' => 1]);
             if ($un) {
                 $role = UniversityAccess::getAccessRole();
                 $id = $un->id;
@@ -223,7 +223,7 @@ class UserHandler extends BaseHandler
         $accessObj = $this->access->getAccessObject($user);
 
         /** @var University[] $models */
-        $models = $this->em->getRepository(University::class)->findBy(['id' => $accessObj->getAccessibleUniversityIds()]);
+        $models = $this->em->getRepository(University::class)->findBy(['id' => $accessObj->getAccessibleUniversityIds(), 'enable' => 1]);
         foreach ($models as $model) {
             $data['universities'][] = [
                 'id' => $model->id,

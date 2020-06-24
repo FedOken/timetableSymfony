@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller\ReactController;
+namespace App\Controller\API;
 
-use App\Controller\ReactController\Handler\UniversityHandler;
+use App\Controller\API\Handler\UniversityHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;

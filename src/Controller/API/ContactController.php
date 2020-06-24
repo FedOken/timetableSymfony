@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Controller\ReactController;
+namespace App\Controller\API;
 
 
-use App\Controller\ReactController\Handler\ContactHandler;
+use App\Controller\API\Handler\ContactHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
