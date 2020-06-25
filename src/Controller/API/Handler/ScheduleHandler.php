@@ -89,9 +89,10 @@ class ScheduleHandler extends BaseHandler
     public function formWeeks(string $type, int $id): array
     {
         try {
-            $unId = $this->getModelAndUnIdByType($type, $id)['unId'];
-            $model = $this->getModelAndUnIdByType($type, $id)['model'];
-            if (!$unId || !$model) return [];
+            $unId = $this->unId ?: $this->getModelAndUnIdByType($type, $id)['unId'];
+            /**@var Party|Teacher|Cabinet $model */
+            $model = $this->searchModel ?: $this->getModelAndUnIdByType($type, $id)['model'];
+            if (!$unId || !$model) return ['status' => true, 'data' => []];
 
             /** @var $repoWeeks WeekRepository */
             $repoWeeks = $this->em->getRepository(Week::class);
