@@ -108,22 +108,28 @@ export const ua = {
   Lecture: 'Лекція',
   Practice: 'Практика',
   'Term of Use': 'Правила використання',
-  'Your access to and use of the service means you agree to be bound by these Terms of Use': 'Ваш доступ і використання сервісу означає, що Ви згодні з цими Умовами використання',
-  'The Company may at any time change the terms and conditions set out in these Rules and such changes shall become effective immediately after their publication on this service': 'Компанія може в будь-який час змінювати умови, викладені в цих Правилах, і такі зміни набувають чинності негайно після їх публікації на даному сервісі',
-  'You must read these Rules before using this service. If you continue to use this service after the Rules are published and/or modified, you agree to be bound by the Rules with all the changes': 'Ви зобов\'язані ознайомитися з цими Правилами перед кожним використанням даного сервісу. Якщо Ви продовжуєте користуватися цим сервісом після оприлюднення та / або зміни Правил, це означає Вашу згоду на дотримання Правил з усіма його змінами',
-  'If any of the terms of these Terms or changes to them are unacceptable to you, you may not start using or discontinue using this service': 'Якщо будь-які умови цих Правил або зміни до них неприйнятні для Вас, Ви можете не починати користування або припинити користування даним сервісом',
-  'The materials and services of this service are provided "as is" without warranty of any kind. The Company does not guarantee the accuracy or completeness of the materials, programs and services on this service. The Company may make changes to the materials and services provided on this service, as well as to the products and prices mentioned therein, at any time without notice. If the materials and services on this service become obsolete, the Company has no obligation to update them': 'Матеріали і послуги цього сервісу надаються «як є» без будь-яких гарантій. Компанія не гарантує точності і повноти матеріалів, програм і послуг на цьому сервісі. Компанія в будь-який час без повідомлення може вносити зміни в матеріали і послуги, що надаються на цьому сервісі, а також у згадані в них продукти і ціни. У разі старіння матеріалів і послуг на цьому сервісі, компанія не зобов\'язана оновлювати їх',
-  'By registering on the service, you agree to provide true and accurate information about yourself and your contact details. As a result of registration, you get a login and password, for the security of which you are responsible for yourself. You are also responsible for all activities under your login and password on the service. In case of loss of your registration data you are obliged to inform us about it': 'Реєструючись на сервісі, ви погоджуєтеся надати достовірну і точну інформацію про себе і свої контактні дані. В результаті реєстрації ви отримуєте логін і пароль, за безпеку яких Ви несете відповідальність самостійно. Ви також несете відповідальність за всі дії під вашим логіном і паролем на сервісі. У разі втрати реєстраційних даних Ви погоджуєтесь повідомити нам про це',
-  "We grant the user a limited, non-exclusive, revocable and non-sublicensable license to access and use our service on users' devices and to use any content on our service for non-commercial purposes": 'Ми надаємо користувачу обмежену, невиключну, відкличні та без права субліцензування ліцензію на доступ і використання нашого сервісу на девайсах користувачів, а також на використання будь-якого контенту, на нашому сервісі в некомерційних цілях',
-  'All rights to the service are and shall remain the property of our company': 'Всі права на сервіс є і повинні залишатися власністю нашої компанії',
-  // '': '',
-  // '': '',
-  // '': '',
-  // '': '',
-  // '': '',
-  // '': '',
-  // '': '',
-  // '': '',
+  'Your access to and use of the service means you agree to be bound by these Terms of Use':
+    'Ваш доступ і використання сервісу означає, що Ви згодні з цими Умовами використання',
+  'The Company may at any time change the terms and conditions set out in these Rules and such changes shall become effective immediately after their publication on this service':
+    'Компанія може в будь-який час змінювати умови, викладені в цих Правилах, і такі зміни набувають чинності негайно після їх публікації на даному сервісі',
+  'You must read these Rules before using this service. If you continue to use this service after the Rules are published and/or modified, you agree to be bound by the Rules with all the changes':
+    "Ви зобов'язані ознайомитися з цими Правилами перед кожним використанням даного сервісу. Якщо Ви продовжуєте користуватися цим сервісом після оприлюднення та / або зміни Правил, це означає Вашу згоду на дотримання Правил з усіма його змінами",
+  'If any of the terms of these Terms or changes to them are unacceptable to you, you may not start using or discontinue using this service':
+    'Якщо будь-які умови цих Правил або зміни до них неприйнятні для Вас, Ви можете не починати користування або припинити користування даним сервісом',
+  'The materials and services of this service are provided "as is" without warranty of any kind. The Company does not guarantee the accuracy or completeness of the materials, programs and services on this service. The Company may make changes to the materials and services provided on this service, as well as to the products and prices mentioned therein, at any time without notice. If the materials and services on this service become obsolete, the Company has no obligation to update them':
+    "Матеріали і послуги цього сервісу надаються «як є» без будь-яких гарантій. Компанія не гарантує точності і повноти матеріалів, програм і послуг на цьому сервісі. Компанія в будь-який час без повідомлення може вносити зміни в матеріали і послуги, що надаються на цьому сервісі, а також у згадані в них продукти і ціни. У разі старіння матеріалів і послуг на цьому сервісі, компанія не зобов'язана оновлювати їх",
+  'By registering on the service, you agree to provide true and accurate information about yourself and your contact details. As a result of registration, you get a login and password, for the security of which you are responsible for yourself. You are also responsible for all activities under your login and password on the service. In case of loss of your registration data you are obliged to inform us about it':
+    'Реєструючись на сервісі, ви погоджуєтеся надати достовірну і точну інформацію про себе і свої контактні дані. В результаті реєстрації ви отримуєте логін і пароль, за безпеку яких Ви несете відповідальність самостійно. Ви також несете відповідальність за всі дії під вашим логіном і паролем на сервісі. У разі втрати реєстраційних даних Ви погоджуєтесь повідомити нам про це',
+  "We grant the user a limited, non-exclusive, revocable and non-sublicensable license to access and use our service on users' devices and to use any content on our service for non-commercial purposes":
+    'Ми надаємо користувачу обмежену, невиключну, відкличні та без права субліцензування ліцензію на доступ і використання нашого сервісу на девайсах користувачів, а також на використання будь-якого контенту, на нашому сервісі в некомерційних цілях',
+  'All rights to the service are and shall remain the property of our company':
+    'Всі права на сервіс є і повинні залишатися власністю нашої компанії',
+  Main: 'Головна',
+  'Business matters': 'Ділові питання',
+  'Technical issue': 'Технічні питання',
+  Contact: 'Контакти',
+  'Email send': 'Email відправлений',
+  'Reset password': 'Відновлення паролю',
   // '': '',
   // '': '',
   // '': '',

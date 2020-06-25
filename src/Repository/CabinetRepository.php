@@ -36,4 +36,17 @@ class CabinetRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findByBuildings(array $buildingIds): array
+    {
+        return $this->createQueryBuilder('tb')
+            ->leftJoin('tb.building', 'bldng')
+            ->andWhere("bldng.id IN (:ids)")
+            ->setParameter('ids', $buildingIds)
+            ->leftJoin(University::class, 'un', 'WITH', 'un.id = bldng.university')
+            ->andWhere('un.enable = 1')
+            ->addOrderBy('tb.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

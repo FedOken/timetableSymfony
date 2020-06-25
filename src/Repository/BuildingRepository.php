@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Building;
+use App\Entity\University;
 use App\Helper\ArrayHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -20,20 +21,15 @@ class BuildingRepository extends ServiceEntityRepository
         parent::__construct($registry, Building::class);
     }
 
-    /**
-     * @param array $universityIds
-     * @param bool $forChoice
-     * @return array
-     */
-    public function getByUniversity(array $universityIds)
+    public function findByUniversities(array $universityIds): array
     {
-        $models = $this->createQueryBuilder('tb')
-            ->andWhere('tb.university IN (:universityIds)')
-            ->setParameter('universityIds', $universityIds)
-            ->orderBy('tb.name', 'ASC')
+        return $this->createQueryBuilder('tb')
+            ->leftJoin(University::class, 'un', 'WITH', 'un.id = tb.university')
+            ->andWhere('un.enable = 1')
+            ->andWhere("un.id IN (:ids)")
+            ->setParameter('ids', $universityIds)
+            ->addOrderBy('tb.name', 'ASC')
             ->getQuery()
             ->getResult();
-
-        return $models;
     }
 }

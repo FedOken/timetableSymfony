@@ -17,7 +17,7 @@ class BuildingHandler extends BaseHandler
         try {
             /**@var BuildingRepository $repo */
             $repo = $this->em->getRepository(Building::class);
-            $models = $repo->findBy(['university' => $unId], ['name' => 'ASC']);
+            $models = $repo->findByUniversities([$unId]);
 
             $data = [];
             /**@var Building $model */

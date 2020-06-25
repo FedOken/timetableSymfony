@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Teacher;
+use App\Entity\University;
 use App\Entity\Week;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -22,15 +23,15 @@ class WeekRepository extends ServiceEntityRepository
 
     public function getWeeksByUniversity(array $unId)
     {
-        $models = $this->createQueryBuilder('tb')
+        return $this->createQueryBuilder('tb')
             ->andWhere('tb.university IN (:universityIds)')
             ->andWhere('tb.name != :name')
             ->setParameter('universityIds', $unId)
             ->setParameter('name', '-')
+            ->leftJoin(University::class, 'un', 'WITH', 'un.id = tb.university')
+            ->andWhere('un.enable = 1')
             ->orderBy('tb.order', 'ASC')
             ->getQuery()
             ->getResult();
-
-        return $models;
     }
 }

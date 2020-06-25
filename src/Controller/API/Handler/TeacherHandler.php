@@ -17,7 +17,7 @@ class TeacherHandler extends BaseHandler
         try {
             /**@var TeacherRepository $repo */
             $repo = $this->em->getRepository(Teacher::class);
-            $models = $repo->findBy(['university' => $unId]);
+            $models = $repo->findByUniversities([$unId]);
 
             $data = [];
             /**@var Teacher $model */

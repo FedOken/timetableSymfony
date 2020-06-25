@@ -35,7 +35,7 @@ function index(props) {
     props.history.push(url);
   };
 
-  if (isEmpty(data)) {
+  if (isEmpty(data) || isEmpty(data.weeks)) {
     return (
       <div className="schedule container not-found">
         <p>{t(props.lang, 'Schedules not found')}</p>

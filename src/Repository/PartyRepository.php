@@ -37,26 +37,26 @@ class PartyRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('tb')
             ->andWhere('tb.name LIKE :name')
             ->setParameter('name', '%'.$name.'%')
+            ->leftJoin('tb.faculty', 'fac')
+            ->andWhere('fac.enable = 1')
+            ->leftJoin(University::class, 'un', 'WITH', 'un.id = fac.university')
+            ->andWhere('un.enable = 1')
             ->addOrderBy('tb.course', 'ASC')
             ->getQuery()
             ->getResult();
     }
 
-    /**
-     * @param int $universityId
-     * @return University[]
-     */
-    public function findByUniversity(int $universityId)
+    public function findByUniversities(array $universityIds): array
     {
-        $university = $this->universityRepo->findOneBy(['id' => $universityId]);
-        $faculties = $university->faculties;
-
-        $parties = [];
-        /**@var Faculty $faculty */
-        foreach ($faculties as $faculty) {
-            $parties = array_merge($parties, $faculty->parties);
-        }
-
-        return $parties;
+        return $this->createQueryBuilder('tb')
+            ->leftJoin('tb.faculty', 'fac')
+            ->andWhere('fac.enable = 1')
+            ->leftJoin(University::class, 'un', 'WITH', 'un.id = fac.university')
+            ->andWhere('un.enable = 1')
+            ->andWhere("un.id IN (:ids)")
+            ->setParameter('ids', $universityIds)
+            ->addOrderBy('tb.course', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 }

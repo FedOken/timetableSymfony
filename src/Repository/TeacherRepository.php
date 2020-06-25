@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Building;
 use App\Entity\Teacher;
+use App\Entity\University;
 use App\Helper\ArrayHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -30,6 +31,20 @@ class TeacherRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('tb')
             ->andWhere('tb.name LIKE :name')
             ->setParameter('name', '%'.$name.'%')
+            ->leftJoin('tb.university', 'un')
+            ->andWhere('un.enable = 1')
+            ->addOrderBy('tb.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByUniversities(array $universityIds): array
+    {
+        return $this->createQueryBuilder('tb')
+            ->leftJoin(University::class, 'un', 'WITH', 'un.id = tb.university')
+            ->andWhere('un.enable = 1')
+            ->andWhere("un.id IN (:ids)")
+            ->setParameter('ids', $universityIds)
             ->addOrderBy('tb.name', 'ASC')
             ->getQuery()
             ->getResult();

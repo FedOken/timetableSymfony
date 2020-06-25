@@ -19,7 +19,7 @@ class CabinetHandler extends BaseHandler
         try {
             /**@var CabinetRepository $repo */
             $repo = $this->em->getRepository(Cabinet::class);
-            $models = $repo->findBy(['building' => $buildingId], ['name' => 'ASC']);
+            $models = $repo->findByBuildings([$buildingId]);
 
             $data = [];
             /**@var Cabinet $model */

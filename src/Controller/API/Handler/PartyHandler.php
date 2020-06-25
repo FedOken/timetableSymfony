@@ -17,7 +17,7 @@ class PartyHandler extends BaseHandler
         try {
             /**@var PartyRepository $repo */
             $repo = $this->em->getRepository(Party::class);
-            $models = $repo->findByUniversity($unId);
+            $models = $repo->findByUniversities([$unId]);
 
             $data = [];
             /**@var Party $model */
