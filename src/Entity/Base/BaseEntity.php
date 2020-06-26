@@ -3,7 +3,7 @@
 namespace App\Entity\Base;
 
 use App\Entity\Schedule;
-use App\Handler\BaseHandler;
+use App\Controller\EasyAdmin\Handler\BaseHandler;
 
 abstract class BaseEntity
 {

@@ -13,6 +13,7 @@ use App\Entity\University;
 use App\Entity\UniversityTime;
 use App\Entity\Week;
 use App\Helper\ArrayHelper;
+use App\Repository\CabinetRepository;
 
 class AdminAccess extends AccessService implements AccessInterface
 {
@@ -66,7 +67,10 @@ class AdminAccess extends AccessService implements AccessInterface
 
     public function getAccessibleCabinetIds(int $buildingId = null): array
     {
-        $response = $this->em->getRepository(Cabinet::class)->findAll();
+        /** @var CabinetRepository $repo */
+        $repo = $this->em->getRepository(Cabinet::class);
+        if ($buildingId) $response = $repo->findByBuildings([$buildingId]);
+        else $response = $repo->findAll();
         return $response ? ArrayHelper::getColumn($response, 'id') : [];
     }
 

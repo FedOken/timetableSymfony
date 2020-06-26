@@ -20,7 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @property integer $id
  * @property string $name
- * @property integer $order
+ * @property integer $sort_order
  * @property Schedule[] $schedules
  * @property University $university
  */
@@ -41,9 +41,9 @@ class Week extends WeekBase
     private $name;
 
     /**
-     * @ORM\Column(type="integer", length=255, nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $order;
+    private $sort_order;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Schedule", mappedBy="week")
@@ -122,6 +122,17 @@ class Week extends WeekBase
     {
         $this->university = $university;
 
+        return $this;
+    }
+
+    public function getSortOrder(): int
+    {
+        return $this->sort_order;
+    }
+
+    public function setSortOrder(int $sort_order): self
+    {
+        $this->sort_order = $sort_order;
         return $this;
     }
 

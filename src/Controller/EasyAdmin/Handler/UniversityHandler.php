@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Handler;
+namespace App\Controller\EasyAdmin\Handler;
 
-use App\Entity\Course;
+use App\Entity\University;
 use App\Entity\User;
 
-class CourseHandler extends BaseHandler
+class UniversityHandler extends BaseHandler
 {
     /**
      * Set select2 data by permission and selected entity
@@ -15,8 +15,8 @@ class CourseHandler extends BaseHandler
      */
     public function setSelect2EasyAdmin($currentId, $user)
     {
-        $validIds = $this->access->getAccessObject($user)->getAccessibleCourseIds();
-        $entityModels = $this->em->getRepository(Course::class)->findBy(['id' => $validIds]);
+        $validIds = $this->access->getAccessObject($user)->getAccessibleUniversityIds();
+        $entityModels = $this->em->getRepository(University::class)->findBy(['id' => $validIds, 'enable' => 1]);
 
         if ($currentId) {
             $currentModel = [];

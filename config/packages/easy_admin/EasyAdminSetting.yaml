@@ -20,7 +20,7 @@ easy_admin:
                     - { entity: 'Week', icon: 'calendar-week', permission: 'ROLE_UNIVERSITY_MANAGER' }
                     - { entity: 'Time', icon: 'clock', permission: 'ROLE_UNIVERSITY_MANAGER' }
 
-            - { entity: 'Teacher', icon: 'chalkboard-teacher', permission: 'ROLE_TEACHER' }
+            - { entity: 'Teacher', labe: 'Teachers', icon: 'chalkboard-teacher', permission: 'ROLE_TEACHER' }
             - { entity: 'Schedule', icon: 'clipboard-list', permission: 'ROLE_PARTY_MANAGER' }
 
             -   label: 'Constant'

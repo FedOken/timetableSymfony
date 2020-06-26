@@ -2,7 +2,7 @@
 
 namespace App\Controller\EasyAdmin;
 
-use App\Handler\UniversityHandler;
+use App\Controller\EasyAdmin\Handler\UniversityHandler;
 use App\Helper\ArrayHelper;
 use App\Repository\RoleRepository;
 use App\Service\Access\AccessService;

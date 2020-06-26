@@ -9,15 +9,15 @@ use App\Entity\Schedule;
 use App\Entity\Teacher;
 use App\Entity\UniversityTime;
 use App\Entity\Week;
-use App\Handler\BuildingHandler;
-use App\Handler\CabinetHandler;
-use App\Handler\CourseHandler;
-use App\Handler\FacultyHandler;
-use App\Handler\PartyHandler;
-use App\Handler\TeacherHandler;
-use App\Handler\UniversityHandler;
-use App\Handler\UniversityTimeHandler;
-use App\Handler\WeekHandler;
+use App\Controller\EasyAdmin\Handler\BuildingHandler;
+use App\Controller\EasyAdmin\Handler\CabinetHandler;
+use App\Controller\EasyAdmin\Handler\CourseHandler;
+use App\Controller\EasyAdmin\Handler\FacultyHandler;
+use App\Controller\EasyAdmin\Handler\PartyHandler;
+use App\Controller\EasyAdmin\Handler\TeacherHandler;
+use App\Controller\EasyAdmin\Handler\UniversityHandler;
+use App\Controller\EasyAdmin\Handler\UniversityTimeHandler;
+use App\Controller\EasyAdmin\Handler\WeekHandler;
 use App\Helper\ArrayHelper;
 use App\Repository\BuildingRepository;
 use App\Repository\CabinetRepository;
@@ -183,14 +183,14 @@ class ScheduleController extends AdminController
 
         /*DATA FOR SELECT*/
         $universityToChoice = $this->universityHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'cabinet.building.university.id'), $this->user);
-        $teacherToChoice = $this->teacherHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'teacher.id'), $this->user);
-        $buildingsToChoice = $this->buildingHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'cabinet.building.id'), $this->user);
-        $weekToChoice = $this->weekHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'week.id'), $this->user);
-        $partyToChoice = $this->partyHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'party.id'), $this->user);
-        $timeToChoice = $this->universityTimeHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'universityTime.id'), $this->user);
+        $teacherToChoice = $this->teacherHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'teacher.id'), $this->user, $universityToChoice[0]->id);
+        $buildingsToChoice = $this->buildingHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'cabinet.building.id'), $this->user, $universityToChoice[0]->id);
+        $weekToChoice = $this->weekHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'week.id'), $this->user, $universityToChoice[0]->id);
+        $partyToChoice = $this->partyHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'party.id'), $this->user, $universityToChoice[0]->id);
+        $timeToChoice = $this->universityTimeHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'universityTime.id'), $this->user, $universityToChoice[0]->id);
 
         //Get buildingId and cabinet to choice
-        $buildingId = ArrayHelper::getValue($entity, 'cabinet.building.id') ? : ArrayHelper::getValue(current($buildingsToChoice), 'id');
+        $buildingId = ArrayHelper::getValue($entity, 'cabinet.building.id') ?: ArrayHelper::getValue(current($buildingsToChoice), 'id');
         $cabinetToChoice = $this->cabinetHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'cabinet.id'), $this->user, $buildingId);
 
         $formBuilder->add('university', EntityType::class, [

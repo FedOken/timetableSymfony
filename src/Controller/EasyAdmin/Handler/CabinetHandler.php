@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Handler;
+namespace App\Controller\EasyAdmin\Handler;
 
 use App\Entity\Cabinet;
 use App\Entity\User;

@@ -5,7 +5,7 @@ namespace App\Controller\EasyAdmin;
 use App\Entity\Faculty;
 use App\Entity\Teacher;
 use App\Entity\University;
-use App\Handler\UniversityHandler;
+use App\Controller\EasyAdmin\Handler\UniversityHandler;
 use App\Helper\ArrayHelper;
 use App\Service\Access\AccessService;
 use App\Service\Access\FacultyAccess;

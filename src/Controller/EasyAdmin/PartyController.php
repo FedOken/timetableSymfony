@@ -9,9 +9,9 @@ use App\Entity\Faculty;
 use App\Entity\Party;
 use App\Entity\Schedule;
 use App\Entity\University;
-use App\Handler\CourseHandler;
-use App\Handler\FacultyHandler;
-use App\Handler\UniversityHandler;
+use App\Controller\EasyAdmin\Handler\CourseHandler;
+use App\Controller\EasyAdmin\Handler\FacultyHandler;
+use App\Controller\EasyAdmin\Handler\UniversityHandler;
 use App\Helper\ArrayHelper;
 use App\Repository\BuildingRepository;
 use App\Repository\CabinetRepository;
@@ -99,6 +99,9 @@ class PartyController extends AdminController
         $formBuilder->add('course', EntityType::class, [
             'choices' => $courseToChoice,
             'class' => 'App\Entity\Course',
+            'choice_label' => function ($choice) {
+                return $choice->course.' - '.$choice->university->name;
+            },
             'attr' => ['data-widget' => 'select2'],
         ]);
 

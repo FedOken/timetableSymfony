@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Handler;
+namespace App\Controller\EasyAdmin\Handler;
 
 use App\Entity\Building;
+use App\Entity\Teacher;
 use App\Entity\User;
 
 class BuildingHandler extends BaseHandler
@@ -11,12 +12,17 @@ class BuildingHandler extends BaseHandler
      * Set select2 data by permission and selected entity
      * @param int|null $currentId
      * @param User|object $user
+     * @param int $unId
      * @return array
      */
-    public function setSelect2EasyAdmin($currentId, $user)
+    public function setSelect2EasyAdmin($currentId, $user, $unId = 0)
     {
-        $validIds = $this->access->getAccessObject($user)->getAccessibleBuildingIds();
-        $entityModels = $this->em->getRepository(Building::class)->findBy(['id' => $validIds]);
+        if ($unId) {
+            $entityModels = $this->em->getRepository(Building::class)->findBy(['university' => $unId]);
+        } else {
+            $validIds = $this->access->getAccessObject($user)->getAccessibleBuildingIds();
+            $entityModels = $this->em->getRepository(Building::class)->findBy(['id' => $validIds]);
+        }
 
         if ($currentId) {
             $currentModel = [];

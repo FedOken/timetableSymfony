@@ -77,6 +77,7 @@ Create lesson type: Создать тип занятия
 Edit lesson type: Редактировать тип занятия
 Lesson every week: Занятие каждую неделю
 Lessons: Занятия
+Short name: Короткое имя
 Set short name (lec, pr): Введите короткое имя (лек. пр.)
 Set full name (Lecture, Practice): Введите полное имя (Лекция, Практика)
 Roles list: Список ролей
@@ -136,7 +137,7 @@ Edit faculty: Редактировать факультет
 Set full name (Faculty of advanced technology): Введите полное имя (Факультет передовых технологий)
 Set short name (FAT): Введите короткое имя (ФПТ)
 Faculty view: Просмотр записи - факультет
-Teacher list: Список преподавателей
+Teachers list: Список преподавателей
 Add teacher: Добавить преподавателя
 Create teacher: Создать преподавателя
 Edit teacher: Редактировать преподавателя

@@ -4,8 +4,8 @@ namespace App\Controller\EasyAdmin;
 
 
 use App\Entity\Party;
-use App\Handler\BuildingHandler;
-use App\Handler\UniversityHandler;
+use App\Controller\EasyAdmin\Handler\BuildingHandler;
+use App\Controller\EasyAdmin\Handler\UniversityHandler;
 use App\Helper\ArrayHelper;
 use App\Service\Access\AccessService;
 use App\Service\Access\FacultyAccess;

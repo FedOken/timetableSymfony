@@ -8,7 +8,7 @@ use App\Entity\Party;
 use App\Entity\Schedule;
 use App\Entity\Teacher;
 use App\Entity\User;
-use App\Handler\UniversityHandler;
+use App\Controller\EasyAdmin\Handler\UniversityHandler;
 use App\Helper\ArrayHelper;
 use App\Repository\BuildingRepository;
 use App\Repository\CabinetRepository;

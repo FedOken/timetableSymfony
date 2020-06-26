@@ -8,7 +8,7 @@ use App\Entity\Role;
 use App\Entity\Teacher;
 use App\Entity\University;
 use App\Entity\User;
-use App\Handler\UniversityHandler;
+use App\Controller\EasyAdmin\Handler\UniversityHandler;
 use App\Helper\ArrayHelper;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;

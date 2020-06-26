@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Handler;
+namespace App\Controller\EasyAdmin\Handler;
 
+use App\Entity\Faculty;
 use App\Entity\University;
-use App\Entity\UniversityTime;
 use App\Entity\User;
-use App\Entity\Week;
-use App\Repository\TeacherRepository;
-use App\Repository\WeekRepository;
+use App\Repository\FacultyRepository;
 use App\Service\Access\AccessService;
+use Doctrine\ORM\EntityManagerInterface;
 
-class WeekHandler extends BaseHandler
+class FacultyHandler extends BaseHandler
 {
     /**
      * Set select2 data by permission and selected entity
@@ -20,8 +19,8 @@ class WeekHandler extends BaseHandler
      */
     public function setSelect2EasyAdmin($currentId, $user)
     {
-        $validIds = $this->access->getAccessObject($user)->getAccessibleWeekIds();
-        $entityModels = $this->em->getRepository(Week::class)->findBy(['id' => $validIds]);
+        $validIds = $this->access->getAccessObject($user)->getAccessibleFacultyIds();
+        $entityModels = $this->em->getRepository(Faculty::class)->findBy(['id' => $validIds]);
 
         if ($currentId) {
             $currentModel = [];

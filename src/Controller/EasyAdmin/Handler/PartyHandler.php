@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Handler;
+namespace App\Controller\EasyAdmin\Handler;
 
 use App\Entity\Party;
+use App\Entity\UniversityTime;
 use App\Entity\User;
 
 class PartyHandler extends BaseHandler
@@ -11,12 +12,17 @@ class PartyHandler extends BaseHandler
      * Set select2 data by permission and selected entity
      * @param int|null $currentId
      * @param User|object $user
+     * @param int $unId
      * @return array
      */
-    public function setSelect2EasyAdmin($currentId, $user)
+    public function setSelect2EasyAdmin($currentId, $user, $unId = 0)
     {
-        $validIds = $this->access->getAccessObject($user)->getAccessiblePartyIds();
-        $entityModels = $this->em->getRepository(Party::class)->findBy(['id' => $validIds]);
+        if ($unId) {
+            $entityModels = $this->em->getRepository(Party::class)->findByUniversities([$unId]);
+        } else {
+            $validIds = $this->access->getAccessObject($user)->getAccessiblePartyIds();
+            $entityModels = $this->em->getRepository(Party::class)->findBy(['id' => $validIds]);
+        }
 
         if ($currentId) {
             $currentModel = [];
