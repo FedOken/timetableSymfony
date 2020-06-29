@@ -105,6 +105,7 @@ class ScheduleHandler extends BaseHandler
             $weeks = [];
             /** @var $week Week */
             foreach ($weekModels as $week) {
+                if ($week->name === Week::WEEK_ALL) continue;
                 $weeks[] = $week->serialize();
             }
             $data = ['weeks' => $weeks, 'model' => $model->serialize()];
