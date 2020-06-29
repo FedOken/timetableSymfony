@@ -20,17 +20,9 @@ import {t} from '../../src/translate/translate';
 function index(props) {
   const renderFirstElement = () => {
     if (!isEmpty(props.user.model.data)) {
-      let rolesForPanel = [getRoleLabel('admin'), getRoleLabel('university'), getRoleLabel('faculty')];
-      if (rolesForPanel.includes(props.user.model.data.role)) {
-        return <HeaderItem url={'/admin'} icon={iconPanel} text={t(props.lang, 'Panel')} activeLinks={[]} isBlanc={true}/>;
-      }
-      let url = '/';
-      if (props.user.model.data.role === getRoleLabel('teacher')) {
-        url = `/schedule/teacher/${props.user.model.data.access_code.split('-')[1]}`;
-      } else {
-        url = `/schedule/group/${props.user.model.data.access_code.split('-')[1]}`;
-      }
-      return <HeaderItem url={url} icon={iconCalendar} text={t(props.lang, 'Schedule')} activeLinks={['/sch']} />;
+      return (
+        <HeaderItem url={'/admin'} icon={iconPanel} text={t(props.lang, 'Panel')} activeLinks={[]} isBlanc={true} />
+      );
     }
     return <HeaderItem url={'/welcome'} icon={iconHome} text={t(props.lang, 'Home')} activeLinks={[]} />;
   };

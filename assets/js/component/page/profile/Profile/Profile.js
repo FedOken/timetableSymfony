@@ -14,16 +14,26 @@ import {isEmpty} from '../../../src/Helper';
 import {loadUserRelation} from '../../../../redux/actions/user';
 import {withRouter} from 'react-router';
 import {t} from '../../../src/translate/translate';
-import {preloaderEnd} from '../../../src/Preloader/Preloader';
+import {preloaderEnd, preloaderStart} from '../../../src/Preloader/Preloader';
+import {push} from 'connected-react-router';
+import {getRoleLabel} from '../../../src/Auth';
 
 function index(props) {
   useEffect(() => {
-    if (isEmpty(props.user.relation.data) && !props.user.relation.isLoading && !isEmpty(props.user.model.data)) {
+    if (!props.user.relation.isLoaded && !props.user.relation.isLoading && !isEmpty(props.user.model.data)) {
       props.loadUserRelation();
-    } else if (!isEmpty(props.user.relation.data)) {
+    } else if (!isEmpty(props.user.relation.data) || props.user.relation.isLoaded) {
       preloaderEnd();
     }
   });
+
+  const redirect = (url) => {
+    preloaderStart();
+    setTimeout(() => {
+      props.push(url);
+      props.history.push(url);
+    }, 300);
+  };
 
   return (
     <div className="profile container">
@@ -33,10 +43,18 @@ function index(props) {
             <TabsItem group={'student'} title={t(props.lang, 'Profile')} active={true} svg={iconProfile}>
               <Common />
             </TabsItem>
-            <TabsItem group={'group'} title={t(props.lang, 'Groups')} svg={iconGroup} disabled={props.user.model.data.role === 'ROLE_PARTY_MANAGER'}>
+            <TabsItem
+              group={'group'}
+              title={t(props.lang, 'Groups')}
+              svg={iconGroup}
+              disabled={props.user.model.data.role === getRoleLabel('party')}>
               <Party />
             </TabsItem>
-            <TabsItem group={'teacher'} title={t(props.lang, 'Teachers')} svg={iconTeacher}>
+            <TabsItem
+              group={'teacher'}
+              title={t(props.lang, 'Teachers')}
+              svg={iconTeacher}
+              disabled={props.user.model.data.role === getRoleLabel('teacher')}>
               <Teacher />
             </TabsItem>
             <TabsItem group={'cabinet'} title={t(props.lang, 'Cabinets')} svg={iconDoor}>
@@ -60,7 +78,7 @@ const mapToProps = (state) => {
 };
 
 const matchDispatch = (dispatch) => {
-  return bindActionCreators({loadUserRelation: loadUserRelation}, dispatch);
+  return bindActionCreators({push: push, loadUserRelation: loadUserRelation}, dispatch);
 };
 
 export default withRouter(connect(mapToProps, matchDispatch)(index));

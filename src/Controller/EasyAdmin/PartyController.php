@@ -21,6 +21,7 @@ use App\Repository\PartyRepository;
 use App\Repository\TeacherRepository;
 use App\Repository\UniversityRepository;
 use App\Service\Access\AccessService;
+use App\Service\Access\AdminAccess;
 use App\Service\Access\FacultyAccess;
 use Doctrine\DBAL\Types\TextType;
 use Doctrine\ORM\QueryBuilder;
@@ -35,22 +36,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-
+/**
+ * Class PartyController
+ * @package App\Controller\EasyAdmin
+ *
+ * @property array $validIds
+ */
 class PartyController extends AdminController
 {
-    private $facultyHandler;
-    private $courseHandler;
     private $validIds = [];
-
-
-    public function __construct(TokenStorageInterface  $tokenStorage, CourseHandler $courseHandler, FacultyHandler $facultyHandler, TranslatorInterface $translator, UniversityHandler $universityHandler, AccessService $accessService)
-    {
-        parent::__construct($translator, $universityHandler, $accessService);
-
-        //Handler
-        $this->facultyHandler = $facultyHandler;
-        $this->courseHandler = $courseHandler;
-    }
 
     private function init()
     {
@@ -66,16 +60,22 @@ class PartyController extends AdminController
         return $response;
     }
 
+    protected function newAction()
+    {
+        $this->init();
+        return $this->newCheckPermissionAndRedirect($this->validIds, 'Party', [FacultyAccess::getAccessRole()]);
+    }
+
     protected function listAction()
     {
         $this->init();
-        return $this->listCheckPermissionAndRedirect($this->validIds, 'Party', FacultyAccess::getAccessRole());
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Party', [FacultyAccess::getAccessRole()]);
     }
 
     protected function editAction()
     {
         $this->init();
-        return $this->editCheckPermissionAndRedirect($this->validIds, 'Party',  FacultyAccess::getAccessRole());
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Party',  [FacultyAccess::getAccessRole()]);
     }
 
     /**
@@ -87,20 +87,19 @@ class PartyController extends AdminController
     protected function createEntityFormBuilder($entity, $view)
     {
         $formBuilder = parent::createEntityFormBuilder($entity, $view);
-
-        $facultyToChoice = $this->facultyHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'faculty.id'), $this->getUser());
-        $courseToChoice = $this->courseHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'course.id'), $this->getUser());
+        $fcltToSel = $this->selDataHandler->getDataFclt(ArrayHelper::getValue($entity, 'faculty.id'), null);
+        $crsToSel = $this->selDataHandler->getDataCrs(ArrayHelper::getValue($entity, 'course.id'), null);
 
         $formBuilder->add('faculty', EntityType::class, [
-            'choices' => $facultyToChoice,
+            'choices' => $fcltToSel,
             'class' => 'App\Entity\Faculty',
             'attr' => ['data-widget' => 'select2'],
         ]);
         $formBuilder->add('course', EntityType::class, [
-            'choices' => $courseToChoice,
+            'choices' => $crsToSel,
             'class' => 'App\Entity\Course',
             'choice_label' => function ($choice) {
-                return $choice->course.' - '.$choice->university->name;
+                return $choice->name_full.' - '.$choice->university->name;
             },
             'attr' => ['data-widget' => 'select2'],
         ]);

@@ -125,7 +125,7 @@ class Week extends WeekBase
         return $this;
     }
 
-    public function getSortOrder(): int
+    public function getSortOrder()
     {
         return $this->sort_order;
     }

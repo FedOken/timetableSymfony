@@ -13,6 +13,7 @@ use App\Entity\Week;
 use App\Helper\ArrayHelper;
 use App\Repository\CabinetRepository;
 use App\Repository\PartyRepository;
+use App\Repository\ScheduleRepository;
 use App\Repository\TeacherRepository;
 use App\Repository\WeekRepository;
 use Exception;
@@ -32,6 +33,7 @@ class ScheduleHandler extends BaseHandler
             $repoDay = $this->em->getRepository(Day::class);
             $repoWeek = $this->em->getRepository(Week::class);
             $repoTime = $this->em->getRepository(UniversityTime::class);
+            /** @var ScheduleRepository $repoSch */
             $repoSch = $this->em->getRepository(Schedule::class);
 
             $days = $repoDay->findAll();
@@ -96,7 +98,9 @@ class ScheduleHandler extends BaseHandler
 
             /** @var $repoWeeks WeekRepository */
             $repoWeeks = $this->em->getRepository(Week::class);
-            $weekModels = $repoWeeks->getWeeksByUniversity([$unId]);
+            $weekModels = $repoWeeks->findByUniversities([$unId]);
+
+            if (!$this->checkSchExist($type)) return ['status' => true, 'data' => []];
 
             $weeks = [];
             /** @var $week Week */
@@ -104,11 +108,7 @@ class ScheduleHandler extends BaseHandler
                 $weeks[] = $week->serialize();
             }
             $data = ['weeks' => $weeks, 'model' => $model->serialize()];
-
-            return [
-                'status' => true,
-                'data' => $data
-            ];
+            return ['status' => true, 'data' => $data];
         } catch (Exception $e) {
             return [
                 'status' => false,
@@ -151,6 +151,21 @@ class ScheduleHandler extends BaseHandler
         $this->unId = $unId;
         $this->searchModel = $model;
         return ['unId' => $unId, 'model' => $model];
+    }
+
+    private function checkSchExist(string $type): bool
+    {
+        /** @var ScheduleRepository $schRepo */
+        $schRepo = $this->em->getRepository(Schedule::class);
+        switch ($type) {
+            case 'group':
+                return (bool) $schRepo->findOneBy(['party' => $this->searchModel->id]);
+            case 'teacher':
+                return (bool) $schRepo->findOneBy(['teacher' => $this->searchModel->id]);
+            case 'cabinet':
+                return (bool) $schRepo->findOneBy(['cabinet' => $this->searchModel->id]);
+        }
+        return false;
     }
 
     private function formDays(): array

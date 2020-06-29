@@ -76,6 +76,14 @@ class MainController extends AbstractController
     }
 
     /**
+     * @Route("/login", name="login")
+     */
+    public function login()
+    {
+        return $this->render('welcome/index.html.twig');
+    }
+
+    /**
      * @Route("/reset-password", name="reset-password")
      */
     public function resetPassword()

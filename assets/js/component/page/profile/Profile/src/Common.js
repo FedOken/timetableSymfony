@@ -10,6 +10,7 @@ import {commonInfo} from './src/CommonInfo';
 import {alert} from '../../../../src/Alert/Alert';
 import {t} from '../../../../src/translate/translate';
 import {updateUserModel, userLogoutRequest} from '../../../../src/axios/axios';
+import {getRoleLabel} from '../../../../src/Auth';
 
 function index(props) {
   const [isLoadRel, setIsLoadRel] = useState(false);
@@ -22,29 +23,30 @@ function index(props) {
 
   useEffect(() => {
     if (!isEmpty(props.user.model.data) && !isLoadMod) {
-      setFirstName(props.user.model.data.first_name);
-      setLastName(props.user.model.data.last_name);
-      setEmail(props.user.model.data.email);
-      setPhone(props.user.model.data.phone);
+      let data = props.user.model.data;
+      isEmpty(data.first_name) ? '' : setFirstName(data.first_name);
+      isEmpty(data.last_name) ? '' : setLastName(data.last_name);
+      isEmpty(data.email) ? '' : setEmail(data.email);
+      isEmpty(data.phone) ? '' : setPhone(data.phone);
       setIsLoadMod(true);
     }
 
     if (!isEmpty(props.user.relation.data) && !isEmpty(props.user.model.data) && !isLoadRel) {
       let relations = props.user.relation.data;
       let model = props.user.model.data;
-
       switch (model.role) {
-        case 'ROLE_ADMIN':
+        case getRoleLabel('admin'):
           commonInfo(t(props.lang, 'Access type'), t(props.lang, 'Full access'));
           break;
-        case 'ROLE_UNIVERSITY_MANAGER':
+        case getRoleLabel('university'):
           commonInfo(t(props.lang, 'University'), relations.universities[0].name);
           break;
-        case 'ROLE_FACULTY_MANAGER':
+        case getRoleLabel('teacher'):
+        case getRoleLabel('faculty'):
           commonInfo(t(props.lang, 'University'), relations.universities[0].name);
           commonInfo(t(props.lang, 'Faculty'), relations.faculties[0].name);
           break;
-        case 'ROLE_PARTY_MANAGER':
+        case getRoleLabel('party'):
           commonInfo(t(props.lang, 'University'), relations.universities[0].name);
           commonInfo(t(props.lang, 'Faculty'), relations.faculties[0].name);
           commonInfo(t(props.lang, 'Group'), relations.parties[0].name);
@@ -71,12 +73,8 @@ function index(props) {
 
   const clickLogout = () => {
     userLogoutRequest(props.lang).then((res) => {
-      if (res.status) {
-        props.userLogout();
-        redirect('/login');
-      } else {
-        alert('error', res.reason);
-      }
+      props.userLogout();
+      redirect('/login');
     });
   };
 

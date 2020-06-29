@@ -15,7 +15,7 @@ function index(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!validateForm('profile-security')) return;
+    if (!validateForm(props.lang, 'profile-security')) return;
 
     let formData = new FormData();
     formData.set('password', password);
@@ -26,9 +26,9 @@ function index(props) {
       .post(`/api/user/update-password`, formData)
       .then((res) => {
         if (res.data.status) {
-          alert('success', 'Password successfully updated.');
+          alert('success', t(props.lang, 'Password successfully updated.'));
         } else {
-          alert('error', res.data.error);
+          alert('error', t(props.lang, res.data.error));
         }
       })
       .catch((error) => {

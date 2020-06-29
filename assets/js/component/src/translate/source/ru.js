@@ -130,6 +130,7 @@ export const ru = {
   Contact: 'Контакты',
   'Email send': 'Email отправлен',
   'Reset password': 'Восстановление пароля',
+  'Password successfully updated.': 'Пароль успешно изменен.',
   // '': '',
   // '': '',
   // '': '',

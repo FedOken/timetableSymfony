@@ -5,6 +5,7 @@ let model = {
 };
 let relation = {
   isLoading: false,
+  isLoaded: false,
   error: null,
   data: {},
 };
@@ -58,6 +59,7 @@ export default function user(state = data, action) {
         ...state,
         relation: {
           ...relation,
+          isLoaded: true,
           isLoading: false,
           data: action.payload,
         },
@@ -67,6 +69,7 @@ export default function user(state = data, action) {
         ...state,
         relation: {
           ...relation,
+          isLoaded: true,
           isLoading: false,
           error: action.payload,
         },

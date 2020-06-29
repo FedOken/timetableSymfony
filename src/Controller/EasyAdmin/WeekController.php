@@ -2,11 +2,15 @@
 
 namespace App\Controller\EasyAdmin;
 
-use App\Entity\Schedule;
-use App\Helper\ArrayHelper;
 use App\Service\Access\UniversityAccess;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
+/**
+ * Class WeekController
+ * @package App\Controller\EasyAdmin
+ *
+ * @property array $validIds
+ */
 class WeekController extends AdminController
 {
     private $validIds = [];
@@ -25,32 +29,30 @@ class WeekController extends AdminController
         return $response;
     }
 
+    protected function newAction()
+    {
+        $this->init();
+        return $this->newCheckPermissionAndRedirect($this->validIds, 'Week', [UniversityAccess::getAccessRole()]);
+    }
+
     protected function listAction()
     {
         $this->init();
-        return $this->listCheckPermissionAndRedirect($this->validIds, 'Week', UniversityAccess::getAccessRole());
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Week', [UniversityAccess::getAccessRole()]);
     }
 
     protected function editAction()
     {
         $this->init();
-        return $this->editCheckPermissionAndRedirect($this->validIds, 'Week', UniversityAccess::getAccessRole());
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Week', [UniversityAccess::getAccessRole()]);
     }
 
-    /**
-     * Rewriting standard easy admin function
-     * @param Schedule $entity
-     * @param string $view
-     * @return \Symfony\Component\Form\FormBuilder
-     */
     protected function createEntityFormBuilder($entity, $view)
     {
         $formBuilder = parent::createEntityFormBuilder($entity, $view);
-
-        $universityToChoice = $this->universityHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'university.id'), $this->getUser());
-
+        $unToSel = $this->selDataHandler->getDataUn(null);
         $formBuilder->add('university', EntityType::class, [
-            'choices' => $universityToChoice,
+            'choices' => $unToSel,
             'class' => 'App\Entity\University',
             'attr' => ['data-widget' => 'select2'],
         ]);

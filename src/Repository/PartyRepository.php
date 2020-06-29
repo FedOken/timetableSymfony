@@ -59,4 +59,16 @@ class PartyRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findByFaculties(array $facIds): array
+    {
+        return $this->createQueryBuilder('tb')
+            ->leftJoin('tb.faculty', 'fac')
+            ->andWhere('fac.enable = 1')
+            ->andWhere("tb.faculty IN (:ids)")
+            ->setParameter('ids', $facIds)
+            ->addOrderBy('tb.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

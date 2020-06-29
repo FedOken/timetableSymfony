@@ -2,36 +2,18 @@
 
 namespace App\Controller\EasyAdmin;
 
-use App\Entity\Building;
-use App\Entity\Cabinet;
-use App\Entity\Party;
-use App\Entity\Schedule;
-use App\Entity\Teacher;
-use App\Entity\University;
-use App\Entity\UniversityTime;
-use App\Entity\Week;
-use App\Controller\EasyAdmin\Handler\UniversityHandler;
-use App\Helper\ArrayHelper;
-use App\Repository\BuildingRepository;
-use App\Repository\CabinetRepository;
-use App\Repository\DayRepository;
-use App\Repository\PartyRepository;
-use App\Repository\ScheduleRepository;
-use App\Repository\TeacherRepository;
-use App\Repository\UniversityRepository;
-use App\Service\Access\AccessService;
-use App\Service\Access\UniversityAccess;
-use Doctrine\ORM\QueryBuilder;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\Validator\Validation;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
+use App\Entity\Schedule;
+use App\Helper\ArrayHelper;
+use App\Service\Access\UniversityAccess;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
+/**
+ * Class CourseController
+ * @package App\Controller\EasyAdmin
+ *
+ * @property array $validIds
+ */
 class CourseController extends AdminController
 {
     private $validIds = [];
@@ -50,16 +32,22 @@ class CourseController extends AdminController
         return $response;
     }
 
+    protected function newAction()
+    {
+        $this->init();
+        return $this->newCheckPermissionAndRedirect($this->validIds, 'Course', [UniversityAccess::getAccessRole()]);
+    }
+
     protected function listAction()
     {
         $this->init();
-        return $this->listCheckPermissionAndRedirect($this->validIds, 'Course', UniversityAccess::getAccessRole());
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Course', [UniversityAccess::getAccessRole()]);
     }
 
     protected function editAction()
     {
         $this->init();
-        return $this->editCheckPermissionAndRedirect($this->validIds, 'Course', UniversityAccess::getAccessRole());
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Course', [UniversityAccess::getAccessRole()]);
     }
 
     /**
@@ -71,11 +59,9 @@ class CourseController extends AdminController
     protected function createEntityFormBuilder($entity, $view)
     {
         $formBuilder = parent::createEntityFormBuilder($entity, $view);
-
-        $universityToChoice = $this->universityHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'university.id'), $this->getUser());
-
+        $unToSel = $this->selDataHandler->getDataUn(ArrayHelper::getValue($entity, 'university.id'));
         $formBuilder->add('university', EntityType::class, [
-            'choices' => $universityToChoice,
+            'choices' => $unToSel,
             'class' => 'App\Entity\University',
             'attr' => ['data-widget' => 'select2'],
         ]);

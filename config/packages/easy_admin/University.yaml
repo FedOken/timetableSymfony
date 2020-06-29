@@ -35,7 +35,7 @@ easy_admin:
                     - { type: 'group-1', label: 'Basic information', 'css_class':'col-md-4' }
                     - { property: 'name',  label: 'Short name', 'type_options':{'block_name': 'group-1'} }
                     - { property: 'name_full', label: 'Full name', 'type_options':{'block_name': 'group-1'}}
-                    - { property: 'access_code', label: 'Access code', 'type_options':{'block_name': 'group-1'}}
+                    - { property: 'access_code', label: 'Access code', 'type_options':{'block_name': 'group-1'}, permission: 'ROLE_UNIVERSITY_MANAGER'}
                     - { property: 'enable', label: 'Enabled', 'type_options':{'block_name': 'group-1'}}
 
                     - { type: 'group-2', label: 'Related data - mutable', 'css_class':'col-md-4' }

@@ -84,13 +84,14 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
         /**@var User $user*/
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
-
-        $this->checkCredentials($credentials, $user);
-
         if (!$user) {
             $this->reasonCode = self::CODE_INCORRECT_DATA;
             throw new CustomUserMessageAuthenticationException('Incorrect email or password.');
-        } else if($user->status === User::STATUS_WAIT_EMAIL_CONFIRM) {
+        }
+
+        $this->checkCredentials($credentials, $user);
+
+        if($user->status === User::STATUS_WAIT_EMAIL_CONFIRM) {
             $this->reasonCode = self::CODE_NEED_EMAIL_AUTH;
             $this->userCode = $user->code;
             throw new CustomUserMessageAuthenticationException('Email not confirm. Please confirm your email address.');
@@ -134,6 +135,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     protected function getLoginUrl()
     {
-        return $this->urlGenerator->generate('react-login-login');
+        return '/login';
     }
 }

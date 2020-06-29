@@ -2,32 +2,42 @@
 
 namespace App\Controller\EasyAdmin;
 
-use App\Controller\EasyAdmin\Handler\UniversityHandler;
+use App\Controller\EasyAdmin\Handler\src\SelectDataHandler;
+use App\Entity\User;
 use App\Service\Access\AccessService;
 use App\Service\Access\AdminAccess;
 use App\Service\Access\FacultyAccess;
 use App\Service\Access\PartyAccess;
 use App\Service\Access\TeacherAccess;
 use App\Service\Access\UniversityAccess;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
-use EasyCorp\Bundle\EasyAdminBundle\Exception\ForbiddenActionException;
-use EasyCorp\Bundle\EasyAdminBundle\Exception\NoPermissionException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class AdminController
+ * @package App\Controller\EasyAdmin
+ *
+ * @property User $user
+ * @property EntityManagerInterface $em
+ * @property AccessService $accessService
+ * @property TranslatorInterface $translator
+ * @property SelectDataHandler $selDataHandler
+ */
 class AdminController extends EasyAdminController
 {
-
+    protected $em;
     protected $accessService;
     protected $translator;
-    protected $universityHandler;
+    protected $selDataHandler;
 
-    public function __construct(TranslatorInterface $translator, UniversityHandler $universityHandler, AccessService $accessService)
+    public function __construct(EntityManagerInterface $em, TranslatorInterface $translator, SelectDataHandler $selDataHandler, AccessService $accessService)
     {
-        //Access service
+        $this->em = $em;
         $this->accessService = $accessService;
-        $this->universityHandler = $universityHandler;
+        $this->selDataHandler = $selDataHandler;
         $this->translator = $translator;
     }
 
@@ -55,10 +65,10 @@ class AdminController extends EasyAdminController
     /**
      * @param array $validIds
      * @param string $entityName
-     * @param string $grantedEditRole
+     * @param array $grantedEditRole
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    protected function editCheckPermissionAndRedirect(array $validIds, string $entityName, string $grantedEditRole)
+    protected function editCheckPermissionAndRedirect(array $validIds, string $entityName, array $grantedEditRole)
     {
         //Allow any edit for admin
         if ($this->isGranted(AdminAccess::getAccessRole())) {
@@ -84,18 +94,21 @@ class AdminController extends EasyAdminController
         return $this->redirect('?action=show&entity='.$entityName.'&id='.$validIds[0]);
     }
 
-    /**
-     * @param array $validIds
-     * @param string $entityName
-     * @param string $grantedEditRole
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    protected function listCheckPermissionAndRedirect(array $validIds, string $entityName, string $grantedEditRole)
+    protected function listCheckPermissionAndRedirect(array $validIds, string $entityName, array $grantedEditRole)
     {
         if ($this->isGranted($grantedEditRole)) {
             return parent::listAction();
         } else {
             return $this->redirect('?action=show&entity='.$entityName.'&id='.$validIds[0]);
+        }
+    }
+
+    protected function newCheckPermissionAndRedirect(array $validIds, string $entityName, array $grantedEditRole)
+    {
+        if ($this->isGranted($grantedEditRole)) {
+            return parent::newAction();
+        } else {
+            return $this->redirect('?action=edit&entity='.$entityName.'&id='.$validIds[0]);
         }
     }
 }

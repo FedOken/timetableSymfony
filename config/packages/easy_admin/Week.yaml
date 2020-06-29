@@ -8,7 +8,7 @@ easy_admin:
                 title: 'Weeks list'
                 sort: ['university', 'ASC']
                 filters: ['university']
-                fields: ['name', 'university', 'schedules']
+                fields: ['name', 'university', 'sort_order', 'schedules']
                 actions:
                     - { name: 'new', label: 'Add week' }
                     - { name: 'show', icon: 'eye', label: false }
@@ -18,6 +18,7 @@ easy_admin:
                 fields:
                     - { property: 'university', type_options: { required: true }, help: 'Choose university'}
                     - { property: 'name',  help: 'Set full name (First week, Second week)' }
+                    - { property: 'sort_order', label: 'Sort order', help: 'Affects the order in which the weeks are displayed when viewing schedules' }
             new:
                 title: 'Create week'
             edit:

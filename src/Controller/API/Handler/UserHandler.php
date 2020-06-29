@@ -5,9 +5,14 @@ namespace App\Controller\API\Handler;
 use App\Entity\Cabinet;
 use App\Entity\Faculty;
 use App\Entity\Party;
+use App\Entity\Role;
+use App\Entity\Schedule;
 use App\Entity\Teacher;
 use App\Entity\University;
 use App\Entity\User;
+use App\Helper\ArrayHelper;
+use App\Repository\ScheduleRepository;
+use App\Service\Access\AccessService;
 use App\Service\Access\FacultyAccess;
 use App\Service\Access\PartyAccess;
 use App\Service\Access\TeacherAccess;
@@ -100,7 +105,7 @@ class UserHandler extends BaseHandler
         }
     }
 
-    public function saveUniversityUser(): array
+    public function saveUserByCode(): array
     {
         try {
             $code = $this->strService->clearStr($this->request->request->get('code'));
@@ -115,6 +120,11 @@ class UserHandler extends BaseHandler
             if ($fc) {
                 $role = FacultyAccess::getAccessRole();
                 $id = $fc->id;
+            }
+            $tchr = $this->em->getRepository(Teacher::class)->findOneBy(['access_code' => $code]);
+            if ($tchr) {
+                $role = TeacherAccess::getAccessRole();
+                $id = $tchr->id;
             }
             if (!$role || !$id) throw new Exception('Invalid access code.');
             return $this->saveUser($role, $id);
@@ -140,6 +150,21 @@ class UserHandler extends BaseHandler
             $model->roles = [$role];
             $model->password = (new NativePasswordEncoder())->encodePassword($model->password, null);
             $model->check_email_code = $this->strService->genRanStrEntity(10, User::class, 'check_email_code');
+            $model->role_label = $this->em->getRepository(Role::class)->findOneBy(['name' => $role]);
+            switch ($role) {
+                case UniversityAccess::getAccessRole():
+                    $model->university = $this->em->getRepository(University::class)->find($modelId);
+                    break;
+                case FacultyAccess::getAccessRole():
+                    $model->faculty = $this->em->getRepository(Faculty::class)->find($modelId);
+                    break;
+                case TeacherAccess::getAccessRole():
+                    $model->teacher = $this->em->getRepository(Teacher::class)->find($modelId);
+                    break;
+                case PartyAccess::getAccessRole():
+                    $model->party = $this->em->getRepository(Party::class)->find($modelId);
+                    break;
+            }
 
             $this->em->persist($model);
             $this->em->flush();
@@ -221,10 +246,14 @@ class UserHandler extends BaseHandler
     {
         $data = [];
         $accessObj = $this->access->getAccessObject($user);
+        /** @var ScheduleRepository $facRepo */
+        $schRepo = $this->em->getRepository(Schedule::class);
+        $schs = $schRepo->findBy(['id' => $accessObj->getAccessibleScheduleIds()]);
 
         /** @var University[] $models */
-        $models = $this->em->getRepository(University::class)->findBy(['id' => $accessObj->getAccessibleUniversityIds(), 'enable' => 1]);
+        $models = $this->em->getRepository(University::class)->findBy(['id' => $accessObj->getAccessibleUniversityIds()]);
         foreach ($models as $model) {
+            if (!$model) continue;
             $data['universities'][] = [
                 'id' => $model->id,
                 'name' => $model->name_full,
@@ -233,30 +262,37 @@ class UserHandler extends BaseHandler
         /** @var Faculty[] $models */
         $models = $this->em->getRepository(Faculty::class)->findBy(['id' => $accessObj->getAccessibleFacultyIds()]);
         foreach ($models as $model) {
+            if (!$model) continue;
             $data['faculties'][] = [
                 'id' => $model->id,
                 'name' => $model->name_full,
             ];
         }
         /** @var Party[] $models */
-        $models = $this->em->getRepository(Party::class)->findBy(['id' => $accessObj->getAccessiblePartyIds()]);
+        $models = ArrayHelper::getColumn($schs, 'party');
+        $models = array_unique($models);
         foreach ($models as $model) {
+            if (!$model) continue;
             $data['parties'][] = [
                 'id' => $model->id,
                 'name' => $model->name,
             ];
         }
         /** @var Cabinet[] $models */
-        $models = $this->em->getRepository(Cabinet::class)->findBy(['id' => $accessObj->getAccessibleCabinetIds()]);
+        $models = ArrayHelper::getColumn($schs, 'cabinet');
+        $models = array_unique($models);
         foreach ($models as $model) {
+            if (!$model) continue;
             $data['cabinets'][] = [
                 'id' => $model->id,
                 'name' => $model->name,
             ];
         }
         /** @var Teacher[] $models */
-        $models = $this->em->getRepository(Teacher::class)->findBy(['id' => $accessObj->getAccessibleTeacherIds()]);
+        $models = ArrayHelper::getColumn($schs, 'teacher');
+        $models = array_unique($models);
         foreach ($models as $model) {
+            if (!$model) continue;
             $data['teachers'][] = [
                 'id' => $model->id,
                 'name' => $model->name,

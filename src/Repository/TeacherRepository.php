@@ -41,7 +41,7 @@ class TeacherRepository extends ServiceEntityRepository
     public function findByUniversities(array $universityIds): array
     {
         return $this->createQueryBuilder('tb')
-            ->leftJoin(University::class, 'un', 'WITH', 'un.id = tb.university')
+            ->leftJoin('tb.university', 'un', 'WITH', 'un.id = tb.university')
             ->andWhere('un.enable = 1')
             ->andWhere("un.id IN (:ids)")
             ->setParameter('ids', $universityIds)

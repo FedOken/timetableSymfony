@@ -130,7 +130,7 @@ export const ua = {
   Contact: 'Контакти',
   'Email send': 'Email відправлений',
   'Reset password': 'Відновлення паролю',
-  // '': '',
+  'Password successfully updated.': 'Пароль успішно змінено.',
   // '': '',
   // '': '',
   // '': '',

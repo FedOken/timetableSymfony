@@ -21,16 +21,15 @@ class WeekRepository extends ServiceEntityRepository
         parent::__construct($registry, Week::class);
     }
 
-    public function getWeeksByUniversity(array $unId)
+    public function findByUniversities(array $universityIds): array
     {
         return $this->createQueryBuilder('tb')
-            ->andWhere('tb.university IN (:universityIds)')
-            ->andWhere('tb.name != :name')
-            ->setParameter('universityIds', $unId)
-            ->setParameter('name', '-')
-            ->leftJoin(University::class, 'un', 'WITH', 'un.id = tb.university')
+            ->leftJoin('tb.university', 'un', 'WITH', 'un.id = tb.university')
             ->andWhere('un.enable = 1')
-            ->orderBy('tb.order', 'ASC')
+            ->andWhere("un.id IN (:ids)")
+            ->setParameter('ids', $universityIds)
+            ->addOrderBy('tb.name', 'ASC')
+            ->orderBy('tb.sort_order', 'DESC')
             ->getQuery()
             ->getResult();
     }

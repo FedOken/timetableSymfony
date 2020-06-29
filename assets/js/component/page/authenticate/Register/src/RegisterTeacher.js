@@ -11,49 +11,18 @@ import {t} from '../../../../src/translate/translate';
 import {createTeacherUser} from '../../../../src/axios/axios';
 
 function index(props) {
-  const [selUnVal, setSelUnVal] = useState();
-
-  const [selTchrOpt, setSelTchrOpt] = useState([]);
-  const [selTchrOptAct, setSelTchrOptAct] = useState(null);
-  const [selTchrVal, setSelTchrVal] = useState();
-
+  const [code, setCode] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  useEffect(() => {
-    if (!props.teacher.isLoading) {
-      let parties = props.teacher.data.filter((teacher) => {
-        return teacher.unId === selUnVal;
-      });
-
-      setSelTchrVal(null);
-      setSelTchrOptAct(null);
-      setSelTchrOpt(dataToOptions(parties));
-    }
-  }, [selUnVal, props.teacher]);
-
-  const selUnOnChange = (data) => {
-    let unId = data.value;
-    if (isEmpty(unId)) return;
-    setSelUnVal(unId);
-    setSelTchrOpt(null);
-    props.loadTeachersByUniversity(unId);
-  };
-
-  const selTchrOnChange = (data) => {
-    if (isEmpty(data.value)) return;
-    setSelTchrOptAct(data);
-    setSelTchrVal(data.value);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!validateForm(props.lang, 'register-teacher', {selTchr: selTchrVal})) {
+    if (!validateForm(props.lang, 'register-teacher')) {
       return;
     }
 
     let formData = new FormData();
-    formData.set('id', selTchrVal);
+    formData.set('code', code);
     formData.set('User[email]', email);
     formData.set('User[password]', password);
 
@@ -69,24 +38,16 @@ function index(props) {
 
   return (
     <form className={'register-teacher'} onSubmit={(e) => handleSubmit(e)} autoComplete="off" noValidate>
-      <Select
-        options={props.selUnOpt}
-        placeholder={t(props.lang, 'Select university')}
-        className={'select select-type-1 ' + (isEmpty(props.selUnOpt) ? 'disabled' : '')}
-        onChange={(data) => {
-          selUnOnChange(data);
-        }}
-      />
-      <div className={`form-group`} id={'selTchr'}>
-        <Select
-          options={selTchrOpt}
-          value={selTchrOptAct}
-          placeholder={t(props.lang, 'Select teacher')}
-          className={'select select-type-1 ' + (isEmpty(selTchrOpt) ? 'disabled' : '')}
-          onChange={(data) => {
-            selTchrOnChange(data);
-          }}
-          isDisabled={isEmpty(selTchrOpt)}
+      <div className={`form-group`}>
+        <input
+          name={'access_code_1'}
+          className={`form-control input input-type-1 w-100`}
+          placeholder={t(props.lang, 'Access code')}
+          type="text"
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+          autoComplete={'off'}
+          required
         />
         <span className={'error'} />
       </div>

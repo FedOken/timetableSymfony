@@ -1,38 +1,47 @@
 easy_admin:
-    site_name: 'Backend timetable'
+    site_name: 'Schedule - Admin'
     user:
         display_name: true
         display_avatar: true
     design:
         menu:
-            - { entity: 'University', icon: 'university', permission: 'ROLE_PARTY_MANAGER' }
-            - { entity: 'Faculty', icon: 'puzzle-piece', permission: 'ROLE_PARTY_MANAGER' }
-            - { entity: 'Party', icon: 'users', permission: 'ROLE_PARTY_MANAGER' }
+            - { entity: 'University', label: 'Universities', icon: 'school', permission: ['ROLE_PARTY_MANAGER', 'ROLE_TEACHER'] }
+            - { entity: 'Faculty', label: 'Faculties', icon: 'sitemap', permission: ['ROLE_PARTY_MANAGER', 'ROLE_TEACHER'] }
 
-            - { entity: 'Building', icon: 'building', permission: 'ROLE_UNIVERSITY_MANAGER' }
-            - { entity: 'Cabinet', icon: 'door-open', permission: 'ROLE_FACULTY_MANAGER' }
-
-            -   label: 'Setting'
-                permission: 'ROLE_UNIVERSITY_MANAGER'
-                icon: 'dot-circle'
+            -   label: 'Parties'
+                permission: 'ROLE_PARTY_MANAGER'
+                icon: 'users'
                 children:
-                    - { entity: 'Course', icon: 'cubes', permission: 'ROLE_UNIVERSITY_MANAGER' }
-                    - { entity: 'Week', icon: 'calendar-week', permission: 'ROLE_UNIVERSITY_MANAGER' }
-                    - { entity: 'Time', icon: 'clock', permission: 'ROLE_UNIVERSITY_MANAGER' }
+                    - { entity: 'Course', label: 'Courses', icon: 'sort-numeric-down', permission: 'ROLE_UNIVERSITY_MANAGER' }
+                    - { entity: 'Party', label: 'Parties', icon: 'user-graduate', permission: 'ROLE_PARTY_MANAGER' }
+
+            -   label: 'Cabinets'
+                permission: 'ROLE_FACULTY_MANAGER'
+                icon: 'door-open'
+                children:
+                    - { entity: 'Building', label: 'Buildings', icon: 'building', permission: 'ROLE_UNIVERSITY_MANAGER' }
+                    - { entity: 'Cabinet', label: 'Cabinets', icon: 'door-open', permission: 'ROLE_FACULTY_MANAGER' }
 
             - { entity: 'Teacher', labe: 'Teachers', icon: 'chalkboard-teacher', permission: 'ROLE_TEACHER' }
-            - { entity: 'Schedule', icon: 'clipboard-list', permission: 'ROLE_PARTY_MANAGER' }
 
-            -   label: 'Constant'
+            -   label: 'Schedules'
+                permission: ['ROLE_PARTY_MANAGER', 'ROLE_TEACHER']
+                icon: 'clipboard-list'
+                children:
+                    - { entity: 'Week', label: 'Weeks', icon: 'calendar-week', permission: 'ROLE_UNIVERSITY_MANAGER' }
+                    - { entity: 'Time', label: 'Schedules time', icon: 'clock', permission: 'ROLE_UNIVERSITY_MANAGER' }
+                    - { entity: 'Schedule', label: 'Schedules', icon: 'clipboard-list', permission: ['ROLE_PARTY_MANAGER', 'ROLE_TEACHER'] }
+
+            -   label: 'Constants'
                 permission: 'ROLE_ADMIN'
                 icon: 'cog'
                 children:
-                    - { entity: 'Day', icon: 'calendar-day', permission: 'ROLE_ADMIN' }
-                    - { entity: 'LessonType', icon: 'bookmark', permission: 'ROLE_ADMIN' }
-                    - { entity: 'Role', icon: 'user', permission: 'ROLE_ADMIN' }
-                    - { entity: 'TeacherPosition', icon: 'user-tie', permission: 'ROLE_ADMIN' }
+                    - { entity: 'Day', label: 'Days', icon: 'calendar-day', permission: 'ROLE_ADMIN' }
+                    - { entity: 'LessonType', label: 'Lessons type', icon: 'bookmark', permission: 'ROLE_ADMIN' }
+                    - { entity: 'Role', label: 'Roles', icon: 'user', permission: 'ROLE_ADMIN' }
+                    - { entity: 'TeacherPosition', label: 'Teachers position', icon: 'user-tie', permission: 'ROLE_ADMIN' }
 
-            - { entity: 'User', icon: 'user', permission: 'ROLE_ADMIN' }
+            - { entity: 'User', label: 'Users', icon: 'user', permission: 'ROLE_ADMIN' }
 
         templates:
             layout: 'easyadmin/layout/main.html.twig'

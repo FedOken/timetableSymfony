@@ -1,0 +1,200 @@
+#Aliases
+group_existing: У группы {group} уже есть занятие в заданное время!
+validation_error: Возникла ошибка при валидации данных, пожалуйста, обратитесь к администратору для устранения проблеммы.
+no_permission: У вас не хватает прав для редактирование запрошенного объекта.
+
+#Easy admin
+Status: Статус
+Universities: Університети
+Faculties: Факультети
+Name: Ім'я
+Full name: Повне ім'я
+University: Університет
+Faculty: Факультет
+Senior lecturer: Старший викладач
+Schedules: Розклад
+Lessons list: Список уроків
+Add lesson: Додати урок
+Lesson name: Ім'я уроку
+Party: Група
+Time: Час
+Teacher: Викладач
+Cabinet: Аудиторія
+Day: День
+Week: Тиждень
+Weeks: Тижні
+Weeks list: Список тижнів
+Add week: Додати тиждень
+Lesson type: Тип уроку
+Edit lesson: Редагувати урок
+Create lesson: Створити урок
+Create group: Створити групу
+Create faculty: Створити факультет
+Enter lesson name ("Chemistry"): Введіть назву уроку ("Хімія")
+Choose university before choosing other data: Виберіть університет перед тим як обирати інші параметри
+Choose university: Виберіть університет
+Choose party: Виберіть групу
+Create cabinet: Створіть аудиторію
+Sort order: Порядок сортування
+Affects the order in which the weeks are displayed when viewing schedules: Впливає на порядок відображення тижнів при перегляді розкладів
+Choose teacher: Виберіть викладача
+Choose lesson type: Виберіть тип уроку
+Choose week: Виберіть тиждень
+Choose day: Виберіть день
+Choose time: Виберіть час
+Choose building: Виберіть корпус
+Choose cabinet: Виберіть аудиторію
+Basic information: Базова інформація
+Class time: Час уроку
+Status choice: Статус
+First name: Ім'я
+Last name: Прізвище
+Phone: Телефон
+Class location: Місце проведення уроку
+Groups: Групи
+Group: Група
+Buildings: Корпуса
+Cabinets: Аудиторії
+Setting: Налаштування
+Teachers: Викладачі
+Teachers position: Посади викладачів
+Constant: Константа
+Users: Користувачі
+User: Користувач
+Users list: Список користувачів
+Email: Email
+Role label: Роль
+Access code: Код доступу
+Days: Дні
+Lesson types: Типи уроків
+Roles: Ролі
+Add user: Додати користувача
+Courses: Курсы
+The selected role is not assigned an access object!: У вибраної ролі не призначений об'єкт доступу!
+Access object: Об'єкт доступу
+The access object must match the selected role: Об'єкт доступу повинен відповідати обраній ролі
+Edit user: Редагувати користувача
+Days list: Список днів
+Add day: Додати день
+Create day: Створити день
+Set day abbreviation (Mo, Tu): Введіть абревіатуру (Пн, Вт)
+Set full name (Monday, Tuesday): Введіть повне ім'я (Понедельник, Вторник)
+Lesson types list: Список типов занятий
+Add type: Добавить тип
+Create lesson type: Создать тип занятия
+Edit lesson type: Редактировать тип занятия
+Lesson every week: Занятие каждую неделю
+Lessons: Занятия
+Short name: Короткое имя
+Set short name (lec, pr): Введите короткое имя (лек. пр.)
+Set full name (Lecture, Practice): Введите полное ім'я (Лекція, Практика)
+Roles list: Список ролей
+Add role: Додати роль
+Create role: Створити роль
+Edit role: Редагувати роль
+Label: Лейбл
+Teachers position list: Список посад викладачів
+Add position: Додати посаду
+Create position: Створити посаду
+Edit position: Редагувати посаду
+Set short name (prof.): Введіть абревіатуру (проф.)
+Set full name (Professor): Введіть повне ім'я (Профессор)
+Position: Посада
+Positions: Посади
+Class time list: Час уроків
+Add class time: Додати час
+Start: Початок
+End: Кінець
+Create class time: Створити час уроків
+Set class time start: Вкажіть час початку уроку
+Set class time end: Вкажіть час закінчення уроку
+Set full name (First week, Second week): Введіть повне ім'я (Перший тиждень, Другий тиждень)
+Create week: Створити тиждень
+Edit week: Редагувати тиждень
+Course: Курс
+Course list: Список курсів
+Add course: Додати курс
+Create course: Створити курс
+Edit course: Редагувати курс
+Set course as number (1, 2, 5): Введіть курс у вигляді номеру (1, 2, 5)
+Set full name (First course, Second course): Введіть повне ім'я (Перший курс, Другий курс)
+Building list: Список корпусів
+Add building: Додати корпус
+Create building: Створити корпус
+Edit building: Редагувати корпус
+Address: Адреса
+Set short building name (K1, K6): Введіть коротке ім'я корпусу (К1, К6)
+Set full building name (Main campus, Learning campus): Введіть повне ім'я корпусу (Головний корпус, Учбовий корпус)
+Set building address (Kiev, st. Khreschatyk, 1): Введіть адресу (Київ, вул. Хрещатик, 1)
+University list: Список університетів
+Add university: Додати університет
+Create university: Створити університет
+Edit university: Редагувати університет
+Set short name (NU): Введіте коротке ім'я (НУ)
+Set full university name (National University): Введіть повне ім'я (Національний Університет)
+University view: Перегляд запису - університет
+Related data: Пов'язані дані
+Constants: Константи
+Lessons type: Типи уроків
+Schedules time: Час проведення уроків
+Related data - constants: Пов'язані дані - константи
+Related data - mutable: Пов'язані дані - змінні
+Lesson times: Час уроків
+Enabled: Ввімкнений
+Faculty list: Список факультетів
+Parties: Групи
+Add faculty: Додати факультет
+Edit faculty: Редагувати факультет
+Set full name (Faculty of advanced technology): Введіть повне ім'я (Факультет передових технологій)
+Set short name (FAT): Введіте коротке ім'я (ФПТ)
+Faculty view: Перегляд запису - факультет
+Teachers list: Список викладачів
+Add teacher: Додати викладача
+Create teacher: Створити викладача
+Edit teacher: Редагувати викладача
+Enter the name with the initials (Fedorenko O.B.): Введіть ім'я з ініціалами (Федоренко О.Б.)
+Set full name (Fedorenko Oleksandr Borisovich): Введіть повне ім'я (Федоренко Олександр Борисович)
+Choose teacher position: Выберіть посаду викладача
+Add party: Додати групу
+Party list: Створити групу
+Edit group: Редагувати групу
+Choose faculty: Виберіть факультет
+Choose course: Виберіть курс
+Enter group name (GN-2-1, GN-5-1m, GN-3-1tec): Введіть ім'я групи (ГН-2-1, ГН-5-1м, ГН-3-1тех)
+Group view: Перегляд запису - група
+Building view: Перегляд запису - корпус
+Cabinet list: Список аудиторій
+Edit cabinet: Редагувати аудиторію
+Cabinet view: Перегляд запису - аудиторія
+Building: Корпус
+Add cabinet: Додати аудиторію
+Enter cabinet number (2, 411, 325a): Введіть номер аудиторії (2, 411, 325а)
+Course view: Перегляд запису - курс
+Week view: Перегляд запису - тиждень
+Class time view: Перегляд запису - час уроку
+Edit class time: Редагувати час уроку
+Teacher view: Перегляд запису - викладач
+Lesson view: Перегляд запису - урок
+Edit day: Редагувати день
+Day view: Перегляд запису - день
+Lesson type view: Перегляд запису - тип уроку
+Teacher position view: Перегляд запису - посада викладача
+Role view: Перегляд запису - роль
+
+#Days full_name
+Monday: Понедельник
+Tuesday: Вторник
+Wednesday: Среда
+Thursday: Четверг
+Friday: Пятница
+Saturday: Суббота
+Sunday: Воскресенье
+
+#Days name
+Mo: Пн
+Tu: Вт
+We: Ср
+Th: Чт
+Fr: Пт
+Sa: Сб
+Su: Вс

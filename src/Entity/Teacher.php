@@ -21,6 +21,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @property int $id
  * @property string $name
  * @property string $name_full
+ * @property string $access_code
+ *
  * @property TeacherPosition $position
  * @property University $university
  * @property Schedule[] $schedules
@@ -48,6 +50,11 @@ class Teacher
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $name_full;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $access_code;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TeacherPosition", inversedBy="teachers")
@@ -201,6 +208,17 @@ class Teacher
             }
         }
 
+        return $this;
+    }
+
+    public function getAccessCode(): ?string
+    {
+        return $this->access_code;
+    }
+
+    public function setAccessCode(?string $access_code): self
+    {
+        $this->access_code = $access_code;
         return $this;
     }
 

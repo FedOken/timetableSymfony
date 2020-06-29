@@ -3,27 +3,27 @@
 namespace App\Controller\EasyAdmin;
 
 
+use App\Controller\EasyAdmin\Handler\src\SelectDataHandler;
 use App\Entity\Party;
 use App\Controller\EasyAdmin\Handler\BuildingHandler;
 use App\Controller\EasyAdmin\Handler\UniversityHandler;
 use App\Helper\ArrayHelper;
 use App\Service\Access\AccessService;
 use App\Service\Access\FacultyAccess;
+use App\Service\Access\UniversityAccess;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-
+/**
+ * Class CabinetController
+ * @package App\Controller\EasyAdmin
+ *
+ * @property array $validIds
+ */
 class CabinetController extends AdminController
 {
-    protected $buildingHandler;
     private $validIds = [];
-
-    public function __construct(BuildingHandler $buildingHandler, TranslatorInterface $translator, UniversityHandler $universityHandler, AccessService $accessService)
-    {
-        parent::__construct($translator, $universityHandler, $accessService);
-        $this->buildingHandler = $buildingHandler;
-    }
 
     private function init()
     {
@@ -41,16 +41,22 @@ class CabinetController extends AdminController
         return $response;
     }
 
+    protected function newAction()
+    {
+        $this->init();
+        return $this->newCheckPermissionAndRedirect($this->validIds, 'Cabinet', [FacultyAccess::getAccessRole()]);
+    }
+
     protected function listAction()
     {
         $this->init();
-        return $this->listCheckPermissionAndRedirect($this->validIds, 'Cabinet', FacultyAccess::getAccessRole());
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Cabinet', [FacultyAccess::getAccessRole()]);
     }
 
     protected function editAction()
     {
         $this->init();
-        return $this->editCheckPermissionAndRedirect($this->validIds, 'Cabinet', FacultyAccess::getAccessRole());
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Cabinet', [FacultyAccess::getAccessRole()]);
     }
 
     /**
@@ -62,11 +68,9 @@ class CabinetController extends AdminController
     protected function createEntityFormBuilder($entity, $view)
     {
         $formBuilder = parent::createEntityFormBuilder($entity, $view);
-
-        $buildingToChoice = $this->buildingHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'building.id'), $this->getUser());
-
+        $bldngToSel = $this->selDataHandler->getDataBldng(null, null);
         $formBuilder->add('building', EntityType::class, [
-            'choices' => $buildingToChoice,
+            'choices' => $bldngToSel,
             'class' => 'App\Entity\Building',
             'attr' => ['data-widget' => 'select2'],
         ]);

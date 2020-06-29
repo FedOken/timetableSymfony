@@ -20,6 +20,7 @@ use App\Repository\ScheduleRepository;
 use App\Repository\TeacherRepository;
 use App\Repository\UniversityRepository;
 use App\Service\Access\AccessService;
+use App\Service\Access\TeacherAccess;
 use App\Service\Access\UniversityAccess;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
@@ -49,16 +50,22 @@ class UniversityTimeController extends AdminController
         return $response;
     }
 
+    protected function newAction()
+    {
+        $this->init();
+        return $this->newCheckPermissionAndRedirect($this->validIds, 'Time', [UniversityAccess::getAccessRole()]);
+    }
+
     protected function listAction()
     {
         $this->init();
-        return $this->listCheckPermissionAndRedirect($this->validIds, 'Time', UniversityAccess::getAccessRole());
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'Time', [UniversityAccess::getAccessRole()]);
     }
 
     protected function editAction()
     {
         $this->init();
-        return $this->editCheckPermissionAndRedirect($this->validIds, 'Time', UniversityAccess::getAccessRole());
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'Time', [UniversityAccess::getAccessRole()]);
     }
 
     /**
@@ -102,10 +109,9 @@ class UniversityTimeController extends AdminController
     protected function createEntityFormBuilder($entity, $view)
     {
         $formBuilder = parent::createEntityFormBuilder($entity, $view);
-        $universityToChoice = $this->universityHandler->setSelect2EasyAdmin(ArrayHelper::getValue($entity, 'university.id'), $this->getUser());
-
+        $unToSel = $this->selDataHandler->getDataUn(ArrayHelper::getValue($entity, 'university.id'));
         $formBuilder->add('university', EntityType::class, [
-            'choices' => $universityToChoice,
+            'choices' => $unToSel,
             'class' => 'App\Entity\University',
             'attr' => ['data-widget' => 'select2'],
         ]);

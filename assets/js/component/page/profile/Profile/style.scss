@@ -4,6 +4,11 @@
   .block-center {
     margin: 50px auto 0 auto;
 
+    .not-found {
+      color: $primary_75;
+      font-weight: bold;
+    }
+
     .block {
       margin-top: 20px;
       @include font-16;

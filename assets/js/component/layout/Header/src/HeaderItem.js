@@ -11,8 +11,8 @@ const index = (props) => {
     if (url === '/profile' && isEmpty(props.user.relation.data)) {
       preloaderStart();
       setTimeout(() => {
-        props.push(url);
-        props.history.push(url);
+        props.history.push('/profile');
+        props.push('/profile');
       }, 300);
     } else {
       props.history.push(url);

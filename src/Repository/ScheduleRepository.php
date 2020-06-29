@@ -39,10 +39,6 @@ class ScheduleRepository extends ServiceEntityRepository
         return $scheduleWithWeek;
     }
 
-    /**
-     * @param int $universityId
-     * @return University[]
-     */
     public function findSchByParams(string $type, array $weekIds, int $id, int $day, int $time)
     {
         $query = $this->createQueryBuilder('tb');

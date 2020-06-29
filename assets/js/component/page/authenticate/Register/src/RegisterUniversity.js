@@ -39,17 +39,19 @@ function index(props) {
   return (
     <form className={'register-university'} onSubmit={(e) => handleSubmit(e)} autoComplete="off" noValidate>
       <div className={`form-group`}>
-        <input
-          name={'email'}
-          className={`form-control input input-type-1 w-100`}
-          placeholder={t(props.lang, 'Access code')}
-          type="text"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          autoComplete={'off'}
-          required
-        />
-        <span className={'error'} />
+        <div className={`form-group`}>
+          <input
+            name={'access_code_2'}
+            className={`form-control input input-type-1 w-100`}
+            placeholder={t(props.lang, 'Access code')}
+            type="text"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            autoComplete={'off'}
+            required
+          />
+          <span className={'error'} />
+        </div>
       </div>
       <div className={`form-group`}>
         <input

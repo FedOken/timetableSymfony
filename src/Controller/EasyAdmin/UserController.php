@@ -2,72 +2,53 @@
 
 namespace App\Controller\EasyAdmin;
 
-use App\Entity\Faculty;
-use App\Entity\Party;
 use App\Entity\Role;
-use App\Entity\Teacher;
-use App\Entity\University;
 use App\Entity\User;
-use App\Controller\EasyAdmin\Handler\UniversityHandler;
 use App\Helper\ArrayHelper;
-use App\Repository\RoleRepository;
-use App\Repository\UserRepository;
-use App\Service\Access\AccessService;
 use App\Service\Access\AdminAccess;
 use App\Service\Access\FacultyAccess;
 use App\Service\Access\PartyAccess;
 use App\Service\Access\TeacherAccess;
 use App\Service\Access\UniversityAccess;
-use Doctrine\DBAL\Types\TextType;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
-use EasyCorp\Bundle\EasyAdminBundle\Form\Type\EasyAdminAutocompleteType;
-use EasyCorp\Bundle\EasyAdminBundle\Search\Autocomplete;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Core\Encoder\NativePasswordEncoder;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-
+/**
+ * Class TeacherPositionController
+ * @package App\Controller\EasyAdmin
+ *
+ * @property array $validIds
+ */
 class UserController extends AdminController
 {
-    protected $userRepo;
-    protected $roleRepo;
     private $validIds = [];
-
-    public function __construct(RoleRepository $roleRepository, UserRepository $userRepository, TranslatorInterface $translator, UniversityHandler $universityHandler, AccessService $accessService)
-    {
-        parent::__construct($translator, $universityHandler, $accessService);
-
-        $this->userRepo = $userRepository;
-        $this->roleRepo = $roleRepository;
-    }
-
 
     private function init()
     {
-        $this->validIds = ArrayHelper::getColumn($this->userRepo->findAll(),'id');
+        $this->validIds = ArrayHelper::getColumn($this->em->getRepository(User::class)->findAll(),'id');
+    }
+
+    protected function newAction()
+    {
+        $this->init();
+        return $this->newCheckPermissionAndRedirect($this->validIds, 'User', [AdminAccess::getAccessRole()]);
     }
 
     protected function listAction()
     {
         $this->init();
-        return $this->listCheckPermissionAndRedirect($this->validIds, 'User', AdminAccess::getAccessRole());
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'User', [AdminAccess::getAccessRole()]);
     }
 
     protected function editAction()
     {
         $this->init();
-        return $this->editCheckPermissionAndRedirect($this->validIds, 'User', AdminAccess::getAccessRole());
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'User', [AdminAccess::getAccessRole()]);
     }
 
-    /**
-     * @param User $entity
-     *
-     * @return bool|void
-     */
     protected function updateEntity($entity)
     {
+        /** @var User $entity */
         if(!$this->request->isXmlHttpRequest()) {
             //Set role by role label
             if (!$this->setRoleByRoleLabel($entity)) {
@@ -75,34 +56,58 @@ class UserController extends AdminController
             }
         }
 
+        $request = $this->request->request->get('user');
+        $entity->status = ArrayHelper::getValue($request, 'status_choice');
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($entity);
+        $entityManager->flush();
+    }
+
+
+    protected function persistEntity($entity)
+    {
+        /** @var User $entity */
+        //Set role by role label
+        if (!$this->setRoleByRoleLabel($entity)) {
+            return false;
+        }
+
+        //Set password
+        $request = $this->request->request->get('user');
+        $password = ArrayHelper::getValue($request, 'password');
+        $entity->password = (new NativePasswordEncoder())->encodePassword($password, null);
+
+        $entity->status = User::STATUS_ACTIVE;
+
         //Save entity
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($entity);
         $entityManager->flush();
     }
 
-    protected function persistEntity($entity)
+    protected function createEntityFormBuilder($entity, $view)
     {
-        $encoder = new NativePasswordEncoder();
-
-        //Set role by role label
-        if (!$this->setRoleByRoleLabel($entity)) {
-            return false;
+        $formBuilder = parent::createEntityFormBuilder($entity, $view);
+        $choice = (new User())->getStatusList();
+        $choiceUpd = [];
+        /**@var User $entity */
+        foreach ($choice as $key => $label) {
+            if ($entity->status === $key) {
+                $choiceUpd[$key] = $label;
+                unset($choice[$key]);
+                break;
+            }
         }
+        $choice = $choiceUpd + $choice;
 
-        //Set status
-        $entity->setEnable(false);
+        $formBuilder->add('status_choice', ChoiceType::class, [
+            'choices' => array_flip($choice),
+            'attr' => ['data-widget' => 'select2'],
+            'mapped' => false,
+        ]);
 
-        //Set password
-        $request = $this->request->request->get('user');
-        $password = ArrayHelper::getValue($request, 'password');
-        $password_encode = $encoder->encodePassword($password, null);
-        $entity->setPassword($password_encode);
-
-        //Save entity
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($entity);
-        $entityManager->flush();
+        return $formBuilder;
     }
 
     private function setRoleByRoleLabel($entity) {
@@ -110,7 +115,7 @@ class UserController extends AdminController
 
         //Set role
         $roleId = ArrayHelper::getValue($request, 'role_label');
-        $roleModel = $this->roleRepo->find($roleId);
+        $roleModel = $this->em->getRepository(Role::class)->find($roleId);
         $entity->roles = [$roleModel->name];
 
         //Search access element

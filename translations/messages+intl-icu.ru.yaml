@@ -19,7 +19,7 @@ Lesson name: Имя занятия
 Party: Группа
 Time: Время
 Teacher: Преподаватель
-Cabinet: Кабинет
+Cabinet: Аудитория
 Day: День
 Week: Неделя
 Weeks: Недели
@@ -29,24 +29,32 @@ Lesson type: Тип занятия
 Edit lesson: Редактировать занятие
 Create lesson: Создать занятие
 Create group: Создать группу
+Create faculty: Создать факультет
 Enter lesson name ("Chemistry"): Введите название занятия ("Химия")
 Choose university before choosing other data: Выберите университет перед тем как выбирать другие параметры
 Choose university: Выберите университет
 Choose party: Выберите группу
+Create cabinet: Создать аудиторию
+Sort order: Порядок сортировки
+Affects the order in which the weeks are displayed when viewing schedules: Влияет на порядок отображения недель при просмотре расписаний
 Choose teacher: Выберите преподавателя
 Choose lesson type: Выберите тип занятия
 Choose week: Выберите неделю
 Choose day: Выберите день
 Choose time: Выберите время
 Choose building: Выберите корпус
-Choose cabinet: Выберите кабинет
+Choose cabinet: Выберите аудиторию
 Basic information: Базовая информация
 Class time: Время занятия
+Status choice: Статус
+First name: Имя
+Last name: Фамилия
+Phone: Телефон
 Class location: Место проведения занятия
 Groups: Группы
 Group: Группа
 Buildings: Корпуса
-Cabinets: Кабинеты
+Cabinets: Аудитории
 Setting: Настройки
 Teachers: Преподаватели
 Teachers position: Должности преподавателей
@@ -126,6 +134,9 @@ Set short name (NU): Введите короткое имя (НУ)
 Set full university name (National University): Введите полное имя (Национальный Университет)
 University view: Просмотр записи - университет
 Related data: Связанные данные
+Constants: Константы
+Lessons type: Типы занятий
+Schedules time: Время занятий
 Related data - constants: Связанные данные - константы
 Related data - mutable: Связанные данные - изменяемые
 Lesson times: Время занятий
@@ -141,7 +152,7 @@ Teachers list: Список преподавателей
 Add teacher: Добавить преподавателя
 Create teacher: Создать преподавателя
 Edit teacher: Редактировать преподавателя
-Set name with abbreviation (Fedorenko O.B.): Введите имя с аббревиатурой (Федоренко А.Б.)
+Enter the name with the initials (Fedorenko O.B.): Введите имя с инициалами (Федоренко А.Б.)
 Set full name (Fedorenko Oleksandr Borisovich): Введите полное имя (Федоренко Александр Борисович)
 Choose teacher position: Выберите должность преподавателя
 Add party: Добавить группу
@@ -149,15 +160,15 @@ Party list: Список групп
 Edit group: Редактировать групу
 Choose faculty: Выберите факультет
 Choose course: Выберите курс
-Set group name (GN-2-1, GN-5-1m, GN-3-1tec): Введите имя группы (ГН-2-1, ГН-5-1м, ГН-3-1тех)
+Enter group name (GN-2-1, GN-5-1m, GN-3-1tec): Введите имя группы (ГН-2-1, ГН-5-1м, ГН-3-1тех)
 Group view: Просмотр записи - группа
 Building view: Просмотр записи - корпус
-Cabinet list: Список кабинетов
-Edit cabinet: Редактировать кабинет
-Cabinet view: Просмотр записи - кабинет
+Cabinet list: Список аудиторий
+Edit cabinet: Редактировать аудиторию
+Cabinet view: Просмотр записи - аудитория
 Building: Корпус
-Add cabinet: Добавить кабинет
-Enter cabinet number (2, 411, 325a): Введите номер кабинета (2, 411, 325а)
+Add cabinet: Добавить аудиторию
+Enter cabinet number (2, 411, 325a): Введите номер аудитории (2, 411, 325а)
 Course view: Просмотр записи - курс
 Week view: Просмотр записи - неделя
 Class time view: Просмотр записи - время занятия

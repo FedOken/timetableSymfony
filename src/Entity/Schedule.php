@@ -189,6 +189,14 @@ class Schedule
 
     public function serialize(): array
     {
+        if (!$this->party ||
+            !$this->lesson_type ||
+            !$this->teacher ||
+            !$this->cabinet ||
+            !$this->week ||
+            !$this->day ||
+            !$this->universityTime) return [];
+
         return [
             'id' => $this->id,
             'lesson_name' => $this->lesson_name,

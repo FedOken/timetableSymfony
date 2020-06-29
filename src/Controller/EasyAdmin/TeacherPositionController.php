@@ -7,6 +7,7 @@ use App\Entity\Cabinet;
 use App\Entity\Party;
 use App\Entity\Schedule;
 use App\Entity\Teacher;
+use App\Entity\TeacherPosition;
 use App\Entity\University;
 use App\Entity\UniversityTime;
 use App\Entity\Week;
@@ -23,6 +24,7 @@ use App\Repository\TeacherRepository;
 use App\Repository\UniversityRepository;
 use App\Repository\WeekRepository;
 use App\Service\Access\AccessService;
+use App\Service\Access\AdminAccess;
 use App\Service\Access\TeacherAccess;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
@@ -35,32 +37,36 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Validation;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * Class TeacherPositionController
+ * @package App\Controller\EasyAdmin
+ *
+ * @property array $validIds
+ */
 class TeacherPositionController extends AdminController
 {
-    private $teacherPosition;
     private $validIds = [];
-
-    public function __construct(TeacherPositionRepository $teacherPositionRepository, TranslatorInterface $translator, UniversityHandler $universityHandler, AccessService $accessService)
-    {
-        parent::__construct($translator, $universityHandler, $accessService);
-
-        $this->teacherPosition = $teacherPositionRepository;
-    }
 
     private function init()
     {
-        $this->validIds = ArrayHelper::getColumn($this->teacherPosition->findAll(),'id');
+        $this->validIds = ArrayHelper::getColumn($this->em->getRepository(TeacherPosition::class)->findAll(),'id');
+    }
+
+    protected function newAction()
+    {
+        $this->init();
+        return $this->newCheckPermissionAndRedirect($this->validIds, 'TeacherPosition', [TeacherAccess::getAccessRole()]);
     }
 
     protected function listAction()
     {
         $this->init();
-        return $this->listCheckPermissionAndRedirect($this->validIds, 'TeacherPosition', TeacherAccess::getAccessRole());
+        return $this->listCheckPermissionAndRedirect($this->validIds, 'TeacherPosition', [TeacherAccess::getAccessRole()]);
     }
 
     protected function editAction()
     {
         $this->init();
-        return $this->editCheckPermissionAndRedirect($this->validIds, 'TeacherPosition', TeacherAccess::getAccessRole());
+        return $this->editCheckPermissionAndRedirect($this->validIds, 'TeacherPosition', [TeacherAccess::getAccessRole()]);
     }
 }

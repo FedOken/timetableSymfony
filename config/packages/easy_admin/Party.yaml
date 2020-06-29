@@ -22,7 +22,7 @@ easy_admin:
                 fields:
                     - { property: 'faculty',  type_options: { required: true }, help: 'Choose faculty' }
                     - { property: 'course', type_options: { required: true }, help: 'Choose course' }
-                    - { property: 'name',  help: 'Set group name (GN-2-1, GN-5-1m, GN-3-1tec)' }
+                    - { property: 'name',  help: 'Enter group name (GN-2-1, GN-5-1m, GN-3-1tec)' }
             new:
                 title: 'Create group'
             edit:

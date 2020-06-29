@@ -76,11 +76,6 @@ class User extends UserBase implements UserInterface
     private $access_code;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $enable;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $code;
@@ -255,18 +250,6 @@ class User extends UserBase implements UserInterface
         return $this;
     }
 
-    public function getEnable(): ?bool
-    {
-        return $this->enable;
-    }
-
-    public function setEnable(bool $enable): self
-    {
-        $this->enable = $enable;
-
-        return $this;
-    }
-
     public function getUniversity(): ?University
     {
         return $this->university;
@@ -394,6 +377,10 @@ class User extends UserBase implements UserInterface
         return $this;
     }
 
+    public function getStatusLabel()
+    {
+        return $this->getStatusList($this->status);
+    }
 
 
     /* ADDITIONAL FUNCTIONS */

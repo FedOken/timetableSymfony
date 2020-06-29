@@ -8,9 +8,14 @@ easy_admin:
                 title: 'Users list'
                 fields:
                     - { property: 'email' }
-                    - { property: 'role_label' }
                     - { property: 'access_code' }
-                    - { property: 'enable', label: 'Status' }
+                    - { property: 'role_label' }
+                    - { property: 'role_label' }
+                    - { property: 'first_name' }
+                    - { property: 'last_name' }
+                    - { property: 'phone' }
+                    - { property: 'statusLabel', label: 'Status' }
+
                 actions:
                     - { name: 'new', label: 'Add user' }
                     - { name: 'edit', icon: 'pencil', label: false }
@@ -19,10 +24,15 @@ easy_admin:
                 title: 'Add user'
                 fields:
                     - { type: 'group', columns: '12', label: 'Basic information', 'type_options':{'block_name': 'group-1'}, 'css_class':'col-md-6' }
-                    - { property: 'email' }
-                    - { property: 'role_label' }
+                    - { property: 'email', type: 'email' }
+                    - { property: 'first_name' }
+                    - { property: 'last_name' }
+                    - { property: 'phone' }
                     - { property: 'password', type: 'password'}
+                    - { property: 'status_choice', help: 'Choose user status', 'css_class': 'group-1', 'format': 'gr-1', 'type_options':{'block_name': 'group-1'} }
+
                     - { type: 'group', columns: '12', label: 'Access object', help: 'The access object must match the selected role', 'type_options':{'block_name': 'group-2'}, 'css_class':'col-md-6' }
+                    - { property: 'role_label', type_options: {required: true}, help: 'The access object must match the selected role' }
                     - { property: 'university' }
                     - { property: 'faculty' }
                     - { property: 'party' }
@@ -30,11 +40,19 @@ easy_admin:
             edit:
                 title: 'Edit user'
                 fields:
+#                    - { type: 'group', columns: '12', label: 'Basic information', 'type_options':{'block_name': 'group-1'}, 'css_class':'col-md-4' }
+#                    - { property: 'lesson_name', help: 'Enter lesson name ("Chemistry")', 'type_options':{'block_name': 'group-1'} }
+#                    - { property: 'university', help: 'Choose university before choosing other data', 'css_class': 'group-1', 'format': 'gr-1', 'type_options':{'block_name': 'group-1'} }
+
                     - { type: 'group', columns: '12', label: 'Basic information', 'type_options':{'block_name': 'group-1'}, 'css_class':'col-md-6' }
-                    - { property: 'email' }
-                    - { property: 'role_label' }
-                    - { property: 'enable', label: 'Status' }
-                    - { type: 'group', columns: '12', label: 'Access object', help: 'The access object must match the selected role', 'type_options':{'block_name': 'group-2'}, 'css_class':'col-md-6' }
+                    - { property: 'email', type: 'email' }
+                    - { property: 'first_name' }
+                    - { property: 'last_name' }
+                    - { property: 'phone' }
+                    - { property: 'status_choice', help: 'Choose user status', 'css_class': 'group-1', 'format': 'gr-1', 'type_options':{'block_name': 'group-1'} }
+
+                    - { type: 'group', columns: '12', label: 'Access object', 'type_options':{'block_name': 'group-2'}, 'css_class':'col-md-6' }
+                    - { property: 'role_label', type_options: {required: true}, help: 'The access object must match the selected role' }
                     - { property: 'university' }
                     - { property: 'faculty' }
                     - { property: 'party' }

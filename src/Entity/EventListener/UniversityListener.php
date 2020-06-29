@@ -3,6 +3,7 @@ namespace App\Entity\EventListener;
 
 use App\Entity\University;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\OnFlushEventArgs;
 
 class UniversityListener extends BaseListener
 {
@@ -18,9 +19,24 @@ class UniversityListener extends BaseListener
         $model->access_code = $this->strService->genRanStrEntity(10, University::class, 'access_code');
 //        foreach ($model->faculties as $faculty) {
 //            $faculty->enable = $model->enable;
-//            $this->ementityManager->persist($product);
-//            $entityManager->flush();
+//            $this->em->persist($faculty);
+//            $this->em->flush();
 //        }
+        return;
+    }
+
+    public function onFlush(OnFlushEventArgs $eventArgs)
+    {
+//        $em = $eventArgs->getEntityManager();
+//        $uow = $em->getUnitOfWork();
+//        $updates = $uow->getScheduledEntityUpdates();
+//        $model = array_shift($updates);
+//        foreach ($model->faculties as $faculty) {
+//            $faculty->enable = $model->enable;
+//            //$this->em->persist($faculty);
+//            //$this->em->flush();
+//        }
+
         return;
     }
 }

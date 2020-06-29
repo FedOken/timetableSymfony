@@ -16,7 +16,7 @@ class UserBase extends BaseEntity
         $arr = [
             self::STATUS_ACTIVE => 'Active',
             self::STATUS_UNACTIVE => 'Disabled',
-            self::STATUS_WAIT_EMAIL_CONFIRM => 'Wait email confirmation',
+            self::STATUS_WAIT_EMAIL_CONFIRM => 'Email confirmation',
         ];
         return $status ? ArrayHelper::getValue($arr, $status) : $arr;
     }

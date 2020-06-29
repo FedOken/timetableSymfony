@@ -21,4 +21,16 @@ class FacultyRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Faculty::class);
     }
+
+    public function findByUniversities(array $universityIds): array
+    {
+        return $this->createQueryBuilder('tb')
+            ->leftJoin('tb.university', 'un', 'WITH', 'un.id = tb.university')
+            ->andWhere('un.enable = 1')
+            ->andWhere("un.id IN (:ids)")
+            ->setParameter('ids', $universityIds)
+            ->addOrderBy('tb.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

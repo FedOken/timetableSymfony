@@ -3,7 +3,7 @@ import {bindActionCreators} from 'redux';
 import {push} from 'connected-react-router';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
-import { preloaderStart } from "../../../../../src/Preloader/Preloader";
+import {preloaderStart} from '../../../../../src/Preloader/Preloader';
 
 function BlockTemplate(props) {
   const renderElements = () => {

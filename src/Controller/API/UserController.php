@@ -83,11 +83,11 @@ class UserController extends AbstractController
 
     /**
      * @Route("/api/user/logout-end", name="api-user-logoutEnd")
-     * @return JsonResponse
      */
     public function apiUserLogoutEnd()
     {
-        return new JsonResponse(['status' => true]);
+        return $this->redirect('/login');
+//        return new JsonResponse(['status' => true]);
     }
 
     /**
@@ -155,7 +155,7 @@ class UserController extends AbstractController
      */
     public function apiUserCreateTeacherUser()
     {
-        $data = $this->handler->saveUser(TeacherAccess::getAccessRole());
+        $data = $this->handler->saveUserByCode();
         return new JsonResponse($data);
     }
 
@@ -164,7 +164,7 @@ class UserController extends AbstractController
      */
     public function apiUserCreateUniversityUser()
     {
-        $data = $this->handler->saveUniversityUser();
+        $data = $this->handler->saveUserByCode();
         return new JsonResponse($data);
     }
 

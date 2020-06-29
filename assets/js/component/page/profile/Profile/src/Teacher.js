@@ -4,6 +4,7 @@ import {withRouter} from 'react-router-dom';
 import {isEmpty} from '../../../../src/Helper';
 import BlockTemplate from './src/BlockTemplate';
 import {getAllAlphabet} from './src/BlockOrder';
+import {t} from '../../../../src/translate/translate';
 
 function index(props) {
   const [teachers, setTeachers] = useState({});
@@ -15,7 +16,7 @@ function index(props) {
   });
 
   const renderRelations = () => {
-    if (isEmpty(teachers)) return '';
+    if (isEmpty(teachers)) return <span className={'not-found'}>{t(props.lang, 'Nothing not found')}</span>;
 
     return getAllAlphabet().map((letter, key) => {
       let filterModels = teachers.filter((model) => {
@@ -33,6 +34,7 @@ function index(props) {
 function mapStateToProps(state) {
   return {
     user: state.user,
+    lang: state.lang,
   };
 }
 

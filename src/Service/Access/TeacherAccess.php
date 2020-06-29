@@ -13,14 +13,30 @@ use App\Entity\University;
 use App\Entity\UniversityTime;
 use App\Entity\Week;
 use App\Helper\ArrayHelper;
+use App\Repository\BuildingRepository;
+use App\Repository\CabinetRepository;
+use App\Repository\FacultyRepository;
+use App\Repository\PartyRepository;
+use App\Repository\ScheduleRepository;
+use App\Repository\UniversityTimeRepository;
+use App\Repository\WeekRepository;
 
-class TeacherAccess extends AccessService implements AccessInterface
+/**
+ * Class TeacherAccess
+ * @package App\Service\Access
+ *
+ * @property string $code
+ * @property Teacher $accessModel
+ */
+class TeacherAccess extends AccessMiddleware implements AccessInterface
 {
     public $code;
+    public $accessModel;
 
     public function init($incomingCode)
     {
         $this->code = $incomingCode;
+        $this->accessModel = $this->getAccessModel($incomingCode);
     }
 
     public static function getAccessCode()
@@ -35,81 +51,66 @@ class TeacherAccess extends AccessService implements AccessInterface
 
     public function getAccessibleUniversityIds(): array
     {
-        return [$this->code];
+        return [$this->accessModel->university->id];
     }
 
-    public function getAccessibleFacultyIds(): array
+    public function getAccessibleFacultyIds(array $unIds = []): array
     {
-        return [];
-//        $accessModel = $this->em->getRepository(University::class)->findOneBy(['id' => $this->code]);
-//        /** @var University $accessModel */
-//        $response = $accessModel->faculties;
-//        return $response ? ArrayHelper::getColumn($response, 'id') : [];
+        $facs = $this->accessModel->university->faculties;
+        return $facs ? ArrayHelper::getColumn($facs, 'id') : [];
     }
 
     public function getAccessiblePartyIds(): array
     {
-        return [];
-//        $response = $this->em->getRepository(Party::class)->getByUniversity([$this->code]);
-//        return $response ? ArrayHelper::getColumn($response, 'id') : [];
+        return $this->getAccssPrtIds($this);
     }
 
     public function getAccessibleTeacherIds(): array
     {
-        return [];
-//        $accessModel = $this->em->getRepository(University::class)->findOneBy(['id' => $this->code]);
-//        /** @var University $accessModel */
-//        $response = $accessModel->teachers;
-//        return $response ? ArrayHelper::getColumn($response, 'id') : [];
+        return [$this->accessModel->id];
     }
 
     public function getAccessibleBuildingIds(): array
     {
-        return [];
-//        $accessModel = $this->em->getRepository(University::class)->findOneBy(['id' => $this->code]);
-//        /** @var University $accessModel */
-//        $response = $accessModel->buildings;
-//        return $response ? ArrayHelper::getColumn($response, 'id') : [];
+        return $this->getAccssBldngIds($this);
     }
 
-    public function getAccessibleCabinetIds(int $buildingId = null): array
+    public function getAccessibleCabinetIds(array $bldngIds = []): array
     {
-        return [];
-//        $response = $this->em->getRepository(Cabinet::class)->getByUniversity([$this->code]);
-//        return $response ? ArrayHelper::getColumn($response, 'id') : [];
+        return $this->getAccssCbntIds($this, $bldngIds);
     }
 
     public function getAccessibleCourseIds(): array
     {
-        return [];
-//        $accessModel = $this->em->getRepository(University::class)->findOneBy(['id' => $this->code]);
-//        /** @var University $accessModel */
-//        $response = $accessModel->courses;
-//        return $response ? ArrayHelper::getColumn($response, 'id') : [];
+        return $this->getAccssCrsIds($this);
     }
 
     public function getAccessibleWeekIds(): array
     {
-        return [];
-//        $accessModel = $this->em->getRepository(University::class)->findOneBy(['id' => $this->code]);
-//        /** @var University $accessModel */
-//        $response = $accessModel->weeks;
-//        return $response ? ArrayHelper::getColumn($response, 'id') : [];
+        return $this->getAccssWkIds($this);
     }
 
     public function getAccessibleTimeIds(): array
     {
-        return [];
-//        $accessModel = $this->em->getRepository(University::class)->findOneBy(['id' => $this->code]);
-//        /** @var University $accessModel */
-//        $response = $accessModel->universityTimes;
-//        return $response ? ArrayHelper::getColumn($response, 'id') : [];
+        return $this->getAccssTmIds($this);
     }
 
     public function getAccessibleScheduleIds(): array
     {
-        return [];
-//        $response = $this->em->getRepository(Schedule::class)->getByUniversity($this->code);
-//        return $response ? ArrayHelper::getColumn($response, 'id') : [];
+        /** @var ScheduleRepository $facRepo */
+        $schRepo = $this->em->getRepository(Schedule::class);
+        $schs = $schRepo->findBy(['teacher' => $this->accessModel->id]);
+        return $schs ? ArrayHelper::getColumn($schs, 'id') : [];
+    }
+
+
+
+
+    //
+    /* PRIVATE FUNCTION */
+    //
+    private function getAccessModel(int $id)
+    {
+        return $this->em->getRepository(Teacher::class)->findOneBy(['id' => $id]);
     }
 }
