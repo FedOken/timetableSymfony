@@ -15,7 +15,7 @@ $duration: 0.25s;
   transition-duration: $duration;
   opacity: 0;
   visibility: hidden;
-  white-space: nowrap;
+  max-width: calc(100% - 30px);
 }
 
 %lesson-type-colors {
@@ -122,8 +122,8 @@ $duration: 0.25s;
 
   .info {
     &.active {
-      visibility: unset;
-      opacity: 1;
+      visibility: unset !important;
+      opacity: 1 !important;
     }
 
     &.teacher_info {
@@ -144,5 +144,4 @@ $duration: 0.25s;
       text-align: right;
     }
   }
-
 }

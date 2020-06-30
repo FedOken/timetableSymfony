@@ -52,7 +52,7 @@ function replaceSelectOption(select_object, data) {
 
 function ajaxGetCabinetByBuilding(id, selectToChange) {
   $.ajax({
-    url: '/public/index.php/ajax/get-cabinet-by-building?buildingId=' + id,
+    url: '/ajax/get-cabinet-by-building?buildingId=' + id,
     type: 'GET',
     success: function (response) {
       replaceSelectOption(selectToChange, response);
@@ -65,7 +65,7 @@ function ajaxGetCabinetByBuilding(id, selectToChange) {
 
 function ajaxGetBuildingByUniversity(id, selectToChange) {
   $.ajax({
-    url: '/public/index.php/ajax/get-building-by-university?universityId=' + id,
+    url: '/ajax/get-building-by-university?universityId=' + id,
     type: 'GET',
     success: function (response) {
       replaceSelectOption(selectToChange, response);
@@ -79,7 +79,7 @@ function ajaxGetBuildingByUniversity(id, selectToChange) {
 
 function ajaxGetGroupByUniversity(id, selectToChange) {
   $.ajax({
-    url: '/public/index.php/ajax/get-group-by-university?universityId=' + id,
+    url: '/ajax/get-group-by-university?universityId=' + id,
     type: 'GET',
     success: function (response) {
       replaceSelectOption(selectToChange, response);
@@ -92,7 +92,7 @@ function ajaxGetGroupByUniversity(id, selectToChange) {
 
 function ajaxGetTeacherByUniversity(id, selectToChange) {
   $.ajax({
-    url: '/public/index.php/ajax/get-teacher-by-university?universityId=' + id,
+    url: '/ajax/get-teacher-by-university?universityId=' + id,
     type: 'GET',
     success: function (response) {
       replaceSelectOption(selectToChange, response);
@@ -105,7 +105,7 @@ function ajaxGetTeacherByUniversity(id, selectToChange) {
 
 function ajaxGetWeekByUniversity(id, selectToChange) {
   $.ajax({
-    url: '/public/index.php/ajax/get-week-by-university?universityId=' + id,
+    url: '/ajax/get-week-by-university?universityId=' + id,
     type: 'GET',
     success: function (response) {
       replaceSelectOption(selectToChange, response);
@@ -118,7 +118,7 @@ function ajaxGetWeekByUniversity(id, selectToChange) {
 
 function ajaxGetTimeByUniversity(id, selectToChange) {
   $.ajax({
-    url: '/public/index.php/ajax/get-time-by-university?universityId=' + id,
+    url: '/ajax/get-time-by-university?universityId=' + id,
     type: 'GET',
     success: function (response) {
       replaceSelectOption(selectToChange, response);

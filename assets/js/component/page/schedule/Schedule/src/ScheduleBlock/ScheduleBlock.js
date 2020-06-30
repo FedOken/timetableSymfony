@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import {preloaderStart} from '../../../../../src/Preloader/Preloader';
 import {t} from '../../../../../src/translate/translate';
 import './style.scss';
+import {isEmpty} from '../../../../../src/Helper';
 
 const showAdditionalInfo = (e, infoName) => {
   let className = '.' + infoName + '_info';
@@ -73,7 +74,22 @@ function ScheduleBlock(props) {
     if (type === 'cabinet') {
       return party.name;
     }
-    return `ауд. ${cabinet.name} - ${building.name} - ${building.address}`;
+    if (isEmpty(building.name_full)) {
+      return (
+        <span>
+          ауд. {cabinet.name} ({building.name})<br />
+          {building.address}
+        </span>
+      );
+    } else {
+      return (
+        <span>
+          ауд. {cabinet.name}<br />
+          {building.name_full} ({building.name})<br />
+          {building.address}
+        </span>
+      );
+    }
   };
 
   const redirect = (url) => {
@@ -85,8 +101,8 @@ function ScheduleBlock(props) {
   };
 
   return (
-    <div className={'col-2 block-schedule-container'}>
-      <div className={'block-schedule-main'}>
+    <div className={`col-2 block-schedule-container`}>
+      <div className={`block-schedule-main`}>
         <div className={'block-lesson'}>
           <p>{truncate(lesson, 36)}</p>
         </div>
@@ -135,6 +151,7 @@ function ScheduleBlock(props) {
       </div>
       <div className={'info cabinet_info group_info'}>
         <p>{renderCabinetGroupBlockFull()}</p>
+        {/*<p>s</p>*/}
       </div>
       <div className={'info lesson_type_info'}>
         <p>{t(props.lang, lessonType.name_full, true)}</p>
