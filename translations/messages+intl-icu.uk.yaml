@@ -15,7 +15,7 @@ Senior lecturer: Старший викладач
 Schedules: Розклад
 Lessons list: Список уроків
 Add lesson: Додати урок
-Lesson name: Ім'я уроку
+Lesson name: Назва уроку
 Party: Група
 Time: Час
 Teacher: Викладач
@@ -53,7 +53,7 @@ Phone: Телефон
 Class location: Місце проведення уроку
 Groups: Групи
 Group: Група
-Buildings: Корпуса
+Buildings: Корпуси
 Cabinets: Аудиторії
 Setting: Налаштування
 Teachers: Викладачі
@@ -78,7 +78,7 @@ Days list: Список днів
 Add day: Додати день
 Create day: Створити день
 Set day abbreviation (Mo, Tu): Введіть абревіатуру (Пн, Вт)
-Set full name (Monday, Tuesday): Введіть повне ім'я (Понедельник, Вторник)
+Set full name (Monday, Tuesday): Введіть повну назву (Понедельник, Вторник)
 Lesson types list: Список типов занятий
 Add type: Добавить тип
 Create lesson type: Создать тип занятия
@@ -87,7 +87,7 @@ Lesson every week: Занятие каждую неделю
 Lessons: Занятия
 Short name: Короткое имя
 Set short name (lec, pr): Введите короткое имя (лек. пр.)
-Set full name (Lecture, Practice): Введите полное ім'я (Лекція, Практика)
+Set full name (Lecture, Practice): Введите повну назву (Лекція, Практика)
 Roles list: Список ролей
 Add role: Додати роль
 Create role: Створити роль
@@ -98,7 +98,7 @@ Add position: Додати посаду
 Create position: Створити посаду
 Edit position: Редагувати посаду
 Set short name (prof.): Введіть абревіатуру (проф.)
-Set full name (Professor): Введіть повне ім'я (Профессор)
+Set full name (Professor): Введіть повну назву (Профессор)
 Position: Посада
 Positions: Посади
 Class time list: Час уроків
@@ -108,7 +108,7 @@ End: Кінець
 Create class time: Створити час уроків
 Set class time start: Вкажіть час початку уроку
 Set class time end: Вкажіть час закінчення уроку
-Set full name (First week, Second week): Введіть повне ім'я (Перший тиждень, Другий тиждень)
+Set full name (First week, Second week): Введіть повну назву (Перший тиждень, Другий тиждень)
 Create week: Створити тиждень
 Edit week: Редагувати тиждень
 Course: Курс
@@ -117,21 +117,21 @@ Add course: Додати курс
 Create course: Створити курс
 Edit course: Редагувати курс
 Set course as number (1, 2, 5): Введіть курс у вигляді номеру (1, 2, 5)
-Set full name (First course, Second course): Введіть повне ім'я (Перший курс, Другий курс)
+Set full name (First course, Second course): Введіть повну назву (Перший курс, Другий курс)
 Building list: Список корпусів
 Add building: Додати корпус
 Create building: Створити корпус
 Edit building: Редагувати корпус
 Address: Адреса
-Set short building name (K1, K6): Введіть коротке ім'я корпусу (К1, К6)
-Set full building name (Main campus, Learning campus): Введіть повне ім'я корпусу (Головний корпус, Учбовий корпус)
+Set short building name (K1, K6): Введіть коротку назву корпусу (К1, К6)
+Set full building name (Main campus, Learning campus): Введіть повну назву корпусу (Головний корпус, Учбовий корпус)
 Set building address (Kiev, st. Khreschatyk, 1): Введіть адресу (Київ, вул. Хрещатик, 1)
 University list: Список університетів
 Add university: Додати університет
 Create university: Створити університет
 Edit university: Редагувати університет
-Set short name (NU): Введіте коротке ім'я (НУ)
-Set full university name (National University): Введіть повне ім'я (Національний Університет)
+Set short name (NU): Введіте коротке назву (НУ)
+Set full university name (National University): Введіть повну назву (Національний Університет)
 University view: Перегляд запису - університет
 Related data: Пов'язані дані
 Constants: Константи
@@ -145,8 +145,8 @@ Faculty list: Список факультетів
 Parties: Групи
 Add faculty: Додати факультет
 Edit faculty: Редагувати факультет
-Set full name (Faculty of advanced technology): Введіть повне ім'я (Факультет передових технологій)
-Set short name (FAT): Введіте коротке ім'я (ФПТ)
+Set full name (Faculty of advanced technology): Введіть повну назву (Факультет передових технологій)
+Set short name (FAT): Введіте коротку назву (ФПТ)
 Faculty view: Перегляд запису - факультет
 Teachers list: Список викладачів
 Add teacher: Додати викладача
@@ -160,7 +160,7 @@ Party list: Створити групу
 Edit group: Редагувати групу
 Choose faculty: Виберіть факультет
 Choose course: Виберіть курс
-Enter group name (GN-2-1, GN-5-1m, GN-3-1tec): Введіть ім'я групи (ГН-2-1, ГН-5-1м, ГН-3-1тех)
+Enter group name (GN-2-1, GN-5-1m, GN-3-1tec): Введіть назву групи (ГН-2-1, ГН-5-1м, ГН-3-1тех)
 Group view: Перегляд запису - група
 Building view: Перегляд запису - корпус
 Cabinet list: Список аудиторій
