@@ -33,8 +33,8 @@ function index(props) {
   };
 
   return (
-    <div className="reset-password container">
-      <div className="col-xs-12 col-sm-6 col-md-4 block-center">
+    <div className="reset-password row h-100">
+      <div className="col-12 col-md-6 col-lg-5 col-xl-4">
         <div className={'block-reset'}>
           <span className={'block-name'}>{t(props.lang, 'Restore2')}</span>
           <form className={'reset-password-form'} onSubmit={(e) => handleSubmit(e)} noValidate>

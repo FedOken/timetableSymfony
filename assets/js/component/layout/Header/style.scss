@@ -8,6 +8,7 @@ header.header {
   display: flex;
   justify-content: center;
   padding: 15px;
+  margin-bottom: 40px;
 
   &.only_logo svg {
     fill: $primary_100;

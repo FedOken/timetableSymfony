@@ -28,7 +28,7 @@ export const ua = {
   'Select building': 'Виберіть корпус',
   'Comfortable schedule is always at hand': 'Зручний розклад завжди поруч',
   'platform for universities and students': 'платформа для університетів і студентів',
-  'Now to plan, search and manage - easy': 'Теперь планувати, шукати та керувати - просто',
+  'Now to plan, search and manage - easy': 'Тепер планувати, шукати та керувати - просто',
   Start: 'Почати',
   'Contact us': "Зв'яжіться з нами",
   'For business matters': 'По діловим питанням',
@@ -37,7 +37,7 @@ export const ua = {
   'Describe as much as possible, we will answer you': "Опишіть якомога детальніше, ми вам обов'язково відповімо",
   'Your message': 'Ваше повідомлення',
   Phone: 'Телефон',
-  'And you can take part in the project': 'І Ви можете прийняти учать у проекті',
+  'And you can take part in the project': 'Ви можете взяти участь у проекті',
   'Fill out the form below and you will be contacted shortly':
     "Заповніть форму нижче і з Вами зв'яжуться найближчим часом",
   "Your message has been processed. We'll be in touch soon.":
@@ -131,7 +131,7 @@ export const ua = {
   'Email send': 'Email відправлений',
   'Reset password': 'Відновлення паролю',
   'Password successfully updated.': 'Пароль успішно змінено.',
-  // '': '',
+  Send: 'Надіслати',
   // '': '',
   // '': '',
   // '': '',

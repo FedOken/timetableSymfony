@@ -37,7 +37,7 @@ export const ru = {
   'Describe as much as possible, we will answer you': 'Опишите как можно подробнее, мы вам обязательно ответим',
   'Your message': 'Ваше сообщение',
   Phone: 'Телефон',
-  'And you can take part in the project': 'И Вы можете принять участие в проекте',
+  'And you can take part in the project': 'Вы можете принять участие в проекте',
   'Fill out the form below and you will be contacted shortly':
     'Заполните форму ниже и с Вами свяжутся в ближайшее время',
   "Your message has been processed. We'll be in touch soon.":
@@ -131,6 +131,7 @@ export const ru = {
   'Email send': 'Email отправлен',
   'Reset password': 'Восстановление пароля',
   'Password successfully updated.': 'Пароль успешно изменен.',
+  Send: 'Отправить',
   // '': '',
   // '': '',
   // '': '',

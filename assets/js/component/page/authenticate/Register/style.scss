@@ -1,10 +1,9 @@
 @import "../../../../../css/sass_components";
 
 .register {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+  &>div {
+    margin: auto;
+  }
 
   .block-register {
     @include block-border;

@@ -3,8 +3,13 @@
 $transitionDuration: 0.2s;
 
 .contact {
-  @include flex-jk_center-fd_column;
-  align-items: center;
+  &>div {
+    margin: auto;
+  }
+
+  &>div>div {
+    margin: 0 auto;
+  }
 
   p {
     text-align: center;
@@ -37,16 +42,13 @@ $transitionDuration: 0.2s;
         fill: $primary_100;
       }
 
-      p {
-        margin-top: 15px;
-      };
-
       .text {
         position: relative;
         display: flex;
         flex-direction: column;
-        height: 45px;
+        height: 30px;
         overflow: hidden;
+        margin-top: 15px;
 
         p {
           position: absolute;
@@ -60,7 +62,7 @@ $transitionDuration: 0.2s;
           &.hidden {
             position: absolute;
             color: $selection_100;
-            top: -50px;
+            top: -55px;
           }
         }
       }
@@ -113,10 +115,12 @@ $transitionDuration: 0.2s;
     }
 
     .between {
-      position: absolute;
-      top: 60px;
-      width: 100%;
-      z-index: -1;
+      margin: auto 0;
+      padding-bottom: 30px;
+      //position: absolute;
+      //top: 60px;
+      //width: 100%;
+      //z-index: -1;
     }
   }
 }

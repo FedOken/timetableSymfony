@@ -17,8 +17,8 @@ ReactDom.render(
     <ConnectedRouter history={history}>
       <BrowserRouter>
         <Title />
-        {/*<Particles />*/}
-        {/*<Alert />*/}
+        <Particles />
+        <Alert />
         <Preloader />
         <Layout />
       </BrowserRouter>

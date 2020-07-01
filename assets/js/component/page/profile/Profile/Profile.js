@@ -36,35 +36,33 @@ function index(props) {
   };
 
   return (
-    <div className="profile container">
-      <div className={'row'}>
-        <div className="col-xs-12 col-sm-6 block-center">
-          <Tabs className={'tabs'} id={'profile-tabs'}>
-            <TabsItem group={'student'} title={t(props.lang, 'Profile')} active={true} svg={iconProfile}>
-              <Common />
-            </TabsItem>
-            <TabsItem
-              group={'group'}
-              title={t(props.lang, 'Groups')}
-              svg={iconGroup}
-              disabled={props.user.model.data.role === getRoleLabel('party')}>
-              <Party />
-            </TabsItem>
-            <TabsItem
-              group={'teacher'}
-              title={t(props.lang, 'Teachers')}
-              svg={iconTeacher}
-              disabled={props.user.model.data.role === getRoleLabel('teacher')}>
-              <Teacher />
-            </TabsItem>
-            <TabsItem group={'cabinet'} title={t(props.lang, 'Cabinets')} svg={iconDoor}>
-              <Cabinet />
-            </TabsItem>
-            <TabsItem group={'university'} title={t(props.lang, 'Security')} svg={iconShield}>
-              <Security />
-            </TabsItem>
-          </Tabs>
-        </div>
+    <div className="profile row h-100">
+      <div className="col-12 col-md-8 col-lg-6 col-xl-6">
+        <Tabs className={'tabs'} id={'profile-tabs'}>
+          <TabsItem group={'student'} title={t(props.lang, 'Profile')} active={true} svg={iconProfile}>
+            <Common />
+          </TabsItem>
+          <TabsItem
+            group={'group'}
+            title={t(props.lang, 'Groups')}
+            svg={iconGroup}
+            disabled={props.user.model.data.role === getRoleLabel('party')}>
+            <Party />
+          </TabsItem>
+          <TabsItem
+            group={'teacher'}
+            title={t(props.lang, 'Teachers')}
+            svg={iconTeacher}
+            disabled={props.user.model.data.role === getRoleLabel('teacher')}>
+            <Teacher />
+          </TabsItem>
+          <TabsItem group={'cabinet'} title={t(props.lang, 'Cabinets')} svg={iconDoor}>
+            <Cabinet />
+          </TabsItem>
+          <TabsItem group={'university'} title={t(props.lang, 'Security')} svg={iconShield}>
+            <Security />
+          </TabsItem>
+        </Tabs>
       </div>
     </div>
   );

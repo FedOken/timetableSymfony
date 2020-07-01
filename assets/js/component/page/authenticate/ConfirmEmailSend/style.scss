@@ -1,7 +1,11 @@
 .confirm-email-send {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
+  &>div {
+    margin: auto;
+  }
+
+  &>div>div {
+    margin: 0 auto;
+  }
 
   p {
     text-align: center;
@@ -15,14 +19,9 @@
     font-weight: bold;
   }
 
-  div {
+  .btn-container {
     display: flex;
-    margin-top: 30px;
     justify-content: center;
-
-    button.btn {
-      width: 160px;
-      margin: 0 15px;
-    }
+    margin-top: 25px;
   }
 }

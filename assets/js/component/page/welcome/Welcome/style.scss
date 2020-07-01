@@ -1,7 +1,16 @@
 @import '../../../../../css/sass_components';
 
 .welcome {
-  @include flex-jk_center-fd_column;
+  padding-top: 15px;
+  padding-bottom: 50px;
+
+  &>div {
+    margin: auto;
+  }
+
+  &>div>div {
+    margin: 0 auto;
+  }
 
   p {
     text-align: center;
@@ -21,10 +30,10 @@
   }
 
   .btn.btn-start {
-    width: 540px;
+    //width: 540px;
     height: 50px;
     letter-spacing: 0.4em;
     font-size: 30px;
-    margin-top: 100px;
+    margin-top: 75px;
   }
 }

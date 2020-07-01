@@ -61,8 +61,8 @@ function index(props) {
   };
 
   return (
-    <div className="login container">
-      <div className="col-xs-12 col-sm-6 col-md-4 block-center">
+    <div className="login row h-100">
+      <div className="col-12 col-md-6 col-lg-5 col-xl-4">
         <div className={'block-login'}>
           <span className={'block-name'}>{t(props.lang, 'Entry')}</span>
 

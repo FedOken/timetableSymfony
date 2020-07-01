@@ -22,25 +22,23 @@ function index(props) {
   });
 
   return (
-    <div className="container">
-      <div className={'row search'}>
-        <div className="col-xs-12 col-sm-6 col-md-4">
-          <div className={'block-search'}>
-            <span className={'block-name'}>{t(props.lang, 'Search')}</span>
-            <form>
-              <Tabs className={'tabs'} id={'search-tabs'}>
-                <TabsItem group={'group'} title={t(props.lang, 'Groups')} active={true} svg={iconUser}>
-                  <Group selUnOpt={unSelOpt} />
-                </TabsItem>
-                <TabsItem group={'teacher'} title={t(props.lang, 'Teachers')} svg={iconTeacher}>
-                  <Teacher selUnOpt={unSelOpt} />
-                </TabsItem>
-                <TabsItem group={'cabinet'} title={t(props.lang, 'Cabinets')} svg={iconUniversity}>
-                  <Cabinet selUnOpt={unSelOpt} />
-                </TabsItem>
-              </Tabs>
-            </form>
-          </div>
+    <div className={'search row h-100'}>
+      <div className="col-12 col-md-6 col-lg-5 col-xl-4">
+        <div className={'block-search'}>
+          <span className={'block-name'}>{t(props.lang, 'Search')}</span>
+          <form>
+            <Tabs className={'tabs'} id={'search-tabs'}>
+              <TabsItem group={'group'} title={t(props.lang, 'Groups')} active={true} svg={iconUser}>
+                <Group selUnOpt={unSelOpt} />
+              </TabsItem>
+              <TabsItem group={'teacher'} title={t(props.lang, 'Teachers')} svg={iconTeacher}>
+                <Teacher selUnOpt={unSelOpt} />
+              </TabsItem>
+              <TabsItem group={'cabinet'} title={t(props.lang, 'Cabinets')} svg={iconUniversity}>
+                <Cabinet selUnOpt={unSelOpt} />
+              </TabsItem>
+            </Tabs>
+          </form>
         </div>
       </div>
     </div>

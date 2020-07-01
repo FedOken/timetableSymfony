@@ -37,57 +37,51 @@ function index(props) {
   };
 
   return (
-    <div className="container">
-      <div className={'row business'}>
-        <div className={'col-8'}>
-          <p className={'title'}>{t(props.lang, 'And you can take part in the project')}!</p>
-          <p className={'description'}>{t(props.lang, 'Fill out the form below and you will be contacted shortly')}</p>
-          <form className={'contact-business'} onSubmit={(e) => handleSubmit(e)} autoComplete="off" noValidate>
-            <div className={'row form'}>
-              <div className={'col-4'}>
-                <div className={`form-group`}>
-                  <input
-                    className={'form-control input input-type-1 w-100'}
-                    placeholder={'Email'}
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    autoComplete={'off'}
-                    required
-                  />
-                  <span className={'error'} />
-                </div>
-                <div className={`form-group`}>
-                  <input
-                    className={'form-control input input-type-1 w-100'}
-                    placeholder={t(props.lang, 'Phone')}
-                    type="text"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    autoComplete={'off'}
-                  />
-                  <span className={'error'} />
-                </div>
-                <button type={'submit'} className={'btn btn-type-2 w-100'}>
-                  Отправить
-                </button>
-              </div>
-              <div className={'col-8'}>
-                <div className={`form-group`}>
-                  <textarea
-                    className={'form-control txt-area area-type-1'}
-                    placeholder={t(props.lang, 'Your message')}
-                    rows="5"
-                    onChange={(e) => setMessage(e.target.value)}
-                    required
-                  >
-                  </textarea>
-                  <span className={'error'} />
-                </div>
-              </div>
+    <div className={'business row h-100'}>
+      <div className={'col-12 col-lg-9 col-xl-8'}>
+        <p className={'title'}>{t(props.lang, 'And you can take part in the project')}!</p>
+        <p className={'description'}>{t(props.lang, 'Fill out the form below and you will be contacted shortly')}</p>
+        <form className={'contact-business row'} onSubmit={(e) => handleSubmit(e)} autoComplete="off" noValidate>
+          <div className={'col-4'}>
+            <div className={`form-group`}>
+              <input
+                className={'form-control input input-type-1 w-100'}
+                placeholder={'Email'}
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete={'off'}
+                required
+              />
+              <span className={'error'} />
             </div>
-          </form>
-        </div>
+            <div className={`form-group`}>
+              <input
+                className={'form-control input input-type-1 w-100'}
+                placeholder={t(props.lang, 'Phone')}
+                type="text"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                autoComplete={'off'}
+              />
+              <span className={'error'} />
+            </div>
+            <button type={'submit'} className={'btn btn-type-2 w-100'}>
+              {t(props.lang, 'Send')}
+            </button>
+          </div>
+          <div className={'col-8'}>
+            <div className={`form-group`}>
+              <textarea
+                className={'form-control txt-area area-type-1'}
+                placeholder={t(props.lang, 'Your message')}
+                rows="5"
+                onChange={(e) => setMessage(e.target.value)}
+                required></textarea>
+              <span className={'error'} />
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   );

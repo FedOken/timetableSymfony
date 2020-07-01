@@ -14,11 +14,13 @@ function index(props) {
   };
 
   return (
-    <div className="container">
-      <div className={'contact row h-100'}>
-        <p className={'title'}>{t(props.lang, 'Contact us')}</p>
+    <div className={'contact row h-100'}>
+      <div className={'w-100'}>
+        <div className="col-12">
+          <p className={'title'}>{t(props.lang, 'Contact us')}</p>
+        </div>
         <div className={'block_container'}>
-          <div className={'col-4 block_content'} onClick={() => redirect('/contact/business')}>
+          <div className={'col-12 col-md-4 col-lg-3 block_content'} onClick={() => redirect('/contact/business')}>
             <div className={'image'}>
               {iconBusiness}
               {iconBusiness}
@@ -28,10 +30,10 @@ function index(props) {
               <p className={'hidden'}>{t(props.lang, 'For business matters')}</p>
             </div>
           </div>
-          <div className={'between'}>
+          <div className={'col-1 between'}>
             <p>{t(props.lang, 'or')}</p>
           </div>
-          <div className={'col-4 block_content'} onClick={() => redirect('/contact/technical')}>
+          <div className={'col-12 col-md-4 col-lg-3 block_content'} onClick={() => redirect('/contact/technical')}>
             <div className={'image'}>
               {iconCog}
               {iconCog}

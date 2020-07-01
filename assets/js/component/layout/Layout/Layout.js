@@ -29,7 +29,7 @@ function index(props) {
 
   return (
     <Router>
-      <div className={'content'}>
+      <div className={'content container'}>
         <Header />
         <main>
           <Switch>

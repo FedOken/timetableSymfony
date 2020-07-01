@@ -4,7 +4,7 @@
 @import "../../../../css/variable/form_control";
 
 $footer-height: 65px;
-$header-height: 125px;
+$header-height: 145px;
 
 * {
   margin: 0;
@@ -46,8 +46,11 @@ body {
     height: 100%;
   }
 
-  header {
+  .header {
     height: $header-height;
+    &.only_logo {
+      height: $header-height + 85px;
+    }
   }
 
   .content {
@@ -56,14 +59,12 @@ body {
     flex-direction: column;
 
     main {
-      display: flex;
       flex: 1 0 auto;
-      //min-height: calc(100% - #{$footer-height} - #{$header-height});
       position: relative;
     }
   }
 
-  footer {
+  .footer {
     height: $footer-height;
   }
 
