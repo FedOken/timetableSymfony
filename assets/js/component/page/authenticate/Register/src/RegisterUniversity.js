@@ -23,9 +23,7 @@ function index(props) {
     formData.set('code', code);
     formData.set('User[email]', email);
     formData.set('User[password]', password);
-
     createUniversityUser(props.lang, formData).then((res) => {
-      console.log(res.error);
       if (res.status) redirect(`/register/confirm-email-send/${res.data}`);
       else alert('error', t(props.lang, res.error));
     });

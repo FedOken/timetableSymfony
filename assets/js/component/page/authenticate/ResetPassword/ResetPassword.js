@@ -20,6 +20,7 @@ function index(props) {
 
     let formData = new FormData();
     formData.set('email', email);
+    formData.set('lang', props.lang);
 
     userResetPassword(props.lang, formData).then((res) => {
       if (!res.status) alert('error', t(props.lang, res.error));

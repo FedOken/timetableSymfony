@@ -4,6 +4,7 @@ namespace App\Controller\API\Handler;
 
 use App\Entity\Building;
 use App\Entity\Contact;
+use App\Entity\SendGridTemplate;
 use App\Entity\User;
 use App\Repository\BuildingRepository;
 use App\Repository\ContactRepository;
@@ -25,6 +26,7 @@ class ContactHandler extends BaseHandler
             $this->em->persist($model);
             $this->em->flush();
 
+            $this->sendContactEmail($model);
             return [
                 'status' => true,
             ];
@@ -34,5 +36,21 @@ class ContactHandler extends BaseHandler
                 'error' => $e->getMessage()
             ];
         }
+    }
+
+    /**
+     * @param Contact $model
+     * @return bool
+     * @throws \SendGrid\Mail\TypeException
+     */
+    private function sendContactEmail($model): bool
+    {
+        $title = $model->type == Contact::TYPE_BUSINESS ? 'New business message' : 'New technical message';
+        return $this->mailer->send(SendGridTemplate::ADMIN_EMAIL, 'new-contact-letter', [
+            'title' => $title,
+            'message' => $model->message,
+            'phone' => $model->phone,
+            'email' => $model->email,
+        ], 'agoodminute@gmail.com');
     }
 }

@@ -124,6 +124,14 @@ class MainController extends AbstractController
     }
 
     /**
+     * @Route("/register/confirm-email/{code}", name="register-confirmEmail")
+     */
+    public function registerConfirmEmail(string $code)
+    {
+        return $this->render('welcome/index.html.twig');
+    }
+
+    /**
      * @Route("/term-of-use", name="termOfUse")
      */
     public function termOfUse()

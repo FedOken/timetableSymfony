@@ -138,6 +138,7 @@ function index(props) {
         onChange={(data) => {
           selUnOnChange(data);
         }}
+        isDisabled={isEmpty(props.selUnOpt)}
       />
       <Select
         options={selBldngOpt}

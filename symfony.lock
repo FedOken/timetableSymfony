@@ -151,6 +151,12 @@
     "psr/log": {
         "version": "1.1.0"
     },
+    "sendgrid/php-http-client": {
+        "version": "3.10.8"
+    },
+    "sendgrid/sendgrid": {
+        "version": "7.6.0"
+    },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
         "recipe": {
@@ -162,6 +168,9 @@
         "files": [
             "./config/packages/sensio_framework_extra.yaml"
         ]
+    },
+    "starkbank/ecdsa": {
+        "version": "0.0.4"
     },
     "swiftmailer/swiftmailer": {
         "version": "v6.2.1"

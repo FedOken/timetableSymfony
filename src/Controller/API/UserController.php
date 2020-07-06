@@ -142,6 +142,15 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route("/api/user/confirm-email", name="api-user-confirmEmail")
+     */
+    public function apiUserConfirmEmail()
+    {
+        $data = $this->handler->emailConfirmation();
+        return new JsonResponse($data);
+    }
+
+    /**
      * @Route("/api/user/create-party-user", name="api-user-createPartyUser")
      */
     public function apiUserCreatePartyUser()

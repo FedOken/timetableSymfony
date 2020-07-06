@@ -112,6 +112,7 @@ function index(props) {
         onChange={(data) => {
           selUnOnChange(data);
         }}
+        isDisabled={isEmpty(props.selUnOpt)}
       />
       <Select
         name="group-select"

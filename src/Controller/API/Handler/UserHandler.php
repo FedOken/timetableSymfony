@@ -165,18 +165,10 @@ class UserHandler extends BaseHandler
                     $model->party = $this->em->getRepository(Party::class)->find($modelId);
                     break;
             }
-
             $this->em->persist($model);
             $this->em->flush();
 
-            if ($this->sendConfirmEmailStep2($model)) {
-                return [
-                    'status' => true,
-                    'data' => $model->code,
-                ];
-            } else {
-                throw new Exception('Something failed. Email not sent.');
-            }
+            return ['status' => true, 'data' => $model->code];
         } catch (Exception $e) {
             return [
                 'status' => false,
@@ -191,10 +183,38 @@ class UserHandler extends BaseHandler
             $user = $this->em->getRepository(User::class)->findOneBy(['code' => $code]);
             if (!$user) throw new Exception('User not found!');
 
-            $data = $this->sendConfirmEmailStep2($user);
+            $lang = $this->request->query->get('lang');
+            if (!$lang) throw new \Exception("Lang code not set.");
+            $lang = explode('-', $lang)[0];
+
+            if ($this->sendConfirmEmailStep2($user, $lang)) {
+                return ['status' => true];
+            } else {
+                throw new Exception('Something failed. Email not sent.');
+            }
+        } catch (Exception $e) {
             return [
-                'status' => true,
+                'status' => false,
+                'error' => $e->getMessage()
             ];
+        }
+    }
+
+    public function emailConfirmation(): array
+    {
+        try {
+            $code = $this->request->query->get('code');
+            if (!$code) throw new Exception('Wrong validation code!');
+            /** @var User $user*/
+            $user = $this->em->getRepository(User::class)->findOneBy(['check_email_code' => $code]);
+            if (!$user) throw new Exception('This link is no longer valid!');
+
+            $user->status = User::STATUS_ACTIVE;
+            $user->check_email_code = null;
+            $this->em->persist($user);
+            $this->em->flush();
+
+            return ['status' => true];
         } catch (Exception $e) {
             return [
                 'status' => false,
@@ -209,17 +229,23 @@ class UserHandler extends BaseHandler
             $email = $this->request->request->get('email');
             $model =$this->em->getRepository(User::class)->findOneBy(['email' => $email]);
 
-            if (!$model) throw new \Exception("User with email $email not found.");
+            if (!$model) throw new \Exception("User with this email not found");
 
+            $newPassword = $this->strService->genRanStr(4);
             /**@var $model User */
-            $model->reset_password_code = $this->strService->genRanStrEntity(10, User::class, 'reset_password_code');
+            $model->password = (new NativePasswordEncoder())->encodePassword($newPassword, null);
+
             $this->em->persist($model);
             $this->em->flush();
 
-            if ($this->sendResetEmail()) {
+            $lang = $this->request->request->get('lang');
+            if (!$lang) throw new \Exception("Lang code not set.");
+            $lang = explode('-', $lang)[0];
+
+            if ($this->sendResetPasswordEmail($newPassword, $model, $lang)) {
                 return ['status' => true];
             }
-            return ['status' => false];
+            return ['status' => false, 'error' => 'Something failed. Email not sent.'];
         } catch (\Exception $e) {
             return [
                 'status' => false,
@@ -231,15 +257,30 @@ class UserHandler extends BaseHandler
 
 
 
-
-    private function sendResetEmail(): bool
+    /**
+     * @param string $newPassword
+     * @param User $user
+     * @param string $lang
+     * @return bool
+     * @throws \SendGrid\Mail\TypeException
+     */
+    private function sendResetPasswordEmail(string $newPassword, $user, string $lang): bool
     {
-        return true;
+        $url = $this->router->generate('login');
+        $url = $this->request->getScheme().'://'.$this->request->getHost().$url;
+        return $this->mailer->send($user->email, "reset-password-{$lang}", ['password' => $newPassword, 'link' => $url]);
     }
 
-    private function sendConfirmEmailStep2($user): bool
+    /**
+     * @param User $user
+     * @return bool
+     * @throws \SendGrid\Mail\TypeException
+     */
+    private function sendConfirmEmailStep2($user, string $lang): bool
     {
-        return true;
+        $url = $this->router->generate('register-confirmEmail', ['code' => $user->check_email_code]);
+        $url = $this->request->getScheme().'://'.$this->request->getHost().$url;
+        return $this->mailer->send($user->email, "confirm-email-{$lang}", ['link' => $url]);
     }
 
     private function getRelations($user): array
@@ -309,16 +350,16 @@ class UserHandler extends BaseHandler
     private function validateUser(User $model, string $role): void
     {
         $existModelEmail = $this->em->getRepository(User::class)->findOneBy(['email' => $model->email]);
-        if ($existModelEmail) throw new \Exception("Email $model->email has already been taken.");
+        if ($existModelEmail) throw new \Exception("This email has already been taken");
 
         $existModelCode = $this->em->getRepository(User::class)->findOneBy(['access_code' => $model->access_code]);
         if ($existModelCode) {
             switch ($role) {
                 case PartyAccess::getAccessRole():
-                    throw new \Exception("This group already have administrator.");
+                    throw new \Exception("This group already have administrator");
                     break;
                 case TeacherAccess::getAccessRole():
-                    throw new \Exception("This teacher already register.");
+                    throw new \Exception("This teacher already register");
                     break;
                 case UniversityAccess::getAccessRole():
                 case FacultyAccess::getAccessRole():

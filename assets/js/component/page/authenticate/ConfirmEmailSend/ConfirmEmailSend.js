@@ -11,7 +11,7 @@ function index(props) {
   let params = useParams();
 
   useEffect(() => {
-    sendConfirmLetter(props.lang, params.code);
+    sendConfirmLetter(props.lang, params.code, {lang: props.lang});
   }, []);
 
   const redirect = (url) => {

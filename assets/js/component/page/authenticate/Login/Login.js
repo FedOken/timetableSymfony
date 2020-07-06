@@ -47,7 +47,7 @@ function index(props) {
         props.loadUserModel();
         redirect('/profile');
       } else {
-        alert('error', res.error);
+        alert('error', t(props.lang, res.error));
         if (res.errorCode === 101) {
           redirect(`/register/confirm-email-send/${res.code}`);
         }

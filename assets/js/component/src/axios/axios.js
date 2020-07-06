@@ -63,11 +63,23 @@ export async function sendContactLetter(lang, postData) {
  * API:
  * @param {string} lang
  * @param {string} code
+ * @param {object} params
  * @returns {Promise<[]>}
  */
-export async function sendConfirmLetter(lang, code) {
-  let url = generateUrl(`/api/user/confirm-email-send/${code}`);
+export async function sendConfirmLetter(lang, code, params) {
+  let url = generateUrl(`/api/user/confirm-email-send/${code}`, params);
   return await baseAxios(lang, url, true, 'GET');
+}
+
+/**
+ * API:
+ * @param {string} lang
+ * @param {object} params
+ * @returns {Promise<[]>}
+ */
+export async function confirmUserViaEmailCode(lang, params) {
+  let url = generateUrl(`/api/user/confirm-email`, params);
+  return await baseAxios(lang, url, true, 'GET', {}, true);
 }
 
 /**
@@ -78,7 +90,7 @@ export async function sendConfirmLetter(lang, code) {
  */
 export async function createPartyUser(lang, postData) {
   let url = generateUrl(`/api/user/create-party-user`);
-  return await baseAxios(lang, url, true, 'POST', postData);
+  return await baseAxios(lang, url, true, 'POST', postData, true);
 }
 
 /**

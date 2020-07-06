@@ -27,7 +27,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @property EntityManagerInterface $em
  */
-class ConsoleCommand extends Command
+class ClearRelationCommand extends Command
 {
     protected static $defaultName = 'app:clear-relations';
 

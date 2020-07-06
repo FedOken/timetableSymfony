@@ -15,6 +15,7 @@ import ResetPasswordEmailSend from '../../page/authenticate/ResetPasswordEmailSe
 import ResetPassword from '../../page/authenticate/ResetPassword/ResetPassword';
 import Profile from '../../page/profile/Profile/Profile';
 import TermOfUse from '../../page/rule/TermOfUse/TermOfUse';
+import ConfirmEmail from '../../page/authenticate/ConfirmEmail/ConfirmEmail';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {loadUserModel} from '../../../redux/actions/user';
@@ -40,6 +41,7 @@ function index(props) {
             <Route path="/schedule/:type/:id" render={() => <Schedule key={props.loc.key} />} />
             <Route path="/contact" component={Contact} />
             <Route path="/login" component={Login} />
+            <Route path="/register/confirm-email/:code" component={ConfirmEmail} />
             <Route path="/register/confirm-email-send/:code" component={ConfirmEmailSend} />
             <Route path="/register" component={Register} />
             <Route path="/reset-password/email-send" component={ResetPasswordEmailSend} />

@@ -9,6 +9,7 @@ import {withRouter} from 'react-router-dom';
 import {loadPartiesByUniversity} from '../../../../../redux/actions/party';
 import {t} from '../../../../src/translate/translate';
 import {createPartyUser} from '../../../../src/axios/axios';
+import {alert} from '../../../../src/Alert/Alert';
 
 function index(props) {
   const [selUnVal, setSelUnVal] = useState();
@@ -58,7 +59,8 @@ function index(props) {
     formData.set('User[password]', password);
 
     createPartyUser(props.lang, formData).then((res) => {
-      redirect(`/register/confirm-email-send/${res}`);
+      if (res.status) redirect(`/register/confirm-email-send/${res.data}`);
+      else alert('error', t(props.lang, res.error));
     });
   };
 
@@ -73,6 +75,7 @@ function index(props) {
         options={props.selUnOpt}
         placeholder={t(props.lang, 'Select university')}
         className={'select select-type-1 ' + (isEmpty(props.selUnOpt) ? 'disabled' : '')}
+        isDisabled={isEmpty(props.selUnOpt)}
         onChange={(data) => {
           selUnOnChange(data);
         }}
