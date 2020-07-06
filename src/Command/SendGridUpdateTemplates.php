@@ -1,25 +1,9 @@
 <?php
 namespace App\Command;
 
-use App\Entity\Base\SendGridTemplateBase;
-use App\Entity\Building;
-use App\Entity\Cabinet;
-use App\Entity\Course;
-use App\Entity\Faculty;
-use App\Entity\Party;
-use App\Entity\Schedule;
 use App\Entity\SendGridTemplate;
-use App\Entity\Teacher;
-use App\Entity\UniversityTime;
-use App\Entity\Week;
 use App\Helper\ArrayHelper;
-use App\Repository\BuildingRepository;
-use App\Repository\CabinetRepository;
-use App\Repository\FacultyRepository;
-use App\Repository\PartyRepository;
-use App\Repository\ScheduleRepository;
 use App\Repository\SendGridTemplateRepository;
-use App\Repository\TeacherRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
