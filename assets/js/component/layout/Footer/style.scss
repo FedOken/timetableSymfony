@@ -6,15 +6,26 @@ $logoPadding: 5px;
 
 .footer {
   transition: $transitionDuration all ease;
-
-  display: flex;
-  justify-content: space-between;
-  width: 540px;
-  margin: 50px auto 0 auto;
+  margin-top: 50px;
   @include font-12;
 
-  @media (max-width: 575px) {
-    width: 100%;
+  .container-block {
+    display: flex;
+    justify-content: center;
+  }
+
+  .mobile-bot_block {
+    text-align: center;
+    margin-top: 10px;
+    display: none;
+
+    p {
+      margin-top: 5px;
+    }
+
+    @media (max-width: 575px) {
+      display: block;
+    }
   }
 
   .logo_block {
@@ -22,10 +33,12 @@ $logoPadding: 5px;
 
     svg {
       width: $logoWidth;
+      height: 58px;
       fill: $primary_100;
 
       @media (max-width: 575px) {
-        width: 70px;
+        width: 66px;
+        height: 45px;
       }
     }
   }
@@ -36,7 +49,7 @@ $logoPadding: 5px;
     width: calc((100% - #{$logoWidth} - #{$logoPadding} - #{$logoPadding})/2);
 
     @media (max-width: 575px) {
-      width: 105px
+      width: 107px
     }
 
     .top_block {
@@ -102,6 +115,7 @@ $logoPadding: 5px;
     .top_block {
       min-height: 37px;
       padding-bottom: 5px;
+      border-bottom: 2px solid $primary_100;
 
       @media (max-width: 575px) {
         min-height: 30px
@@ -109,11 +123,10 @@ $logoPadding: 5px;
     }
 
     .bot_block {
-      border-top: 2px solid $primary_100;
       padding-top: 5px;
 
       @media (max-width: 575px) {
-        padding-bottom: 5px;
+        display: none;
       }
 
       a:hover {

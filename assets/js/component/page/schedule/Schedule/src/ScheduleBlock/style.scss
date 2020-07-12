@@ -15,7 +15,7 @@ $duration: 0.25s;
   transition-duration: $duration;
   opacity: 0;
   visibility: hidden;
-  max-width: calc(100% - 30px);
+  max-width: 100%;
 }
 
 %lesson-type-colors {
@@ -129,20 +129,32 @@ $duration: 0.25s;
 
     &.teacher_info {
       @extend  %info-block;
-      left: 15px;
+      left: 0px;
       text-align: left;
     }
 
     &.cabinet_info {
       @extend  %info-block;
-      left: 15px;
+      left: 0px;
       text-align: left;
     }
 
     &.lesson_type_info {
       @extend  %info-block;
-      right: 15px;
+      right: 0px;
       text-align: right;
+    }
+  }
+
+  &:last-child {
+    .info {
+      top: unset;
+      bottom: 36px;
+
+      &.active {
+        top: unset;
+        bottom: 36px;
+      }
     }
   }
 }

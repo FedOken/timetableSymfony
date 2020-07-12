@@ -46,38 +46,48 @@ function Footer(props) {
   };
 
   return (
-    <footer className={'footer'}>
-      <div className={'text_block left'}>
-        <div className={'top_block'}>
-          <span onClick={() => redirect('/term-of-use')}>{t(props.lang, 'Term of Use')}</span>
-        </div>
-        <div className={'bot_block'}>
-          <p>
-            <a href="https://www.facebook.com/agooodminute/" target={'_blanc'}>
-              {t(props.lang, 'Invented and developed by FedOk')}
-            </a>
-          </p>
-        </div>
-      </div>
-      <div className={'logo_block'}>{iconLogo}</div>
-      <div className={'text_block right'}>
-        <div className={'top_block'}>
-          <div className={'lang'} onClick={clickLang}>
-            <span code={'en-GB'} onClick={(e) => changeLanguage(e)}>
-              en
-            </span>
-            <span code={'ru-RU'} onClick={(e) => changeLanguage(e)}>
-              ru
-            </span>
-            <span code={'ua-UA'} onClick={(e) => changeLanguage(e)}>
-              ua
-            </span>
-            {iconEarth}
+    <footer className={'footer row'}>
+      <div className={'container-block col-12 col-md-6 offset-md-3'}>
+        <div className={'text_block left'}>
+          <div className={'top_block'}>
+            <span onClick={() => redirect('/term-of-use')}>{t(props.lang, 'Term of Use')}</span>
+          </div>
+          <div className={'bot_block'}>
+            <p>
+              <a href="https://www.facebook.com/agooodminute/" target={'_blanc'}>
+                {t(props.lang, 'Invented and developed by FedOk')}
+              </a>
+            </p>
           </div>
         </div>
-        <div className={'bot_block'}>
-          <p>© 2020. {t(props.lang, 'All rights reserved')}</p>
+        <div className={'logo_block'}>{iconLogo}</div>
+        <div className={'text_block right'}>
+          <div className={'top_block'}>
+            <div className={'lang'} onClick={clickLang}>
+              <span code={'en-GB'} onClick={(e) => changeLanguage(e)}>
+                en
+              </span>
+              <span code={'ru-RU'} onClick={(e) => changeLanguage(e)}>
+                ru
+              </span>
+              <span code={'ua-UA'} onClick={(e) => changeLanguage(e)}>
+                ua
+              </span>
+              {iconEarth}
+            </div>
+          </div>
+          <div className={'bot_block'}>
+            <p>
+              © {new Date().getFullYear()}. {t(props.lang, 'All rights reserved')}
+            </p>
+          </div>
         </div>
+      </div>
+      <div className={'col-12 mobile-bot_block'}>
+        <p>{t(props.lang, 'Invented and developed by FedOk')}</p>
+        <p>
+          © {new Date().getFullYear()}. {t(props.lang, 'All rights reserved')}
+        </p>
       </div>
     </footer>
   );
