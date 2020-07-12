@@ -11,7 +11,11 @@ $logoPadding: 5px;
   justify-content: space-between;
   width: 540px;
   margin: 50px auto 0 auto;
-  font-size: 12px;
+  @include font-12;
+
+  @media (max-width: 575px) {
+    width: 100%;
+  }
 
   .logo_block {
     padding: 0 $logoPadding;
@@ -19,6 +23,10 @@ $logoPadding: 5px;
     svg {
       width: $logoWidth;
       fill: $primary_100;
+
+      @media (max-width: 575px) {
+        width: 70px;
+      }
     }
   }
 
@@ -26,6 +34,10 @@ $logoPadding: 5px;
     display: flex;
     flex-direction: column;
     width: calc((100% - #{$logoWidth} - #{$logoPadding} - #{$logoPadding})/2);
+
+    @media (max-width: 575px) {
+      width: 105px
+    }
 
     .top_block {
       display: flex;
@@ -43,7 +55,6 @@ $logoPadding: 5px;
     &.right {
       .top_block {
         align-items: flex-end;
-        padding-bottom: 5px;
       }
 
       .lang {
@@ -68,7 +79,6 @@ $logoPadding: 5px;
         }
 
         span {
-          font-size: 14px;
           cursor: pointer;
           position: absolute;
           top: 0;
@@ -91,10 +101,20 @@ $logoPadding: 5px;
 
     .top_block {
       min-height: 37px;
+      padding-bottom: 5px;
+
+      @media (max-width: 575px) {
+        min-height: 30px
+      }
     }
 
     .bot_block {
       border-top: 2px solid $primary_100;
+      padding-top: 5px;
+
+      @media (max-width: 575px) {
+        padding-bottom: 5px;
+      }
 
       a:hover {
         color: $selection_100;

@@ -26,10 +26,8 @@ function DayBlock(props) {
   }, []);
 
   return (
-    <div className={'col-2'}>
-      <div className={'block-day'} opacity={opacity}>
-        <span>{t(props.lang, day.name_full, true)}</span>
-      </div>
+    <div className={'block-day'} opacity={opacity}>
+      <span>{t(props.lang, day.name_full, true)}</span>
     </div>
   );
 }

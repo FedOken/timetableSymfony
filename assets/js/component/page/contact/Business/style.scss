@@ -13,6 +13,10 @@
   .title {
     @include font-45;
     letter-spacing: -1px;
+
+    @media (max-width: 575px) {
+      @include font-35;
+    }
   }
 
   form {
@@ -31,5 +35,27 @@
     @include font-25;
     font-weight: normal;
     margin: 10px 0 30px 0;
+
+    @media (max-width: 575px) {
+      @include font-20;
+    }
+  }
+
+  .btn.btn-type-2 {
+    &.not-mobile-btn{
+      display: block;
+
+      @media (max-width: 575px) {
+        display: none;
+      }
+    }
+
+    &.mobile-btn {
+      display: none;
+
+      @media (max-width: 575px) {
+        display: block;
+      }
+    }
   }
 }

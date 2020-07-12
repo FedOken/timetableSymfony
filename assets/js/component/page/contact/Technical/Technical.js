@@ -41,7 +41,7 @@ function index(props) {
         <p className={'title'}>{t(props.lang, 'Did you find a mistake or know how to do better?')}</p>
         <p className={'description'}>{t(props.lang, 'Describe as much as possible, we will answer you')}</p>
         <form className={'contact-technical row'} onSubmit={(e) => handleSubmit(e)} autoComplete="off" noValidate>
-          <div className={'col-4'}>
+          <div className={'col-12 col-md-4'}>
             <div className={`form-group`}>
               <input
                 className={'form-control input input-type-1 w-100'}
@@ -65,11 +65,11 @@ function index(props) {
               />
               <span className={'error'} />
             </div>
-            <button type={'submit'} className={'btn btn-type-2 w-100'}>
+            <button type={'submit'} className={'btn btn-type-2 w-100 not-mobile-btn'}>
               {t(props.lang, 'Send')}
             </button>
           </div>
-          <div className={'col-8'}>
+          <div className={'col-12 col-md-8'}>
             <div className={`form-group`}>
               <textarea
                 className={'form-control txt-area area-type-1'}
@@ -79,6 +79,11 @@ function index(props) {
                 required></textarea>
               <span className={'error'} />
             </div>
+          </div>
+          <div className={'col-12'}>
+            <button type={'submit'} className={'btn btn-type-2 w-100 mobile-btn'}>
+              {t(props.lang, 'Send')}
+            </button>
           </div>
         </form>
       </div>

@@ -4,6 +4,11 @@
   padding-top: 15px;
   padding-bottom: 50px;
 
+  @media (max-width: 575px) {
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+
   &>div {
     margin: auto;
   }
@@ -20,6 +25,10 @@
     @include font-60;
     font-weight: bold;
     color: $selection_100;
+    
+    @media (max-width: 575px) {
+      @include font-35;
+    }
   }
 
   .description {
@@ -27,6 +36,10 @@
     @include flex-jk_center-fd_column;
     font-weight: bold;
     margin-top: 20px;
+
+    @media (max-width: 575px) {
+      @include font-20;
+    }
   }
 
   .btn.btn-start {
@@ -35,5 +48,11 @@
     letter-spacing: 0.4em;
     font-size: 30px;
     margin-top: 75px;
+
+    @media (max-width: 575px) {
+      margin-top: 40px;
+      height: 40px;
+      font-size: 20px;
+    }
   }
 }

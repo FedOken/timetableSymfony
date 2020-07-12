@@ -84,7 +84,8 @@ function ScheduleBlock(props) {
     } else {
       return (
         <span>
-          ауд. {cabinet.name}<br />
+          ауд. {cabinet.name}
+          <br />
           {building.name_full} ({building.name})<br />
           {building.address}
         </span>
@@ -101,7 +102,7 @@ function ScheduleBlock(props) {
   };
 
   return (
-    <div className={`col-2 block-schedule-container`}>
+    <div className={`block-schedule-container`}>
       <div className={`block-schedule-main`}>
         <div className={'block-lesson'}>
           <p>{truncate(lesson, 36)}</p>

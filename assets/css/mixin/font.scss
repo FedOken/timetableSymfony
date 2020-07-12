@@ -2,6 +2,11 @@
   font-family: 'Neucha', sans-serif;
 }
 
+@mixin font-12 {
+  font-size: 12px;
+  line-height: 13px;
+}
+
 @mixin font-16 {
   font-size: 16px;
   line-height: 18px;
@@ -30,6 +35,12 @@
 @mixin font-30 {
   font-size: 30px;
   line-height: 33px;
+}
+
+
+@mixin font-35 {
+  font-size: 35px;
+  line-height: 39px;
 }
 
 @mixin font-45 {

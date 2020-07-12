@@ -13,15 +13,23 @@ $transitionDuration: 0.2s;
 
   p {
     text-align: center;
-    font-size: 25px;
+    @include font-25;
     line-height: 28px;
     font-weight: bold;
+
+    @media (max-width: 575px) {
+      @include font-20;
+    }
   }
 
   .title {
-    font-size: 45px;
+    @include font-45;
     line-height: 50px;
     margin-bottom: 30px;
+
+    @media (max-width: 575px) {
+      @include font-35;
+    }
   }
 
   .block_container {
@@ -40,6 +48,10 @@ $transitionDuration: 0.2s;
         height: 150px;
         width: auto;
         fill: $primary_100;
+
+        @media (max-width: 575px) {
+          height: 100px;
+        }
       }
 
       .text {
@@ -49,6 +61,10 @@ $transitionDuration: 0.2s;
         height: 30px;
         overflow: hidden;
         margin-top: 15px;
+
+        @media (max-width: 575px) {
+          height: 45px;
+        }
 
         p {
           position: absolute;
@@ -74,6 +90,10 @@ $transitionDuration: 0.2s;
         align-items: center;
         height: 150px;
         overflow: hidden;
+
+        @media (max-width: 575px) {
+          height: 100px;
+        }
 
         svg {
           position: absolute;
@@ -117,6 +137,10 @@ $transitionDuration: 0.2s;
     .between {
       margin: auto 0;
       padding-bottom: 30px;
+
+      @media (max-width: 575px) {
+        display: none;
+      }
       //position: absolute;
       //top: 60px;
       //width: 100%;

@@ -20,7 +20,7 @@ function index(props) {
           <p className={'title'}>{t(props.lang, 'Contact us')}</p>
         </div>
         <div className={'block_container'}>
-          <div className={'col-12 col-md-4 col-lg-3 block_content'} onClick={() => redirect('/contact/business')}>
+          <div className={'col-6 col-md-4 col-lg-3 block_content'} onClick={() => redirect('/contact/business')}>
             <div className={'image'}>
               {iconBusiness}
               {iconBusiness}
@@ -33,7 +33,7 @@ function index(props) {
           <div className={'col-1 between'}>
             <p>{t(props.lang, 'or')}</p>
           </div>
-          <div className={'col-12 col-md-4 col-lg-3 block_content'} onClick={() => redirect('/contact/technical')}>
+          <div className={'col-6 col-md-4 col-lg-3 block_content'} onClick={() => redirect('/contact/technical')}>
             <div className={'image'}>
               {iconCog}
               {iconCog}

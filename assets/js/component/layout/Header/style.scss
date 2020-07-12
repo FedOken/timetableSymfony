@@ -10,10 +10,18 @@ header.header {
   padding: 15px;
   margin-bottom: 40px;
 
+  @media (max-width: 575px) {
+    margin-bottom: 50px;
+  }
+
   &.only_logo svg {
     fill: $primary_100;
     height: 200px;
     background: $background;
+
+    @media (max-width: 575px) {
+      height: 150px;
+    }
   }
 
   .header_item {
@@ -115,6 +123,10 @@ header.header {
   .header_item_logo {
     margin: 0 10px;
     cursor: pointer;
+
+    @media (max-width: 575px) {
+      display: none;
+    }
 
     svg {
       height: 110px;

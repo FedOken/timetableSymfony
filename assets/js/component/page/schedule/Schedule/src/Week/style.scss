@@ -1,8 +1,132 @@
-.week {
-  margin-top: 100px;
+@mixin new-col($width) {
+  -ms-flex: 0 0 $width;
+  flex: 0 0 $width;
+  max-width: $width;
 
-  &:last-child {
-    margin-top: 50px;
-    margin-bottom: 100px;
+  &:first-child, &:last-child{
+    -ms-flex: 0 0 calc(#{$width} - 15px);
+    flex: 0 0 calc(#{$width} - 15px);
+    max-width: calc(#{$width} - 15px);
   }
+  &:first-child {
+    padding-left: 0;
+  }
+  &:last-child {
+    padding-right: 0;
+  }
+}
+
+.week {
+  margin-top: 50px;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  .time-container {
+    margin-top: 40px;
+
+    @media (max-width: 575px) {
+      &.last {
+        display: none;
+      }
+    }
+  }
+
+  .main-sch-container {
+    display: flex;
+    padding: 0 0 20px 0;
+    margin: 0 15px;
+    overflow-x: auto;
+    overflow-y: hidden ;
+
+    @media (max-width: 575px) {
+      margin: 0 5px;
+
+      &.col-9 {
+        -ms-flex: 0 0 calc(75% - 10px);
+        flex: 0 0 calc(75% - 10px);
+        max-width: calc(75% - 10px);
+      }
+    }
+
+    @media (min-width: 576px) and (max-width: 991px) {
+      &.col-sm-8 {
+        -ms-flex: 0 0 calc(66.666667% - 30px);
+        flex: 0 0 calc(66.666667% - 30px);
+        max-width: calc(66.666667% - 30px);
+      }
+    }
+
+    @media (min-width: 992px) and (max-width: 1199px) {
+      &.col-lg-10 {
+        -ms-flex: 0 0 calc(83.333333% - 30px);
+        flex: 0 0 calc(83.333333% - 30px);
+        max-width: calc(83.333333% - 30px);
+      }
+    }
+
+    @media (min-width: 1200px) {
+      & {
+        margin: 0;
+      }
+    }
+
+  }
+
+  .col-xl-2_4, .col-lg-3_5, .col-md-4_8 {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  @media (max-width: 575px) {
+    .col-3, .col-11-c, .title-container.col-9 {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    .row {
+      margin-left: -5px;
+      margin-right: -5px;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .col-10-c {
+      @include new-col(83.333333%);
+    }
+    .col-11-c {
+      @include new-col(91.666667%);
+    }
+  }
+
+  @media (min-width: 576px) and (max-width: 767px) {
+    .col-sm-8-c {
+      @include new-col(66.666667%);
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    .col-md-4_8 {
+      @include new-col(40%);
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1199px)  {
+    .col-lg-3_5 {
+      @include new-col(29.16666666666667%);
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .col-xl-2_4 {
+      -ms-flex: 0 0 20%;
+      flex: 0 0 20%;
+      max-width: 20%;
+    }
+  }
+
+
 }

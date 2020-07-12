@@ -7,6 +7,12 @@
   font-size: 20px;
   background: #ffffff;
 
+  @media (max-width: 575px) {
+    flex-direction: column;
+    padding: 10px;
+    height: auto;
+  }
+
   span:first-child {
     display: block;
     min-width: max-content;
@@ -14,11 +20,25 @@
     color: $selection_100;
     padding: 0 10px;
     border-right: 2px solid $primary_100;
+
+    @media (max-width: 575px) {
+      border-right: none;
+      border-bottom: 1px solid $primary_100;
+      width: 100%;
+      padding-bottom: 5px;
+      text-align: center;
+    }
   }
   span:last-child {
     width: 100%;
     text-align: center;
     font-weight: bold;
+
+    @media (max-width: 575px) {
+      padding-top: 5px;
+    }
   }
+
+
 
 }

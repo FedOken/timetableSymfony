@@ -23,7 +23,8 @@ function index(props) {
     });
   }, []);
 
-  const renderDays = () => {
+  /** Render weeks. Main render. */
+  const renderWeeks = () => {
     if (isEmpty(data)) return;
     return Object.keys(data.weeks).map((key) => {
       return <Week key={key} week={data.weeks[key]} model={data.model} type={type} />;
@@ -35,6 +36,7 @@ function index(props) {
     props.history.push(url);
   };
 
+  /** Show nothing not found */
   if (isEmpty(data) || isEmpty(data.weeks)) {
     return (
       <div className="schedule container not-found">
@@ -45,7 +47,8 @@ function index(props) {
       </div>
     );
   }
-  return <div className="schedule container">{renderDays()}</div>;
+  /** Main return */
+  return <div className="schedule">{renderWeeks()}</div>;
 }
 
 const mapToProps = (state) => {

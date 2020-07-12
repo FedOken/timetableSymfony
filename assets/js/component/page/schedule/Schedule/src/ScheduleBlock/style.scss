@@ -4,7 +4,7 @@ $duration: 0.25s;
 
 %info-block {
   position: absolute;
-  top: 102px;
+  top: 93px;
   border: 1px solid $selection_75;
   color: $selection_100;
   z-index: 20;
@@ -35,6 +35,7 @@ $duration: 0.25s;
 }
 
 .block-schedule-container {
+  position: relative;
 
   .block-schedule-main {
     border: 1px solid $primary_100;
