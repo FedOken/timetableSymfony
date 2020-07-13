@@ -24,8 +24,11 @@ function BlockTemplate(props) {
     }, 300);
   };
 
+  let classes = '';
+  if (props.type === 'teacher') classes = 'col-6 col-md-6 col-lg-4';
+  else classes = 'col-4 col-md-3 col-lg-3 col-xl-2';
   return (
-    <div className={'block_template'}>
+    <div className={`block_template ${classes}`}>
       <p className={'title'}>{props.letter.toUpperCase()}</p>
       <div>{renderElements()}</div>
     </div>

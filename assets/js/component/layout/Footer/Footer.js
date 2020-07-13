@@ -47,7 +47,7 @@ function Footer(props) {
 
   return (
     <footer className={'footer row'}>
-      <div className={'container-block col-12 col-md-6 offset-md-3'}>
+      <div className={'container-block col-12 col-md-10 col-lg-6 offset-md-1 offset-lg-3'}>
         <div className={'text_block left'}>
           <div className={'top_block'}>
             <span onClick={() => redirect('/term-of-use')}>{t(props.lang, 'Term of Use')}</span>

@@ -28,7 +28,7 @@ function index(props) {
     });
   };
 
-  return <div className={'block_template_container teacher'}>{renderRelations()}</div>;
+  return <div className={'block_template_container teacher row'}>{renderRelations()}</div>;
 }
 
 function mapStateToProps(state) {

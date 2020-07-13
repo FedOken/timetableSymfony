@@ -11,6 +11,7 @@
 
     .block-name {
       @include block-name;
+      width: fit-content;
     }
 
     .group {
