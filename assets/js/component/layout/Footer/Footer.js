@@ -70,7 +70,7 @@ function Footer(props) {
               <span code={'ru-RU'} onClick={(e) => changeLanguage(e)}>
                 ru
               </span>
-              <span code={'ua-UA'} onClick={(e) => changeLanguage(e)}>
+              <span code={'uk-UA'} onClick={(e) => changeLanguage(e)}>
                 ua
               </span>
               {iconEarth}

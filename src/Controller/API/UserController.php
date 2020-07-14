@@ -87,7 +87,6 @@ class UserController extends AbstractController
     public function apiUserLogoutEnd()
     {
         return $this->redirect('/login');
-//        return new JsonResponse(['status' => true]);
     }
 
     /**

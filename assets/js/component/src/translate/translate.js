@@ -1,6 +1,6 @@
 import React from 'react';
 import {ru} from './source/ru';
-import {ua} from './source/ua';
+import {uk} from './source/uk';
 import {en} from './source/en';
 import {isEmpty} from '../Helper';
 
@@ -16,7 +16,7 @@ export function t(targetLang, message, globalSearch = false) {
     /** Search translate in each langs. Get translate key and trans to needed lang*/
     let transKey = null;
     if (isEmpty(transKey)) transKey = Object.keys(ru).find((key) => ru[key] === message);
-    if (isEmpty(transKey)) transKey = Object.keys(ua).find((key) => ua[key] === message);
+    if (isEmpty(transKey)) transKey = Object.keys(uk).find((key) => uk[key] === message);
     if (isEmpty(transKey)) transKey = Object.keys(en).find((key) => en[key] === message);
     if (isEmpty(transKey)) return message;
     message = transKey;
@@ -37,8 +37,8 @@ function getSource(targetLang) {
   switch (targetLang) {
     case 'ru-RU':
       return ru;
-    case 'ua-UA':
-      return ua;
+    case 'uk-UA':
+      return uk;
     case 'en-GB':
       return en;
     default:

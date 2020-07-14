@@ -1,4 +1,4 @@
-export const ua = {
+export const uk = {
   Schedule: 'Розклад',
   Panel: 'Панель',
   Home: 'Головна',

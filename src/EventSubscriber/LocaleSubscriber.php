@@ -10,7 +10,7 @@ class LocaleSubscriber implements EventSubscriberInterface
 {
     private $defaultLocale;
 
-    public function __construct($defaultLocale = 'ua')
+    public function __construct($defaultLocale = 'uk')
     {
         $this->defaultLocale = $defaultLocale;
     }

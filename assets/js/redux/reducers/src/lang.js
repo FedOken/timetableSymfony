@@ -1,4 +1,4 @@
-let data = 'ua-UA';
+let data = 'uk-UA';
 
 export default function user(state = data, action) {
   switch (action.type) {
