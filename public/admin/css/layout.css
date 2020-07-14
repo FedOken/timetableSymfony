@@ -12,4 +12,61 @@
 .lang-form .select2-search.select2-search--dropdown {
     display: none;
 }
+
+.lang-block {
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 20;
+    margin-right: 20px;
+}
+.lang-block svg {
+    height: 21px;
+    width: 21px;
+    fill: #878994;
+    z-index: 20;
+    cursor: pointer;
+}
+.lang-block.active svg {
+    fill: #6174d1;
+}
+.lang-block a {
+    color: #9fa9b7;
+    position: absolute;
+    right: 5px;
+    transition: 0.2s all ease;
+    opacity: 0;
+    z-index: 10;
+}
+.lang-block a.active {
+    font-weight: bold;
+    color: #6174d1;
+}
+.lang-block.active .one {
+    right: 75px;
+    opacity: 1;
+}
+.lang-block.active .two {
+    right: 55px;
+    opacity: 1;
+}
+.lang-block.active .thr {
+    right: 35px;
+    opacity: 1;
+}
+/*.drop-menu {*/
+/*    display: flex;*/
+/*    position: absolute;*/
+/*    right: 21px;*/
+/*}*/
+/*.drop-menu span {*/
+/*    padding-right: 10px;*/
+/*    text-transform: lowercase;*/
+/*    color: #9fa9b7;*/
+/*}*/
+/*.drop-menu span.active {*/
+/*    font-weight: bold;*/
+/*    color: #292d42;*/
+
+/*}*/
 /* END LANGUAGE SELECTOR */

@@ -51,20 +51,6 @@ class AjaxRequestController extends AbstractController
     }
 
     /**
-     * @Route("/ajax/set-language", name="ajax-set-language")
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function setLanguage(Request $request)
-    {
-        $locale = $request->get('_locale');
-        if ($locale) {
-            $request->getSession()->set('_locale', $locale);
-        }
-        return new JsonResponse(true);
-    }
-
-    /**
      * @Route("/ajax/get-building-by-university", name="ajax-get-building-by-university")
      * @param Request $request
      * @return JsonResponse

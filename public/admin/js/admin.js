@@ -21,20 +21,8 @@ $().ready(function () {
     ajaxGetTimeByUniversity($(this).val(), schTime);
   });
 
-  //Language change
-  $('#lang-selector').on('change', function () {
-    $.ajax({
-      url: '/ajax/set-language?_locale=' + $(this).val(),
-      type: 'GET',
-      success: function (response) {
-        if (response == true) {
-          window.location.reload();
-        }
-      },
-      error: function (exception) {
-        console.log(exception);
-      },
-    });
+  $('.lang-block svg').on('click', function () {
+    $(this).closest('div').toggleClass('active');
   });
 });
 

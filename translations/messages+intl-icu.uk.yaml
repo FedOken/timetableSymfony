@@ -13,9 +13,9 @@ University: Університет
 Faculty: Факультет
 Senior lecturer: Старший викладач
 Schedules: Розклад
-Lessons list: Список уроків
-Add lesson: Додати урок
-Lesson name: Назва уроку
+Lessons list: Список занять
+Add lesson: Додати заняття
+Lesson name: Назва заняття
 Party: Група
 Time: Час
 Teacher: Викладач
@@ -25,12 +25,12 @@ Week: Тиждень
 Weeks: Тижні
 Weeks list: Список тижнів
 Add week: Додати тиждень
-Lesson type: Тип уроку
-Edit lesson: Редагувати урок
-Create lesson: Створити урок
+Lesson type: Тип заняття
+Edit lesson: Редагувати заняття
+Create lesson: Створити заняття
 Create group: Створити групу
 Create faculty: Створити факультет
-Enter lesson name ("Chemistry"): Введіть назву уроку ("Хімія")
+Enter lesson name ("Chemistry"): Введіть назву заняття ("Хімія")
 Choose university before choosing other data: Виберіть університет перед тим як обирати інші параметри
 Choose university: Виберіть університет
 Choose party: Виберіть групу
@@ -38,19 +38,19 @@ Create cabinet: Створіть аудиторію
 Sort order: Порядок сортування
 Affects the order in which the weeks are displayed when viewing schedules: Впливає на порядок відображення тижнів при перегляді розкладів
 Choose teacher: Виберіть викладача
-Choose lesson type: Виберіть тип уроку
+Choose lesson type: Виберіть тип заняття
 Choose week: Виберіть тиждень
 Choose day: Виберіть день
 Choose time: Виберіть час
 Choose building: Виберіть корпус
 Choose cabinet: Виберіть аудиторію
 Basic information: Базова інформація
-Class time: Час уроку
+Class time: Час заняття
 Status choice: Статус
 First name: Ім'я
 Last name: Прізвище
 Phone: Телефон
-Class location: Місце проведення уроку
+Class location: Місце проведення заняття
 Groups: Групи
 Group: Група
 Buildings: Корпуси
@@ -66,10 +66,10 @@ Email: Email
 Role label: Роль
 Access code: Код доступу
 Days: Дні
-Lesson types: Типи уроків
+Lesson types: Типи занять
 Roles: Ролі
 Add user: Додати користувача
-Courses: Курсы
+Courses: Курси
 The selected role is not assigned an access object!: У вибраної ролі не призначений об'єкт доступу!
 Access object: Об'єкт доступу
 The access object must match the selected role: Об'єкт доступу повинен відповідати обраній ролі
@@ -101,13 +101,13 @@ Set short name (prof.): Введіть абревіатуру (проф.)
 Set full name (Professor): Введіть повну назву (Профессор)
 Position: Посада
 Positions: Посади
-Class time list: Час уроків
+Class time list: Час занять
 Add class time: Додати час
 Start: Початок
 End: Кінець
-Create class time: Створити час уроків
-Set class time start: Вкажіть час початку уроку
-Set class time end: Вкажіть час закінчення уроку
+Create class time: Створити час заняття
+Set class time start: Вкажіть час початку заняття
+Set class time end: Вкажіть час закінчення заняття
 Set full name (First week, Second week): Введіть повну назву (Перший тиждень, Другий тиждень)
 Create week: Створити тиждень
 Edit week: Редагувати тиждень
@@ -135,11 +135,11 @@ Set full university name (National University): Введіть повну наз
 University view: Перегляд запису - університет
 Related data: Пов'язані дані
 Constants: Константи
-Lessons type: Типи уроків
-Schedules time: Час проведення уроків
+Lessons type: Типи занять
+Schedules time: Час проведення занять
 Related data - constants: Пов'язані дані - константи
 Related data - mutable: Пов'язані дані - змінні
-Lesson times: Час уроків
+Lesson times: Час занять
 Enabled: Ввімкнений
 Faculty list: Список факультетів
 Parties: Групи
@@ -171,13 +171,13 @@ Add cabinet: Додати аудиторію
 Enter cabinet number (2, 411, 325a): Введіть номер аудиторії (2, 411, 325а)
 Course view: Перегляд запису - курс
 Week view: Перегляд запису - тиждень
-Class time view: Перегляд запису - час уроку
-Edit class time: Редагувати час уроку
+Class time view: Перегляд запису - час заняття
+Edit class time: Редагувати час заняття
 Teacher view: Перегляд запису - викладач
-Lesson view: Перегляд запису - урок
+Lesson view: Перегляд запису - заняття
 Edit day: Редагувати день
 Day view: Перегляд запису - день
-Lesson type view: Перегляд запису - тип уроку
+Lesson type view: Перегляд запису - тип заняття
 Teacher position view: Перегляд запису - посада викладача
 Role view: Перегляд запису - роль
 

@@ -62,6 +62,15 @@ class AdminController extends EasyAdminController
         return $this->redirect('/login');
     }
 
+    /** @Route("/set-locale/{locale}", name="easyadmin-setLocale") */
+    public function adminSetLocale(string $locale, Request $request)
+    {
+        if ($locale) {
+            $request->getSession()->set('_locale', $locale);
+        }
+        return $this->redirect($request->headers->get('referer'));
+    }
+
     /**
      * @param array $validIds
      * @param string $entityName

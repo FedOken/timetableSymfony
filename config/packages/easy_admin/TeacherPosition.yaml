@@ -25,10 +25,10 @@ easy_admin:
             show:
                 title: 'Teacher position view'
                 fields:
-                    - { type: 'group-1', label: 'Basic information', 'css_class':'col-md-6' }
+                    - { type: 'group-1', label: 'Basic information', 'css_class':'col-12' }
                     - { property: 'name', 'type_options':{'block_name': 'group-1'} }
                     - { property: 'name_full', label: 'Full name', 'type_options':{'block_name': 'group-1'} }
 
-                    - { type: 'group-2', label: 'Related data', 'css_class':'col-md-6' }
-                    - { property: 'teachers', 'type_options':{'block_name': 'group-2'} }
+#                    - { type: 'group-2', label: 'Related data', 'css_class':'col-md-6' }
+#                    - { property: 'teachers', 'type_options':{'block_name': 'group-2'} }
                 actions: ['-delete']
