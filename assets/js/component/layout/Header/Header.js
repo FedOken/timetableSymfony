@@ -24,7 +24,7 @@ function index(props) {
         <HeaderItem url={'/admin'} icon={iconPanel} text={t(props.lang, 'Panel')} activeLinks={[]} isBlanc={true} />
       );
     }
-    return <HeaderItem url={'/welcome'} icon={iconHome} text={t(props.lang, 'Home')} activeLinks={[]} />;
+    return <HeaderItem url={'/'} icon={iconHome} text={t(props.lang, 'Home')} activeLinks={[]} />;
   };
 
   const renderLastElement = () => {
@@ -43,14 +43,14 @@ function index(props) {
     );
   };
 
-  if (props.pathname === '/welcome') {
+  if (props.pathname === '/') {
     return <header className={'header only_logo'}>{iconLogo}</header>;
   } else {
     return (
       <header className={'header'}>
         {renderFirstElement()}
         <HeaderItem url={'/search'} icon={iconSearch} text={t(props.lang, 'Search')} activeLinks={['/search']} />
-        <HeaderLogo url={'/welcome'} icon={iconLogo} activeLinks={['/welcome']} />
+        <HeaderLogo url={'/'} icon={iconLogo} activeLinks={['/']} />
         <HeaderItem
           url={'/contact'}
           icon={iconContact}

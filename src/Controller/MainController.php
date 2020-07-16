@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Controller\API\Handler\TeacherHandler;
+use App\Controller\Handler\MainHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,20 +11,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+/**
+ * Class MainController
+ * @package App\Controller
+ *
+ * @property MainHandler $handler
+ */
 class MainController extends AbstractController
 {
+    private $handler;
+
+    public function __construct(MainHandler $handler)
+    {
+        $this->handler = $handler;
+    }
+
     /**
      * @Route("/", name="home")
      */
     public function main()
-    {
-        return $this->redirect('/welcome');
-    }
-
-    /**
-     * @Route("/welcome", name="welcome")
-     */
-    public function welcome()
     {
         return $this->render('welcome/index.html.twig');
     }
@@ -32,7 +39,7 @@ class MainController extends AbstractController
      */
     public function schedule()
     {
-        return $this->render('welcome/index.html.twig');
+        return $this->render('default/index.html.twig');
     }
 
     /**
@@ -40,7 +47,8 @@ class MainController extends AbstractController
      */
     public function search()
     {
-        return $this->render('welcome/index.html.twig');
+        $data = $this->handler->formSearchData();
+        return $this->render('search/index.html.twig', $data);
     }
 
     /**
@@ -48,7 +56,7 @@ class MainController extends AbstractController
      */
     public function contact()
     {
-        return $this->render('welcome/index.html.twig');
+        return $this->render('contact/index.html.twig');
     }
 
     /**
@@ -56,7 +64,7 @@ class MainController extends AbstractController
      */
     public function contactBusiness()
     {
-        return $this->render('welcome/index.html.twig');
+        return $this->render('contact/index.html.twig');
     }
 
     /**
@@ -64,7 +72,7 @@ class MainController extends AbstractController
      */
     public function contactTechnical()
     {
-        return $this->render('welcome/index.html.twig');
+        return $this->render('contact/index.html.twig');
     }
 
     /**
@@ -72,7 +80,7 @@ class MainController extends AbstractController
      */
     public function register()
     {
-        return $this->render('welcome/index.html.twig');
+        return $this->render('default/index.html.twig');
     }
 
     /**
@@ -80,7 +88,7 @@ class MainController extends AbstractController
      */
     public function login()
     {
-        return $this->render('welcome/index.html.twig');
+        return $this->render('default/index.html.twig');
     }
 
     /**
@@ -88,7 +96,7 @@ class MainController extends AbstractController
      */
     public function resetPassword()
     {
-        return $this->render('welcome/index.html.twig');
+        return $this->render('default/index.html.twig');
     }
 
     /**
@@ -96,7 +104,7 @@ class MainController extends AbstractController
      */
     public function resetPasswordEmailSend()
     {
-        return $this->render('welcome/index.html.twig');
+        return $this->render('default/index.html.twig');
     }
 
     /**
@@ -104,7 +112,7 @@ class MainController extends AbstractController
      */
     public function profile()
     {
-        return $this->render('welcome/index.html.twig');
+        return $this->render('default/index.html.twig');
     }
 
     /**
@@ -112,7 +120,7 @@ class MainController extends AbstractController
      */
     public function scheduleTypePartyId()
     {
-        return $this->render('welcome/index.html.twig');
+        return $this->render('default/index.html.twig');
     }
 
     /**
@@ -120,7 +128,7 @@ class MainController extends AbstractController
      */
     public function registerConfirmEmailSend(string $code)
     {
-        return $this->render('welcome/index.html.twig');
+        return $this->render('default/index.html.twig');
     }
 
     /**
@@ -128,7 +136,7 @@ class MainController extends AbstractController
      */
     public function registerConfirmEmail(string $code)
     {
-        return $this->render('welcome/index.html.twig');
+        return $this->render('default/index.html.twig');
     }
 
     /**
@@ -136,6 +144,6 @@ class MainController extends AbstractController
      */
     public function termOfUse()
     {
-        return $this->render('welcome/index.html.twig');
+        return $this->render('default/index.html.twig');
     }
 }

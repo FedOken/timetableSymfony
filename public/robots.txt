@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Allow: /search
+Allow: /contact
+Sitemap: https://schedule.com.ua/sitemap.xml

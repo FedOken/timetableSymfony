@@ -36,7 +36,6 @@ function index(props) {
           <Switch>
             <Route path="/contact/business" component={Business} />
             <Route path="/contact/technical" component={Technical} />
-            <Route path="/welcome" component={Welcome} />
             <Route path="/search" component={Search} />
             <Route path="/schedule/:type/:id" render={() => <Schedule key={props.loc.key} />} />
             <Route path="/contact" component={Contact} />
@@ -48,6 +47,7 @@ function index(props) {
             <Route path="/reset-password" component={ResetPassword} />
             <Route path="/profile" component={Profile} />
             <Route path="/term-of-use" component={TermOfUse} />
+            <Route path="/" component={Welcome} />
           </Switch>
         </main>
         <Footer />

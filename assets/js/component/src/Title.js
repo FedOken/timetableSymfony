@@ -5,7 +5,7 @@ import {t} from './translate/translate';
 
 function Title(props) {
   const titles = {
-    '/welcome': 'Schedule - ' + t(props.lang, 'Main'),
+    '/': 'Schedule - ' + t(props.lang, 'Home'),
     '/search': 'Schedule - ' + t(props.lang, 'Search'),
     '/contact/business': 'Schedule - ' + t(props.lang, 'Business matters'),
     '/contact/technical': 'Schedule - ' + t(props.lang, 'Technical issue'),

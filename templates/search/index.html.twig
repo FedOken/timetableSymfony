@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block metablock %}
+    <title>SCHEDULE | Пошук розкладу груп, викладачів, аудиторій.</title>
+    <meta name="keywords" content="пошук, розклад, груп, викладачів, аудиторій">
+    <meta name="description" content="Пошук розкладу групи, викладача, аудиторії у вашому навчальному закладі.">
+{% endblock %}
+
+{% block body %}
+    <p>
+    {% for university in universities %}
+        {{university.name}} - {{university.name_full}}
+    {% endfor %}
+    </p>
+    <p>
+        {% for party in parties %}
+            {{party.name}}
+        {% endfor %}
+    </p>
+    <p>
+        {% for teacher in teachers %}
+            {{teacher.name_full}}
+        {% endfor %}
+    </p>
+    <p>
+        {% for cabinet in cabinets %}
+            {{cabinet.name}}
+        {% endfor %}
+    </p>
+{% endblock %}
