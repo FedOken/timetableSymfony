@@ -33,7 +33,7 @@ class SendGridController extends AbstractController
     {
         $url = $this->generateUrl('api-user-confirmEmail', ['code' => 'asd12asda3']);
         $url = $request->getScheme().'://'.$request->getHost().$url;
-        $data = $this->mailer->send('agoodminute@gmail.com', 'confirm-email', ['link' => $url]);
+        $data = $this->mailer->send('agoodminute@gmail.com', 'confirm-email-ua', ['link' => $url]);
         //$data = $url;
         return new JsonResponse($data);
     }
