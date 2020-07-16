@@ -82,7 +82,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/api/user/logout-end", name="api-user-logoutEnd")
+     * @Route("/api/user/logout-end", name="api-user-logoutEnd", schemes={"https"})
      */
     public function apiUserLogoutEnd()
     {
