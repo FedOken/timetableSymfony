@@ -7,24 +7,26 @@
 {% endblock %}
 
 {% block body %}
-    <p>
-    {% for university in universities %}
-        {{university.name}} - {{university.name_full}}
-    {% endfor %}
-    </p>
-    <p>
-        {% for party in parties %}
-            {{party.name}}
-        {% endfor %}
-    </p>
-    <p>
-        {% for teacher in teachers %}
-            {{teacher.name_full}}
-        {% endfor %}
-    </p>
-    <p>
-        {% for cabinet in cabinets %}
-            {{cabinet.name}}
-        {% endfor %}
-    </p>
+    <div style="opacity: 0">
+        <p>
+            {% for university in universities %}
+                {{university.name}} - {{university.name_full}}
+            {% endfor %}
+        </p>
+        <p>
+            {% for party in parties %}
+                {{party.name}}
+            {% endfor %}
+        </p>
+        <p>
+            {% for teacher in teachers %}
+                {{teacher.name_full}}
+            {% endfor %}
+        </p>
+        <p>
+            {% for cabinet in cabinets %}
+                {{cabinet.name}}
+            {% endfor %}
+        </p>
+    </div>
 {% endblock %}
