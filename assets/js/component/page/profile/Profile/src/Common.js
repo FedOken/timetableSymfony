@@ -39,17 +39,21 @@ function index(props) {
           commonInfo(t(props.lang, 'Access type'), t(props.lang, 'Full access'));
           break;
         case getRoleLabel('university'):
-          commonInfo(t(props.lang, 'University'), relations.universities[0].name);
+          commonInfo(t(props.lang, 'University'), !isEmpty(relations.universities) ? relations.universities[0].name : '');
           break;
         case getRoleLabel('teacher'):
+          commonInfo(t(props.lang, 'University'), !isEmpty(relations.universities) ? relations.universities[0].name : '');
+          commonInfo(t(props.lang, 'Faculty'), !isEmpty(relations.faculties) ? relations.faculties[0].name : '');
+          commonInfo(t(props.lang, 'Teacher'), !isEmpty(relations.teachers) ? relations.teachers[0].name : '');
+          break;
         case getRoleLabel('faculty'):
-          commonInfo(t(props.lang, 'University'), relations.universities[0].name);
-          commonInfo(t(props.lang, 'Faculty'), relations.faculties[0].name);
+          commonInfo(t(props.lang, 'University'), !isEmpty(relations.universities) ? relations.universities[0].name : '');
+          commonInfo(t(props.lang, 'Faculty'), !isEmpty(relations.faculties) ? relations.faculties[0].name : '');
           break;
         case getRoleLabel('party'):
-          commonInfo(t(props.lang, 'University'), relations.universities[0].name);
-          commonInfo(t(props.lang, 'Faculty'), relations.faculties[0].name);
-          commonInfo(t(props.lang, 'Group'), relations.parties[0].name);
+          commonInfo(t(props.lang, 'University'), !isEmpty(relations.universities) ? relations.universities[0].name : '');
+          commonInfo(t(props.lang, 'Faculty'), !isEmpty(relations.faculties) ? relations.faculties[0].name : '');
+          commonInfo(t(props.lang, 'Group'), !isEmpty(relations.parties) ? relations.parties[0].name : '');
           break;
       }
       setIsLoadRel(true);
