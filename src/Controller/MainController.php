@@ -123,6 +123,7 @@ class MainController extends AbstractController
         return $this->render('default/index.html.twig');
     }
 
+
     /**
      * @Route("/register/confirm-email-send/{code}", name="register-confirmEmailSend")
      */
