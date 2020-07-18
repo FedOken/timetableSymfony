@@ -310,7 +310,7 @@ class UserHandler extends BaseHandler
             ];
         }
         /** @var Party[] $models */
-        $models = ArrayHelper::getColumn($schs, 'party');
+        $models = $this->em->getRepository(Party::class)->findBy(['id' => $accessObj->getAccessiblePartyIds()]);
         $models = array_unique($models);
         foreach ($models as $model) {
             if (!$model) continue;

@@ -1,4 +1,7 @@
-&.not-found {
+.not-found {
+  display: flex;
+  flex-direction: column;
+
   @include font-30;
   font-weight: bold;
   text-align: center;

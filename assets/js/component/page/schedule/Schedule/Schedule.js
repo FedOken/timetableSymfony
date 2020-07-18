@@ -39,11 +39,13 @@ function index(props) {
   /** Show nothing not found */
   if (isEmpty(data) || isEmpty(data.weeks)) {
     return (
-      <div className="schedule container not-found">
-        <p>{t(props.lang, 'Schedules not found')}</p>
-        <button type={'button'} className={'btn btn-type-2'} onClick={() => redirect('/search')}>
-          {t(props.lang, 'To search')}
-        </button>
+      <div className="schedule row h-100">
+        <div className={'not-found'}>
+          <p>{t(props.lang, 'Schedules not found')}</p>
+          <button type={'button'} className={'btn btn-type-2'} onClick={() => redirect('/search')}>
+            {t(props.lang, 'To search')}
+          </button>
+        </div>
       </div>
     );
   }
